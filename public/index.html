@@ -1,43 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
+    <title>My HTML File</title>
   </head>
+
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    <nav>
+      <a href="/">
+        <div class="nav-icon">
+          <img src="img4.jpg" alt="logo">
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#">Link 1</a></li>
+        <li><a href="#">Link 2</a></li>
+        <li><a href="#">Link 3</a></li>
+        <li><a href="#">Account</a></li>
+      </ul>
+    </nav>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    <div class="hero-image">
+      <img src="hero-img.jpg" alt="Hero
+             Image">
+      <div class="button-container">
+        <a href="/login">
+          <button class="login-button">Login</button>
+          <button class="signup-button">Signup</button></a>
+      </div>
+    </div>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <div class="news">
+      <div class="news-heading">
+        <h2>Latest News</h2>
+        <p>Here is the latest news from our company. We have been working hard to bring you the best
+          products
+          and
+          services.</p>
+      </div>
+      <div class="news-container">
+        <div class="news-item">
+          <img src="img4.jpg" alt="Image 1">
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, expedita soluta? Earum non
+            natus
+            vero
+            veniam ipsa aperiam tempore unde, quam dolores voluptatum modi ea ducimus, quae itaque ratione
+            illum!
+          </p>
+        </div>
+        <div class="news-item">
+          <img src="img4.jpg" alt="Image 2"> <a
+            href="https://www.freepik.com/free-vector/illustration-gallery-icon_2922280.htm#query=placeholder&position=0&from_view=keyword&track=sph&uuid=a218c410-d8f6-45ef-89aa-b36719c05cdb">Image
+            by rawpixel.com</a> on Freepik
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui necessitatibus repellat temporibus
+            provident
+            ad ea nesciunt rem? Velit, eos nam accusantium assumenda ducimus asperiores, reprehenderit odit
+            doloremque sapiente impedit odio.</p>
+        </div>
+        <div class="news-item">
+          <img src="img4.jpg" alt="Image 3">
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea harum sit eos! Impedit nam
+            repellendus
+            aperiam ut doloremque alias eos aliquam id! Ipsam numquam commodi, laudantium magnam velit
+            perspiciatis
+            doloribus!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="macrocalculator">
+        <h2>Macro Calculator</h2>
+        <p>Use our macro calculator to find out how many calories you need to consume to reach your goals.</p>
+        <img src="img4.jpg" alt="Macro Calculator">
+        <a href="macrocalculator">
+          <button type="submit">Calculate</button>
+        </a>
+      </div>
+      <div class="secondimage">
+        <img src="img4.jpg" alt="Image 4">
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="img4.jpg" alt="Your Logo">
+        </div>
+
+        <div class="footer-links">
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-social">
+          <ul class="social-icons">
+            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+            <li><a href="#"><i class="fa fa-codepen"></i></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2024 Your Website. All rights reserved.</p>
+      </div>
+    </footer>
   </body>
+
 </html>
