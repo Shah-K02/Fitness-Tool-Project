@@ -6,8 +6,11 @@ import HeroSection from "./components/HeroSection";
 import NewsSection from "./components/NewsSection";
 import MacronutrientSection from "./components/MacronutrientSection";
 import LoginPage from "./components/LoginPage"; // Import the login page component
+import UserHomePage from "./components/UserHomePage"; // Import the user home page component
 import MacroCalculator from "./components/MacroCalculator"; // Import the stats page component
 import "./App.css";
+import NutritionTips from "./components/NutritionTips";
+import Posts from "./components/Posts";
 
 function App() {
   return (
@@ -26,6 +29,18 @@ function App() {
           }
         />
         <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/user-home"
+          element={
+            <>
+              <UserHomePage />
+              <NewsSection />
+              <NutritionTips />
+              <Posts />
+            </>
+          }
+        />
+
         {/* Add other routes here */}
         <Route path="/macro-calculator" element={<MacroCalculator />} />
       </Routes>
