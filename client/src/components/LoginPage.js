@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import {
   FaGooglePlusG,
   FaFacebookF,
@@ -9,21 +8,22 @@ import {
 import "./LoginPage.css";
 
 const LoginPage = () => {
-  const { loginWithRedirect } = useAuth0();
   const [isSignUpActive, setIsSignUpActive] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleAuth0Login = () => {
-    loginWithRedirect({
-      screen_hint: "login",
-    });
+  const handleSignup = (event) => {
+    event.preventDefault();
+    // Implement your signup logic here
+    // Example:
+    // setError("Signup not implemented yet.");
   };
 
-  const handleAuth0Signup = () => {
-    loginWithRedirect({
-      screen_hint: "signup",
-    });
+  const handleLogin = (event) => {
+    event.preventDefault();
+    // Implement your login logic here
+    // Example:
+    // setError("Login not implemented yet.");
   };
-
   const toggleSignUp = () => {
     setIsSignUpActive(true);
   };
@@ -37,9 +37,10 @@ const LoginPage = () => {
       className={`login-container ${isSignUpActive ? "active" : ""}`}
       id="container"
     >
+      {error && <div className="error-message">{error}</div>}
       {/* Sign Up Form */}
       <div className="form-container sign-up-container">
-        <form id="signup-form" onSubmit={handleAuth0Signup}>
+        <form id="signup-form" onSubmit={handleSignup}>
           <h1>Create Account</h1>
           <div className="social-icons">
             <a href="#" className="icon">
@@ -77,14 +78,12 @@ const LoginPage = () => {
             placeholder="Confirm Password"
             required
           />
-          <button type="button" onClick={handleAuth0Signup}>
-            Sign Up
-          </button>
+          <button type="submit">Sign Up</button>
         </form>
       </div>
       {/* Sign In Form */}
       <div className="form-container sign-in-container">
-        <form onSubmit={handleAuth0Login}>
+        <form onSubmit={handleLogin}>
           <h1>Sign In</h1>
           <div className="social-icons">
             <a href="#" className="icon">
@@ -109,9 +108,7 @@ const LoginPage = () => {
             required
           />
           <a href="#">Forgot Your Password?</a>
-          <button type="button" onClick={handleAuth0Login}>
-            Sign In
-          </button>
+          <button type="submit">Sign In</button>
         </form>
       </div>
       <div className="toggle-container">
