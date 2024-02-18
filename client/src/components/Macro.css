@@ -1,0 +1,64 @@
+/* Macro.css */
+.macro-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.macro-form-container form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.macro-form-container input,
+.macro-form-container select,
+.macro-form-container button {
+  padding: 8px;
+  margin: -5px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.macro-form-container button {
+  background-color: #dc0000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.macro-form-container button:hover {
+  background-color: #ffa500;
+}
+
+.macro-form-container label {
+  margin-top: 10px;
+}
+
+.macro-results-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.macro-chart-container canvas {
+  width: 400px;
+  height: 400px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.macro-results-container p {
+  color: #dc0000;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  overflow: hidden;
+}
