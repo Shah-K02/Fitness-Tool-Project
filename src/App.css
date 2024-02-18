@@ -3,8 +3,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #c9d6ff;
-  background: linear-gradient(to bottom, grey, black);
+  background-color: #f7f7f7;
   display: flex; /* Use flexbox to make the body a flex container */
   flex-direction: column; /* Stack child elements vertically */
   min-height: 100vh; /* Set the minimum height of the body to 100% of the viewport height */
@@ -12,12 +11,14 @@ body {
 
 /* Style for the navigation bar */
 nav {
-  background-color: black;
-  color: white;
+  background-color: #36454f;
+  color: #d3d3d3;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
+  z-index: 1000; /* Use a high value to ensure it's on top */
+  position: relative; /* z-index only works on positioned elements */
 }
 .nav-icon {
   margin-right: 10px; /* Add spacing between the logo and the navigation links */
@@ -59,7 +60,7 @@ nav {
 }
 
 .footer {
-  background-color: black;
+  background-color: #36454f;
   padding: 10px;
   text-align: center;
   margin-top: auto; /* Push the footer to the bottom */

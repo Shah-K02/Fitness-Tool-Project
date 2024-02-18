@@ -9,6 +9,7 @@
   width: 100%;
   max-width: 768px; /* Adjust the maximum width as needed */
   min-height: 480px;
+  margin-bottom: 45px;
   margin-top: 40px;
   margin-left: auto; /* Center the container horizontally */
   margin-right: auto; /* Center the container horizontally */
@@ -33,7 +34,7 @@
 }
 
 .login-container button {
-  background-color: black;
+  background-color: #dc0000;
   color: #fff;
   font-size: 12px;
   padding: 10px 45px;
@@ -149,9 +150,9 @@
 }
 
 .toggle {
-  background-color: #fff;
+  background-color: #36454f;
   height: 100%;
-  background: linear-gradient(to right, grey, rgb(112, 112, 112));
+  background: linear-gradient(to right, #36454f, rgb(112, 112, 112));
   color: black;
   position: relative;
   left: -100%;
