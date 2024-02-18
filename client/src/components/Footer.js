@@ -1,4 +1,5 @@
 import React from "react";
+import { FaFacebook, FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
 //import "./Footer.css"; // Your global styles
 
 const Footer = () => {
@@ -27,22 +28,22 @@ const Footer = () => {
           <ul className="social-icons">
             <li>
               <a href="#">
-                <i className="fa fa-instagram"></i>
+                <FaFacebook />
               </a>
             </li>
             <li>
               <a href="#">
-                <i className="fa fa-twitter"></i>
+                <FaTwitter />
               </a>
             </li>
             <li>
               <a href="#">
-                <i className="fa fa-linkedin"></i>
+                <FaGithub />
               </a>
             </li>
             <li>
               <a href="#">
-                <i className="fa fa-codepen"></i>
+                <FaLinkedin />
               </a>
             </li>
           </ul>

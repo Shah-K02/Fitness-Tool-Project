@@ -1,21 +1,36 @@
-// App.js
 import React from "react";
-import Navbar from "./components/Navbar"; // Adjust the path if Navbar is in a different directory
-import "./App.css"; // Your global styles
-import "./index.css"; // Your global styles
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import HeroSection from "./components/HeroSection";
 import NewsSection from "./components/NewsSection";
+import MacronutrientSection from "./components/MacronutrientSection";
+import LoginPage from "./components/LoginPage"; // Import the login page component
+import MacroCalculator from "./components/MacroCalculator"; // Import the stats page component
+import "./App.css";
 
 function App() {
   return (
-    <>
+    <Router>
       <Navbar />
-      <HeroSection />
-      <NewsSection />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <HeroSection />
+              <NewsSection />
+              <MacronutrientSection />
+              {/* Other components that you want to render on the homepage */}
+            </>
+          }
+        />
+        <Route path="/login" element={<LoginPage />} />
+        {/* Add other routes here */}
+        <Route path="/macro-calculator" element={<MacroCalculator />} />
+      </Routes>
       <Footer />
-      {/* Other components that you want to render below the navbar */}
-    </>
+    </Router>
   );
 }
 
