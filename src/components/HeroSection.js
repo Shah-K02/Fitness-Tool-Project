@@ -1,5 +1,6 @@
 // HeroSection.js
 import React from "react";
+import { Link } from "react-router-dom";
 // import "./HeroSection.css"; // Assume you have CSS for the HeroSection
 
 const HeroSection = () => {
@@ -7,12 +8,10 @@ const HeroSection = () => {
     <div className="hero-image">
       <img src="hero-img.jpg" alt="Hero Image" />
       <div className="button-container">
-        <a href="/login">
+        <Link to="/login">
           <button className="login-button">Login</button>
-        </a>
-        <a href="/signup">
           <button className="signup-button">Signup</button>
-        </a>
+        </Link>
       </div>
     </div>
   );
