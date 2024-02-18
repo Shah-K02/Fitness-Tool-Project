@@ -10,26 +10,104 @@ import "./LoginPage.css";
 const LoginPage = () => {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
   const [error, setError] = useState(null);
+  const [userCredentials, setUserCredentials] = useState({
+    signUpEmail: "",
+    signUpPassword: "",
+    confirmPassword: "",
+    signInEmail: "",
+    signInPassword: "",
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setUserCredentials({ ...userCredentials, [name]: value });
+  };
 
   const handleSignup = (event) => {
     event.preventDefault();
-    // Implement your signup logic here
-    // Example:
-    // setError("Signup not implemented yet.");
+    if (userCredentials.signUpPassword !== userCredentials.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    // Assuming your backend endpoint for registration is '/register'
+    fetch("/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: userCredentials.signUpEmail.split("@")[0], // Or however you wish to set the username
+        email: userCredentials.signUpEmail,
+        password: userCredentials.signUpPassword,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // If response is not ok, throw an error to catch block
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Parse JSON response
+      })
+      .then((data) => {
+        // Handle data here
+        console.log(data);
+        // Redirect to login page or automatically log the user in, as desired
+      })
+      .catch((error) => {
+        // Handle any errors here
+        setError("Failed to sign up. Please try again.");
+        console.error("Sign Up Error:", error);
+      });
   };
 
   const handleLogin = (event) => {
     event.preventDefault();
-    // Implement your login logic here
-    // Example:
-    // setError("Login not implemented yet.");
+
+    // Assuming your backend endpoint for login is '/login'
+    fetch("/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: userCredentials.signInEmail,
+        password: userCredentials.signInPassword,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          // If response is not ok, throw an error to catch block
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // Parse JSON response
+      })
+      .then((data) => {
+        // Handle data here
+        console.log(data);
+        // Store the token in localStorage or manage the session as needed
+        localStorage.setItem("token", data.token);
+        // Redirect to home page or dashboard as appropriate
+      })
+      .catch((error) => {
+        // Handle any errors here
+        setError(
+          "Failed to log in. Please check your credentials and try again."
+        );
+        console.error("Login Error:", error);
+      });
   };
+
   const toggleSignUp = () => {
     setIsSignUpActive(true);
   };
 
   const toggleLogin = () => {
     setIsSignUpActive(false);
+  };
+
+  const preventDefault = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -60,16 +138,22 @@ const LoginPage = () => {
           <input
             type="email"
             id="email"
-            name="email"
+            name="signUpEmail"
             placeholder="Email"
             required
+            aria-label="Email"
+            onChange={handleInputChange}
+            value={userCredentials.signUpEmail}
           />
           <input
             type="password"
             id="password"
-            name="password"
+            name="signUpPassword"
             placeholder="Password"
             required
+            aria-label="Password"
+            onChange={handleInputChange}
+            value={userCredentials.signUpPassword}
           />
           <input
             type="password"
@@ -77,6 +161,9 @@ const LoginPage = () => {
             name="confirmPassword"
             placeholder="Confirm Password"
             required
+            aria-label="Confirm Password"
+            onChange={handleInputChange}
+            value={userCredentials.confirmPassword}
           />
           <button type="submit">Sign Up</button>
         </form>
@@ -100,14 +187,27 @@ const LoginPage = () => {
             </a>
           </div>
           <span>or use your email password</span>
-          <input type="email" name="email" placeholder="Email" required />
+          <input
+            type="email"
+            name="signInEmail"
+            placeholder="Email"
+            required
+            aria-label="Email"
+            onChange={handleInputChange}
+            value={userCredentials.signInEmail}
+          />
           <input
             type="password"
-            name="password"
+            name="signInPassword"
             placeholder="Password"
             required
+            aria-label="Password"
+            onChange={handleInputChange}
+            value={userCredentials.signInPassword}
           />
-          <a href="#">Forgot Your Password?</a>
+          <a href="#" onClick={preventDefault}>
+            Forgot Your Password?
+          </a>
           <button type="submit">Sign In</button>
         </form>
       </div>
