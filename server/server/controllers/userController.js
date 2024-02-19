@@ -1,3 +1,4 @@
+// userController.js is the file that contains the logic for registering and logging in users. It uses bcrypt to hash passwords and MySQL to store user data. The registerUser function hashes the password and inserts the user into the database. The loginUser function checks if the email exists in the database and compares the provided password with the stored hashed password. If the password matches, it can create a session or token and redirect to the user-home page or send the token as a response.
 const mysql = require("mysql");
 const bcrypt = require("bcryptjs"); // Make sure to install bcryptjs
 

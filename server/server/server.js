@@ -1,3 +1,4 @@
+// server.js
 require("dotenv").config(); // Ensure this is at the top to load environment variables
 const express = require("express");
 const mysql = require("mysql");
@@ -11,7 +12,12 @@ const saltRounds = 10; // It's better to use an explicit number for salt rounds
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Adjust this to your frontend's origin
+    credentials: true, // This allows sending cookies and credentials headers
+  })
+);
 app.use(cookieParser());
 
 // Create a connection to the database
@@ -61,8 +67,7 @@ app.post("/login", (req, res) => {
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
         expiresIn: "24h",
       });
-      res.cookie("token", token, { httpOnly: true });
-      res.status(200).send("Login successful");
+      res.status(200).json({ token: token });
     } else {
       res.status(401).send("Password is incorrect");
     }
