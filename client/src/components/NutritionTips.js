@@ -2,13 +2,13 @@ import React from "react";
 
 const NutritionTips = () => {
   return (
-    <div class="news">
-      <div class="news-heading">
+    <div className="news">
+      <div className="news-heading">
         <h2>Nutrition Tips</h2>
         <p>Nutrition tips for you.</p>
       </div>
-      <div class="news-container">
-        <div class="news-item">
+      <div className="news-container">
+        <div className="news-item">
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum,
             expedita soluta? Earum non natus vero veniam ipsa aperiam tempore
@@ -16,7 +16,7 @@ const NutritionTips = () => {
             illum!
           </p>
         </div>
-        <div class="news-item">
+        <div className="news-item">
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui
             necessitatibus repellat temporibus provident ad ea nesciunt rem?
@@ -24,7 +24,7 @@ const NutritionTips = () => {
             reprehenderit odit doloremque sapiente impedit odio.
           </p>
         </div>
-        <div class="news-item">
+        <div className="news-item">
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea harum
             sit eos! Impedit nam repellendus aperiam ut doloremque alias eos
