@@ -6,6 +6,7 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa";
 import "./LoginPage.css";
+import axios from "axios";
 
 const LoginPage = () => {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
@@ -23,92 +24,53 @@ const LoginPage = () => {
     setUserCredentials({ ...userCredentials, [name]: value });
   };
 
-  const handleSignup = (event) => {
+  const handleSignup = async (event) => {
     event.preventDefault();
     if (userCredentials.signUpPassword !== userCredentials.confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
 
-    // Assuming your backend endpoint for registration is '/register'
-    fetch("/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: userCredentials.signUpEmail.split("@")[0], // Or however you wish to set the username
+    try {
+      const response = await axios.post("http://localhost:8081/register", {
         email: userCredentials.signUpEmail,
         password: userCredentials.signUpPassword,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          // If response is not ok, throw an error to catch block
-          throw new Error("Network response was not ok");
-        }
-        return response.json(); // Parse JSON response
-      })
-      .then((data) => {
-        // Handle data here
-        console.log(data);
-        // Redirect to login page or automatically log the user in, as desired
-      })
-      .catch((error) => {
-        // Handle any errors here
-        setError("Failed to sign up. Please try again.");
-        console.error("Sign Up Error:", error);
       });
+      console.log(response.data);
+      // Handle success (e.g., show message, redirect)
+      setError(null);
+      // Optionally, redirect the user or update UI to show login
+    } catch (error) {
+      setError("Failed to sign up. Please try again.");
+      console.error("Sign Up Error:", error);
+    }
   };
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
-    // Assuming your backend endpoint for login is '/login'
-    fetch("/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    try {
+      const response = await axios.post("http://localhost:8081/login", {
         email: userCredentials.signInEmail,
         password: userCredentials.signInPassword,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          // If response is not ok, throw an error to catch block
-          throw new Error("Network response was not ok");
-        }
-        return response.json(); // Parse JSON response
-      })
-      .then((data) => {
-        // Handle data here
-        console.log(data);
-        // Store the token in localStorage or manage the session as needed
-        localStorage.setItem("token", data.token);
-        // Redirect to home page or dashboard as appropriate
-      })
-      .catch((error) => {
-        // Handle any errors here
-        setError(
-          "Failed to log in. Please check your credentials and try again."
-        );
-        console.error("Login Error:", error);
       });
+      console.log(response.data);
+      localStorage.setItem("token", response.data.token); // Adjust based on your API response
+      // Handle success (e.g., redirect to dashboard)
+      setError(null);
+    } catch (error) {
+      setError(
+        "Failed to log in. Please check your credentials and try again."
+      );
+      console.error("Login Error:", error);
+    }
   };
 
-  const toggleSignUp = () => {
-    setIsSignUpActive(true);
-  };
+  const toggleSignUp = () => setIsSignUpActive(true);
+  const toggleLogin = () => setIsSignUpActive(false);
+  const preventDefault = (event) => event.preventDefault();
 
-  const toggleLogin = () => {
-    setIsSignUpActive(false);
-  };
-
-  const preventDefault = (event) => {
-    event.preventDefault();
-  };
+  // Component's JSX follows...
 
   return (
     <div
