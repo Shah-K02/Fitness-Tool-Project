@@ -4,11 +4,14 @@ import {
   FaFacebookF,
   FaGithub,
   FaLinkedinIn,
+  FaTimes,
 } from "react-icons/fa";
 import "./LoginPage.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate(); // Use this hook to navigate to other pages
   const [isSignUpActive, setIsSignUpActive] = useState(false);
   const [error, setError] = useState(null);
   const [userCredentials, setUserCredentials] = useState({
@@ -23,11 +26,20 @@ const LoginPage = () => {
     const { name, value } = event.target;
     setUserCredentials({ ...userCredentials, [name]: value });
   };
-
+  const displayError = (message) => {
+    setError(message);
+    // Use a timeout to ensure class is added after the component updates
+    setTimeout(() => {
+      document.querySelector(".error-message").classList.add("error-visible");
+    }, 0);
+  };
+  const dismissError = () => {
+    setError(null); // Clear the error message
+  };
   const handleSignup = async (event) => {
     event.preventDefault();
     if (userCredentials.signUpPassword !== userCredentials.confirmPassword) {
-      setError("Passwords do not match.");
+      displayError("Passwords do not match.");
       return;
     }
 
@@ -38,10 +50,10 @@ const LoginPage = () => {
       });
       console.log(response.data);
       // Handle success (e.g., show message, redirect)
-      setError(null);
+      displayError(null);
       // Optionally, redirect the user or update UI to show login
     } catch (error) {
-      setError("Failed to sign up. Please try again.");
+      displayError("Failed to sign up. Please try again.");
       console.error("Sign Up Error:", error);
     }
   };
@@ -57,9 +69,10 @@ const LoginPage = () => {
       console.log(response.data);
       localStorage.setItem("token", response.data.token); // Adjust based on your API response
       // Handle success (e.g., redirect to dashboard)
-      setError(null);
+      navigate("/user-home");
+      displayError(null);
     } catch (error) {
-      setError(
+      displayError(
         "Failed to log in. Please check your credentials and try again."
       );
       console.error("Login Error:", error);
@@ -77,7 +90,14 @@ const LoginPage = () => {
       className={`login-container ${isSignUpActive ? "active" : ""}`}
       id="container"
     >
-      {error && <div className="error-message">{error}</div>}
+      {error && (
+        <div className="error-message">
+          {error}
+          <button onClick={dismissError} className="dismiss-error">
+            <FaTimes />
+          </button>
+        </div>
+      )}
       {/* Sign Up Form */}
       <div className="form-container sign-up-container">
         <form id="signup-form" onSubmit={handleSignup}>
