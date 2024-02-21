@@ -12,6 +12,7 @@ import "./App.css";
 import UserInfoPage from "./components/UserInfoPage";
 import NutritionTips from "./components/NutritionTips";
 import Posts from "./components/Posts";
+import searchBar from "./components/searchBar";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           element={
             <>
               <UserHomePage />
+              <searchBar />
               <NewsSection />
               <NutritionTips />
               <Posts />
