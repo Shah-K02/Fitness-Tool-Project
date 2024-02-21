@@ -49,7 +49,7 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8081/register", {
+      const response = await axios.post("http://localhost:8081/api/register", {
         email: userCredentials.signUpEmail,
         password: userCredentials.signUpPassword,
       });
@@ -68,7 +68,7 @@ const LoginPage = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8081/login", {
+      const response = await axios.post("http://localhost:8081/api/login", {
         email: userCredentials.signInEmail,
         password: userCredentials.signInPassword,
       });

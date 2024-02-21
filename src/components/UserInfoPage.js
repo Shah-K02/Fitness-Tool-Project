@@ -92,7 +92,7 @@ const UserInfoPage = () => {
         <input name="bmi" value={userInfo.bmi} onChange={handleChange} />
         <label>Activity Level:</label>
         <input
-          name="activity-level"
+          name="activityLevel"
           value={userInfo.activityLevel}
           onChange={handleChange}
         />
