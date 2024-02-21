@@ -21,7 +21,6 @@ const LoginPage = () => {
     signInEmail: "",
     signInPassword: "",
   });
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserCredentials({ ...userCredentials, [name]: value });
@@ -56,6 +55,7 @@ const LoginPage = () => {
       });
       console.log(response.data);
       // Handle success (e.g., show message, redirect)
+
       displayError(null);
       // Optionally, redirect the user or update UI to show login
     } catch (error) {
