@@ -1,0 +1,65 @@
+/* Style for search bar */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px; /* Adjust margin as needed */
+}
+.search-form {
+  position: relative;
+  width: 20rem;
+}
+.search-form input[type="search"] {
+  border: 1px solid black;
+  position: relative;
+  width: 30rem;
+  border-radius: 0.7rem;
+}
+.search-form input,
+.search-form button {
+  height: 3rem;
+  font-family: "Lato", sans-serif;
+  border: 0;
+  color: #2f2f2f;
+  font-size: 1.8rem;
+}
+.search-form input[type="search"] {
+  outline: 0;
+  width: 100%;
+  background: #fff;
+  padding: 0 1.6rem;
+  border-radius: 0.7rem;
+  appearance: none;
+  transition: all 0.3s cubic-bezier(0, 0, 0.43, 1.49);
+  transition-property: width, border-radius;
+  z-index: 1;
+  position: relative;
+}
+.search-form button {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6rem;
+  font-weight: bold;
+  color: white;
+  background: #dc0000;
+  border-radius: 0 0.7rem 0.7rem 0;
+  border-style: solid;
+  border: 1px solid black;
+}
+.search-form input:not(:placeholder-shown) {
+  border-radius: 0.7rem 0 0 0.7rem;
+  width: calc(100% - 6rem);
+}
+.search-form input:not(:placeholder-shown) + button {
+  display: block;
+}
+.search-form label {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}

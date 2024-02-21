@@ -1,0 +1,11 @@
+.result {
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.result:hover {
+  background-color: #efefef;
+  cursor: pointer;
+}
