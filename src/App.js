@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -12,7 +12,6 @@ import "./App.css";
 import UserInfoPage from "./components/UserInfoPage";
 import NutritionTips from "./components/NutritionTips";
 import Posts from "./components/Posts";
-import searchBar from "./components/searchBar";
 
 function App() {
   return (
@@ -36,7 +35,6 @@ function App() {
           element={
             <>
               <UserHomePage />
-              <searchBar />
               <NewsSection />
               <NutritionTips />
               <Posts />
