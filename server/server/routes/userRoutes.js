@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController"); // Controller to handle logic
-
+const userInfoController = require("../controllers/userInfoController"); // Controller to handle user info logic
 // Register route
 router.post("/register", userController.registerUser);
 

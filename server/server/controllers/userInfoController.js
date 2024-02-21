@@ -1,5 +1,5 @@
 const mysql = require("mysql");
-const db = require("./config/db");
+const db = require("../../config/db");
 
 exports.fetchUserInfo = (req, res) => {
   const userId = req.userId; // Make sure to implement authentication to set this
