@@ -4,8 +4,8 @@ import {
   FaFacebookF,
   FaGithub,
   FaLinkedinIn,
-  FaTimes,
 } from "react-icons/fa";
+import { LiaTimesSolid } from "react-icons/lia";
 import "./LoginPage.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -26,16 +26,22 @@ const LoginPage = () => {
     const { name, value } = event.target;
     setUserCredentials({ ...userCredentials, [name]: value });
   };
+  const [errorVisible, setErrorVisible] = useState(false);
+
   const displayError = (message) => {
     setError(message);
-    // Use a timeout to ensure class is added after the component updates
+    setErrorVisible(true); // Make the error message visible
+    // Optionally, hide the message after some time
     setTimeout(() => {
-      document.querySelector(".error-message").classList.add("error-visible");
-    }, 0);
+      setErrorVisible(false);
+    }, 5000); // Hide after 5 seconds
   };
+
   const dismissError = () => {
-    setError(null); // Clear the error message
+    setError(null);
+    setErrorVisible(false); // Hide the error message
   };
+
   const handleSignup = async (event) => {
     event.preventDefault();
     if (userCredentials.signUpPassword !== userCredentials.confirmPassword) {
@@ -90,14 +96,17 @@ const LoginPage = () => {
       className={`login-container ${isSignUpActive ? "active" : ""}`}
       id="container"
     >
-      {error && (
-        <div className="error-message">
+      {error && errorVisible && (
+        <div className="error-message error-visible">
+          {" "}
+          {/* Ensure your CSS handles visibility based on just the presence of "error-message" or an additional class is not strictly necessary. */}
           {error}
           <button onClick={dismissError} className="dismiss-error">
-            <FaTimes />
+            <LiaTimesSolid />
           </button>
         </div>
       )}
+
       {/* Sign Up Form */}
       <div className="form-container sign-up-container">
         <form id="signup-form" onSubmit={handleSignup}>
