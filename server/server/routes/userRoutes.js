@@ -9,4 +9,8 @@ router.post("/register", userController.registerUser);
 // Login route
 router.post("/login", userController.loginUser);
 
+// Add routes for fetching and updating user information
+router.get("/api/user/info", userInfoController.fetchUserInfo);
+router.post("/api/user/update", userInfoController.updateUserInfo);
+
 module.exports = router;
