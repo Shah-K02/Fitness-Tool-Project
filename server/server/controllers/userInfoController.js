@@ -4,7 +4,7 @@ const db = require("../../config/db");
 exports.fetchUserInfo = (req, res) => {
   const userId = req.userId; // Make sure to implement authentication to set this
   const query =
-    "SELECT name, email, birthday, gender, height, weight, bmi, activityLevel FROM users_info WHERE id = ?";
+    "SELECT name, email, birthday, gender, height, weight, bmi, activityLevel FROM users_info WHERE user_id = ?";
 
   db.query(query, [userId], (err, result) => {
     if (err) {
@@ -14,7 +14,16 @@ exports.fetchUserInfo = (req, res) => {
     if (result.length > 0) {
       return res.json(result[0]);
     } else {
-      return res.status(404).send("User not found");
+      return res.json({
+        name: "",
+        email: "",
+        birthday: "",
+        gender: "",
+        height: "",
+        weight: "",
+        bmi: "",
+        activityLevel: "",
+      });
     }
   });
 };
@@ -25,7 +34,7 @@ exports.updateUserInfo = (req, res) => {
   const userId = req.userId; // Make sure to implement authentication to set this
 
   const query =
-    "UPDATE users_info SET name = ?, email = ?, birthday = ?, gender = ?, height = ?, weight = ?, bmi = ?, activityLevel = ? WHERE id = ?";
+    "UPDATE users_info SET name = ?, email = ?, birthday = ?, gender = ?, height = ?, weight = ?, bmi = ?, activityLevel = ? WHERE user_id = ?";
   db.query(
     query,
     [name, email, birthday, gender, height, weight, bmi, activityLevel, userId],
