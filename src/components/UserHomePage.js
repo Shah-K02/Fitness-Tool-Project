@@ -19,6 +19,12 @@ const UserHomePage = () => {
         </Link>
         <button className="log-food-button">Log Food</button>
         <button className="your-foods-button">Your Foods</button>
+        <button className="your-exercises-button">Your Exercises</button>
+        <Link to="/macro-calculator">
+          <button className="macro-button" type="submit">
+            Calculate Macros
+          </button>
+        </Link>
       </div>
     </div>
   );
