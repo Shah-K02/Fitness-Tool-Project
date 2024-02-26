@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./UserInfoPage.css";
 
 const UserInfoPage = () => {
   const [userInfo, setUserInfo] = useState({
@@ -18,7 +19,12 @@ const UserInfoPage = () => {
     const fetchUserInfo = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch("http://localhost:8081/api/user/info");
+        const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage after login
+        const response = await fetch("http://localhost:8081/api/user/info", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the request headers
+          },
+        });
         if (!response.ok) throw new Error("Failed to fetch user info");
         const data = await response.json();
         setUserInfo(data);
@@ -42,7 +48,6 @@ const UserInfoPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Additional validation could be added here
     if (!userInfo.email.includes("@")) {
       setError("Please enter a valid email address.");
       return;
@@ -50,16 +55,19 @@ const UserInfoPage = () => {
 
     setIsLoading(true);
     try {
+      const token = localStorage.getItem("token"); // Retrieve the auth token
       const response = await fetch("http://localhost:8081/api/user/update", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include the token in the request headers
+        },
         body: JSON.stringify(userInfo),
       });
       if (!response.ok) throw new Error("Failed to update user info");
-      // Display success message or reset form as needed
-      alert("Profile updated successfully!"); // Example success feedback
+      alert("Profile updated successfully!");
     } catch (error) {
-      setError("Failed to update. Please try again.");
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -71,25 +79,33 @@ const UserInfoPage = () => {
   return (
     <div>
       <h1>Edit Profile</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="user-info-form" onSubmit={handleSubmit}>
+        <div className="form-field"></div>
         <label>Name:</label>
         <input name="name" value={userInfo.name} onChange={handleChange} />
+        <div className="form-field"></div>
         <label>Email:</label>
         <input name="email" value={userInfo.email} onChange={handleChange} />
+        <div className="form-field"></div>
         <label>Birthday:</label>
         <input
           name="birthday"
           value={userInfo.birthday}
           onChange={handleChange}
         />
+        <div className="form-field"></div>
         <label>Gender:</label>
         <input name="gender" value={userInfo.gender} onChange={handleChange} />
+        <div className="form-field"></div>
         <label>Height:</label>
         <input name="height" value={userInfo.height} onChange={handleChange} />
+        <div className="form-field"></div>
         <label>Weight:</label>
         <input name="weight" value={userInfo.weight} onChange={handleChange} />
+        <div className="form-field"></div>
         <label>BMI:</label>
         <input name="bmi" value={userInfo.bmi} onChange={handleChange} />
+        <div className="form-field"></div>
         <label>Activity Level:</label>
         <input
           name="activityLevel"
