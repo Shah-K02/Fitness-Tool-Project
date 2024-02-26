@@ -24,6 +24,119 @@ nav {
   padding: 10px 20px;
   z-index: 1000; /* Use a high value to ensure it's on top */
   position: relative; /* z-index only works on positioned elements */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a shadow to the navigation bar */
+}
+.burger {
+  height: 26px;
+  width: 30px;
+  position: relative;
+  border-radius: 5px;
+  cursor: pointer;
+  display: none; /* Hide the burger menu by default */
+
+  .bar {
+    width: 100%;
+    height: 5px;
+    background-color: #d3d3d3;
+    margin: 6px 0;
+    position: absolute;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    &:nth-child(1) {
+      top: 0;
+    }
+    &:nth-child(2) {
+      top: 50%;
+      transform-origin: right;
+      transform: scaleX(0.8) translateY(-50%);
+    }
+    &:nth-child(3) {
+      top: 100%;
+      transform-origin: right;
+      transform: scaleX(1.1) translateY(-100%);
+    }
+  }
+  &.active {
+    .bar {
+      transform-origin: center;
+      top: 50%;
+      &:nth-child(1) {
+        transform: translateY(-50%) scale(1) rotate(45deg);
+        top: 50%;
+      }
+      &:nth-child(2) {
+        transform: scaleX(0);
+      }
+      &:nth-child(3) {
+        transform: translateY(-50%) scale(1) rotate(-45deg);
+        top: 50%;
+      }
+    }
+  }
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 200px;
+  z-index: 1000; /* Use a high value to ensure it's on top */
+  background-color: #36454f;
+  box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.2), 3px 0 5px rgba(0, 0, 0, 0.2);
+  animation: ease-in;
+  .sidebar-link {
+    display: block;
+    padding: 0.5em 1em;
+    font-size: 1.1em;
+    color: #d3d3d3;
+    border-left: 0.3em solid transparent;
+    margin-bottom: 1em;
+    text-decoration: none;
+    transition: all 0.3s ease-in;
+    animation: ease-in;
+    &:hover {
+      border-left: 0.3em solid #dc0000;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    &:active {
+      background-color: #dc0000;
+    }
+    svg {
+      width: 1.2em;
+      margin-right: 0.5em;
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  nav {
+    .burger {
+      display: block; /* Show the burger menu on smaller screens */
+    }
+    .nav-links {
+      display: none; /* Hide the navigation links by default */
+      flex-direction: column; /* Stack the navigation links vertically */
+      position: absolute; /* Position the navigation links absolutely */
+      top: 60px; /* Position the navigation links below the navigation bar */
+      left: 0;
+      width: 100%;
+      background-color: #36454f; /* Set the background color of the navigation links */
+      padding: 10px 0; /* Add some padding to the navigation links */
+      z-index: 1; /* Use a high value to ensure it's on top */
+      transition: all 0.3s ease-in; /* Add a smooth transition effect */
+    }
+    .nav-links li {
+      text-align: center; /* Center the navigation links */
+      margin: 0; /* Reset the margin */
+    }
+    .nav-links a {
+      color: #d3d3d3; /* Set the color of the navigation links */
+    }
+    .nav-links a:hover {
+      text-decoration: underline; /* Add an underline effect on hover */
+    }
+    .nav-links.active {
+      display: flex; /* Show the navigation links when the burger menu is active */
+    }
+  }
 }
 .nav-icon {
   margin-right: 10px; /* Add spacing between the logo and the navigation links */

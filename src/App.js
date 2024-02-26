@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import HeroSection from "./components/HeroSection";
-import NewsSection from "./components/NewsSection";
+import Navbar from "./components/Index/Navbar";
+import Footer from "./components/Index/Footer";
+import HeroSection from "./components/Index/HeroSection";
+import NewsSection from "./components/Index/NewsSection";
 import MacronutrientSection from "./components/MacronutrientSection";
-import LoginPage from "./components/LoginPage";
+import LoginPage from "./components/Login/LoginPage";
 import UserHomePage from "./components/UserHomePage";
 import MacroCalculator from "./components/MacroCalculator";
 import "./App.css";

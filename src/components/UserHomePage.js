@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./UserHomePage.css";
-import SearchBar from "./SearchBar";
-import SearchResultsList from "./SearchResultsList";
+import SearchBar from "./SearchBar/SearchBar";
+import SearchResultsList from "./SearchBar/SearchResultsList";
 
 const UserHomePage = () => {
   const [results, setResults] = useState([]);
