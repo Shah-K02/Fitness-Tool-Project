@@ -10,13 +10,13 @@ const MacronutrientSection = () => {
           Use our macro calculator to find out how many calories you need to
           consume to reach your goals.
         </p>
-        <img src="img4.jpg" alt="Macro Calculator" />
+        <img src="MacroCalculator.png" alt="Macro Calculator" />
         <Link to="/macro-calculator">
           <button type="submit">Calculate</button>
         </Link>
       </div>
       <div className="secondimage">
-        <img src="img4.jpg" alt="Image 4" />
+        <img src="girlyoga.png" alt="Image 4" />
       </div>
     </div>
   );

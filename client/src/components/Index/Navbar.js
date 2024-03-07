@@ -22,7 +22,7 @@ const Navbar = () => {
       <nav>
         <a href="/">
           <div className="nav-icon">
-            <img src="img4.jpg" alt="logo" />
+            <img src="logo.png" alt="logo" />
           </div>
         </a>
         <ul className="nav-links">
