@@ -16,7 +16,13 @@ body {
 }
 /* Style for the navigation bar */
 nav {
-  background-color: #36454f;
+  background-color: rgba(
+    247,
+    247,
+    247,
+    1
+  ); /* RGBA colour with 0.5 (i.e. 50%) opacity */
+  height: 8vh;
   color: #d3d3d3;
   display: flex;
   justify-content: space-between;
@@ -24,7 +30,30 @@ nav {
   padding: 10px 20px;
   z-index: 1000; /* Use a high value to ensure it's on top */
   position: relative; /* z-index only works on positioned elements */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a shadow to the navigation bar */
+  .nav-icon {
+    margin-right: 10px; /* Add spacing between the logo and the navigation links */
+  }
+
+  .nav-icon img {
+    width: 10vh;
+    height: auto;
+    margin-top: 10px;
+    margin-left: 10vh;
+  }
+  .nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+
+  .nav-links li {
+    margin-right: 15px;
+  }
+  .nav-links a {
+    color: red;
+    text-decoration: none;
+  }
 }
 .burger {
   height: 26px;
@@ -138,32 +167,6 @@ nav {
     }
   }
 }
-.nav-icon {
-  margin-right: 10px; /* Add spacing between the logo and the navigation links */
-}
-
-.nav-icon img {
-  margin-left: 50px;
-  width: 40px; /* Adjust the size of the logo */
-  height: 40px; /* Adjust the size of the logo */
-  border-radius: 50%; /* Make the logo circular */
-}
-.nav-links {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-
-.nav-links li {
-  margin-right: 15px;
-}
-
-/* Style for links */
-.nav-links a {
-  color: white;
-  text-decoration: none;
-}
 
 .nav-links a:hover {
   text-decoration: underline;
@@ -183,7 +186,7 @@ nav {
   text-align: center;
   margin-top: auto; /* Push the footer to the bottom */
 }
-footer img {
+.footer img {
   width: 10vh;
   height: auto;
   margin-top: 10px;
