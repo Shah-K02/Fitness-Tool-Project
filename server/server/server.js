@@ -1,24 +1,27 @@
 // server.js
-require("dotenv").config(); // Ensure this is at the top to load environment variables
+require("dotenv").config();
 const express = require("express");
 const db = require("../config/db");
 const userRoutes = require("./routes/userRoutes");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const authenticate = require("./middleware/authenticate");
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000", // Adjust this to your frontend's origin
+    origin: "http://localhost:3000",
     credentials: true, // This allows sending cookies and credentials headers
   })
 );
 app.use(cookieParser());
 
 // Use routes
-app.use("/api", userRoutes); // This will use your userRoutes for any '/api' endpoint
+app.use("/api", userRoutes);
+
+app.use("/api/user", authenticate);
 
 app.listen(8081, () => {
   console.log("Server is running on port 8081");

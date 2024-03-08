@@ -1,8 +1,18 @@
 const mysql = require("mysql");
 const db = require("../../config/db");
+// Convert birthday to MySQL format
+function convertDateToMySQLFormat(dateString) {
+  // Assuming dateString is in the format DD/MM/YYYY
+  const parts = dateString.split("/");
+  if (parts.length === 3) {
+    return `${parts[2]}-${parts[1]}-${parts[0]}`; // Convert to YYYY-MM-DD
+  } else {
+    throw new Error("Invalid date format");
+  }
+}
 
 exports.fetchUserInfo = (req, res) => {
-  const userId = req.userId; // Make sure to implement authentication to set this
+  const userId = req.userId;
   const query =
     "SELECT name, email, birthday, gender, height, weight, bmi, activityLevel FROM users_info WHERE user_id = ?";
 
@@ -29,9 +39,10 @@ exports.fetchUserInfo = (req, res) => {
 };
 
 exports.updateUserInfo = (req, res) => {
-  const { name, email, birthday, gender, height, weight, bmi, activityLevel } =
+  let { name, email, birthday, gender, height, weight, bmi, activityLevel } =
     req.body;
-  const userId = req.userId; // Make sure to implement authentication to set this
+  const userId = req.userId;
+  birthday = convertDateToMySQLFormat(birthday);
 
   const query =
     "UPDATE users_info SET name = ?, email = ?, birthday = ?, gender = ?, height = ?, weight = ?, bmi = ?, activityLevel = ? WHERE user_id = ?";
