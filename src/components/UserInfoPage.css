@@ -1,7 +1,7 @@
 .user-info-form {
   display: grid;
   grid-template-columns: repeat(
-    3,
+    2,
     1fr
   ); /* Adjust the number of columns as needed */
   gap: 20px; /* Space between fields */

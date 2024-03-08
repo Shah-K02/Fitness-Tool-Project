@@ -1,6 +1,35 @@
 import React, { useState, useEffect } from "react";
 import "./UserInfoPage.css";
 
+// Define gender options
+const genderOptions = [
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "other", label: "Other" },
+];
+
+// Define activity level options
+const activityLevelOptions = [
+  { value: "sedentary", label: "Sedentary: little or no exercise" },
+  {
+    value: "lightly_active",
+    label: "Lightly Active: light exercise/sports 1-3 days/week",
+  },
+  {
+    value: "moderately_active",
+    label: "Moderately Active: moderate exercise/sports 3-5 days/week",
+  },
+  {
+    value: "very_active",
+    label: "Very Active: hard exercise/sports 6-7 days/week",
+  },
+  {
+    value: "extra_active",
+    label:
+      "Extra Active: very hard exercise/sports & physical job or 2x training",
+  },
+];
+
 const UserInfoPage = () => {
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -26,8 +55,14 @@ const UserInfoPage = () => {
           },
         });
         if (!response.ok) throw new Error("Failed to fetch user info");
-        const data = await response.json();
-        setUserInfo(data);
+        const fetchedData = await response.json();
+        const sanitizedData = Object.keys(fetchedData).reduce((acc, key) => {
+          acc[key] = fetchedData[key] === null ? "" : fetchedData[key];
+          return acc;
+        }, {});
+
+        // Now use sanitizedData to set your component's state
+        setUserInfo(sanitizedData);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -48,10 +83,34 @@ const UserInfoPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate the email
     if (!userInfo.email.includes("@")) {
       setError("Please enter a valid email address.");
       return;
     }
+
+    // Validate the gender and activity level
+    const validGenders = ["male", "female", "other"];
+    const validActivityLevels = [
+      "sedentary",
+      "lightly_active",
+      "moderately_active",
+      "very_active",
+      "extra_active",
+    ];
+
+    // Validate gender and activityLevel selections
+    if (
+      !validGenders.includes(userInfo.gender) ||
+      !validActivityLevels.includes(userInfo.activityLevel)
+    ) {
+      setError("Please select both your gender and activity level.");
+      return;
+    }
+    console.log(
+      `Updating with gender: ${userInfo.gender}, activityLevel: ${userInfo.activityLevel}`
+    );
 
     setIsLoading(true);
     try {
@@ -80,38 +139,78 @@ const UserInfoPage = () => {
     <div>
       <h1>Edit Profile</h1>
       <form className="user-info-form" onSubmit={handleSubmit}>
-        <div className="form-field"></div>
+        {/* Removed empty divs as they seem unnecessary unless they are for styling purposes */}
+
         <label>Name:</label>
-        <input name="name" value={userInfo.name} onChange={handleChange} />
-        <div className="form-field"></div>
-        <label>Email:</label>
-        <input name="email" value={userInfo.email} onChange={handleChange} />
-        <div className="form-field"></div>
-        <label>Birthday:</label>
         <input
-          name="birthday"
-          value={userInfo.birthday}
+          type="text"
+          name="name"
+          value={userInfo.name || ""}
           onChange={handleChange}
         />
-        <div className="form-field"></div>
-        <label>Gender:</label>
-        <input name="gender" value={userInfo.gender} onChange={handleChange} />
-        <div className="form-field"></div>
-        <label>Height:</label>
-        <input name="height" value={userInfo.height} onChange={handleChange} />
-        <div className="form-field"></div>
-        <label>Weight:</label>
-        <input name="weight" value={userInfo.weight} onChange={handleChange} />
-        <div className="form-field"></div>
-        <label>BMI:</label>
-        <input name="bmi" value={userInfo.bmi} onChange={handleChange} />
-        <div className="form-field"></div>
-        <label>Activity Level:</label>
+
+        <label>Email:</label>
         <input
+          type="email"
+          name="email"
+          value={userInfo.email || ""}
+          onChange={handleChange}
+        />
+
+        <label>Birthday:</label>
+        <input
+          type="date"
+          name="birthday"
+          value={userInfo.birthday || ""}
+          onChange={handleChange}
+        />
+
+        <label>Gender:</label>
+        <select name="gender" value={userInfo.gender} onChange={handleChange}>
+          {genderOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        <label>Height:</label>
+        <input
+          type="text"
+          name="height"
+          value={userInfo.height || ""}
+          onChange={handleChange}
+        />
+
+        <label>Weight:</label>
+        <input
+          type="text"
+          name="weight"
+          value={userInfo.weight || ""}
+          onChange={handleChange}
+        />
+
+        <label>BMI:</label>
+        <input
+          type="text"
+          name="bmi"
+          value={userInfo.bmi || ""}
+          onChange={handleChange}
+        />
+
+        <label>Activity Level:</label>
+        <select
           name="activityLevel"
           value={userInfo.activityLevel}
           onChange={handleChange}
-        />
+        >
+          {activityLevelOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
         <button type="submit">Save Changes</button>
       </form>
     </div>
