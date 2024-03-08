@@ -1,25 +1,24 @@
 .user-info-form {
   display: grid;
   grid-template-columns: repeat(
-    2,
+    3,
     1fr
   ); /* Adjust the number of columns as needed */
   gap: 20px; /* Space between fields */
   max-width: 600px; /* Adjust based on your preference */
   margin: auto; /* Center the form on the page */
-}
+  .form-field {
+    display: flex;
+    flex-direction: column; /* Stack label and input vertically */
+  }
 
-.form-field {
-  display: flex;
-  flex-direction: column; /* Stack label and input vertically */
-}
+  .form-field label {
+    margin-bottom: 5px; /* Space between label and input */
+  }
 
-.form-field label {
-  margin-bottom: 5px; /* Space between label and input */
-}
-
-.form-field input {
-  padding: 8px; /* Make inputs taller */
-  border: 1px solid #ccc; /* Light grey border */
-  border-radius: 4px; /* Slightly rounded corners for the inputs */
+  .form-field input {
+    padding: 10px; /* Make inputs taller */
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 4px; /* Slightly rounded corners for the inputs */
+  }
 }
