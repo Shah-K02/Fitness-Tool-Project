@@ -12,6 +12,9 @@ import "./App.css";
 import UserInfoPage from "./components/UserInfoPage";
 import NutritionTips from "./components/NutritionTips";
 import Posts from "./components/Posts";
+import "@fontsource/bebas-neue";
+import FoodDetailPage from "./components/FoodDetailPage";
+import FoodLogPage from "./components/FoodLogPage";
 
 function App() {
   return (
@@ -35,6 +38,7 @@ function App() {
           element={
             <>
               <UserHomePage />
+
               <NewsSection />
               <NutritionTips />
               <Posts />
@@ -42,9 +46,11 @@ function App() {
           }
         />
         <Route path="/profile" element={<UserInfoPage />} />
+        <Route path="/log-food" element={<FoodLogPage />} />
         <Route path="/macro-calculator" element={<MacroCalculator />} />
         <Route path="/nutrition-tips" element={<NutritionTips />} />
         <Route path="/posts" element={<Posts />} />
+        <Route path="/food/:id" element={<FoodDetailPage />} />
         {/* Add other routes here if needed */}
       </Routes>
       <Footer />
