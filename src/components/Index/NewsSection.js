@@ -12,7 +12,7 @@ const NewsSection = () => {
       </div>
       <div className="news-container">
         <div className="news-item">
-          <img src="img4.jpg" alt="Image 1" />
+          <img src="NewsImg1.jpg" alt="Image 1" />
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum,
             expedita soluta? Earum non natus vero veniam ipsa aperiam tempore
@@ -21,11 +21,8 @@ const NewsSection = () => {
           </p>
         </div>
         <div className="news-item">
-          <img src="img4.jpg" alt="Image 2" />{" "}
-          <a href="https://www.freepik.com/free-vector/illustration-gallery-icon_2922280.htm#query=placeholder&position=0&from_view=keyword&track=sph&uuid=a218c410-d8f6-45ef-89aa-b36719c05cdb">
-            Image by rawpixel.com
-          </a>{" "}
-          on Freepik
+          <img src="NewsImg2.jpg" alt="Image 2" />
+          <a href="https://www.freepik.com/free-vector/illustration-gallery-icon_2922280.htm#query=placeholder&position=0&from_view=keyword&track=sph&uuid=a218c410-d8f6-45ef-89aa-b36719c05cdb"></a>{" "}
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui
             necessitatibus repellat temporibus provident ad ea nesciunt rem?
@@ -34,7 +31,7 @@ const NewsSection = () => {
           </p>
         </div>
         <div className="news-item">
-          <img src="img4.jpg" alt="Image 3" />
+          <img src="NewsImg3.jpg" alt="Image 3" />
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea harum
             sit eos! Impedit nam repellendus aperiam ut doloremque alias eos
