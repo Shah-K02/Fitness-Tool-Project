@@ -1,0 +1,44 @@
+body {
+  font-family: Open Sans, sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+.label {
+  border: 2px solid black;
+  width: 270px;
+  margin: 20px auto;
+  padding: 0 7px;
+}
+.header h2 {
+  text-align: center;
+  margin: -4px 0px;
+  letter-spacing: 1.2px;
+}
+p {
+  margin: 0px;
+}
+.divider {
+  border-bottom: 1px solid black;
+  margin: 2px 0;
+  clear: right;
+}
+.bold {
+  font-weight: 600;
+}
+.right {
+  float: right;
+}
+.lg {
+  height: 10px;
+}
+.lg {
+  background-color: black;
+}
+.md {
+  height: 5px;
+}
+.calories-info span {
+  font-size: 1.2em;
+  margin-top: -5px;
+}

@@ -17,7 +17,9 @@ const UserHomePage = () => {
         <Link to="/profile">
           <button className="profile-button">Profile</button>
         </Link>
-        <button className="log-food-button">Log Food</button>
+        <Link to="/log-food">
+          <button className="log-food-button">Log Food</button>
+        </Link>
         <button className="your-foods-button">Your Foods</button>
         <button className="your-exercises-button">Your Exercises</button>
         <Link to="/macro-calculator">
