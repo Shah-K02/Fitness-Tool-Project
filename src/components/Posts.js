@@ -3,37 +3,38 @@ import axios from "axios";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
-  const [newPost, setNewPost] = useState({ imageUrl: "", description: "" });
   const [file, setFile] = useState(null); // For storing the uploaded file
   const [description, setDescription] = useState("");
+
   useEffect(() => {
     const fetchPosts = async () => {
-      // Fetching posts logic...
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:8081/api/posts", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setPosts(response.data.posts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
     };
 
     fetchPosts();
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewPost((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     if (file) {
-      formData.append("image", file); // "image" is the key your server expects
+      formData.append("image", file);
     }
     formData.append("description", description);
 
     try {
-      // Adjust the endpoint as necessary
       const response = await axios.post(
-        "http://localhost:8081/api/posts/upload",
+        "http://localhost:8081/api/posts",
         formData,
         {
           headers: {
@@ -41,9 +42,14 @@ const Posts = () => {
           },
         }
       );
-      // Handle response, update state as before
-      setFile(null); // Clear the selected file
-      setDescription(""); // Clear the description
+
+      const newPost = response.data.post;
+
+      setPosts((currentPosts) => [newPost, ...currentPosts]);
+
+      // Clear the form
+      setFile(null);
+      setDescription("");
     } catch (error) {
       console.error("Error uploading post:", error);
     }
@@ -55,7 +61,6 @@ const Posts = () => {
         <h2>Posts</h2>
         <p>Explore the latest posts from our community.</p>
       </div>
-      {/* Form for creating a new post */}
       <form
         onSubmit={handleSubmit}
         className="new-post-form"
