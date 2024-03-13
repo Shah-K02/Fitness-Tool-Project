@@ -1,22 +1,86 @@
-// Navbar.js
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import SideBar from "./SideBar";
-import { faHome, faList, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const isLoggedIn = localStorage.getItem("token") !== null;
+  // Dummy user data - replace with actual data from your auth system
+  const [currentUserName, setCurrentUserName] = useState("");
+
   const links = [
-    { name: "Home", url: "/", icon: faHome },
-    { name: "Link 2", url: "/link2", icon: faList },
-    { name: "Link 3", url: "/link3", icon: faList },
-    { name: "Account", url: "/account", icon: faUser },
+    { name: "Home", url: "/user-home", icon: faHome },
+    { name: "Link 2", url: "/link2" },
+    { name: "Link 3", url: "/link3" },
   ];
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   function closeSideBar() {
     setIsOpen(false);
   }
+
+  const handleLogout = () => {
+    // Show confirmation dialog
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+
+    // If user confirms logout
+    if (confirmLogout) {
+      // Clear the token from localStorage
+      localStorage.removeItem("token");
+
+      // Redirect the user to the home page or login page
+      window.location.href = "/";
+    }
+    // If user cancels, do nothing (the confirmation dialog will close on its own)
+  };
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.log("No token found");
+          return;
+        }
+
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        // Update the state with the fetched name
+        setCurrentUserName(response.data.name);
+      } catch (error) {
+        console.error(
+          "Failed to fetch user info:",
+          error.response ? error.response.data : error.message
+        );
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchUserInfo();
+    }
+  }, [isLoggedIn]); // Add isLoggedIn as a dependency if its value changes over time
+
   return (
     <>
       <nav>
@@ -28,18 +92,30 @@ const Navbar = () => {
         <ul className="nav-links">
           {links.map((link) => (
             <li key={link.name}>
-              {/* Conditional rendering for the Account icon only */}
-              {link.name === "Account" ? (
-                <a href={link.url} title={link.name}>
-                  <FontAwesomeIcon icon={link.icon} />
-                </a>
-              ) : (
-                <a href={link.url} title={link.name}>
-                  {link.name}
-                </a>
-              )}
+              <a href={link.url} title={link.name}>
+                <FontAwesomeIcon icon={link.icon} />
+                {link.name}
+              </a>
             </li>
           ))}
+          {isLoggedIn && (
+            <li className="account-dropdown" ref={dropdownRef}>
+              <div
+                onClick={() => setDropdownOpen(!isDropdownOpen)}
+                title="Account"
+              >
+                <FontAwesomeIcon icon={faUser} />
+              </div>
+              {isDropdownOpen && (
+                <div className="dropdown-content">
+                  <div className="dropdown-item">{currentUserName}</div>
+                  <div className="dropdown-item" onClick={handleLogout}>
+                    Logout
+                  </div>
+                </div>
+              )}
+            </li>
+          )}
         </ul>
         <div
           onClick={() => setIsOpen(!isOpen)}

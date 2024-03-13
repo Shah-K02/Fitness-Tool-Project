@@ -10,14 +10,17 @@ function FoodLogPage() {
     const foodData = { foodName, meal, servings };
     try {
       const token = localStorage.getItem("token"); // Retrieve the auth token
-      const response = await fetch("http://localhost:8081/api/log-food", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include the token in the request headers
-        },
-        body: JSON.stringify(foodData),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/log-food`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the token in the request headers
+          },
+          body: JSON.stringify(foodData),
+        }
+      );
       if (response.ok) {
         console.log("Food logged successfully!");
         // Handle successful food log here (e.g., clear form, display message)

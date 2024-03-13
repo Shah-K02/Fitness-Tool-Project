@@ -112,6 +112,32 @@ nav {
     }
   }
 }
+.account-dropdown {
+  position: relative; /* Required for absolute positioning of child elements */
+}
+.account-dropdown:hover {
+  cursor: pointer;
+}
+.dropdown-content {
+  position: absolute;
+  right: 0; /* Align dropdown to the right */
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1; /* Ensure it stacks on top of other content */
+}
+
+.dropdown-content .dropdown-item {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block; /* Dropdown items should stack vertically */
+}
+
+.dropdown-content .dropdown-item:hover {
+  background-color: #f1f1f1; /* Hover effect */
+}
+
 .sidebar {
   position: fixed;
   top: 0;
