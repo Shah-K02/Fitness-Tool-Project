@@ -6,7 +6,7 @@ exports.createPost = async (req, res) => {
   try {
     const { description } = req.body;
     const image = req.file.path; // Path where the image is saved
-    const userId = req.userId; // Assuming you store the user's ID from the authentication middleware
+    const userId = req.userId;
 
     const [result] = await db.execute(
       "INSERT INTO posts (description, image, user_id) VALUES (?, ?, ?)",

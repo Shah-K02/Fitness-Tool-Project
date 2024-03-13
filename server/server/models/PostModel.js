@@ -1,3 +1,4 @@
+// postModel.js
 const db = require("../../config/db");
 
 class PostModel {
@@ -34,7 +35,7 @@ class PostModel {
     }
   }
 
-  // Update a post by ID - This is just a template, adjust fields as needed
+  // Update a post by ID
   static async updateById(id, { description, image }) {
     try {
       await db.execute(
