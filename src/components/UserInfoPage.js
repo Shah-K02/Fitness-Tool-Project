@@ -49,11 +49,14 @@ const UserInfoPage = () => {
       setIsLoading(true);
       try {
         const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage after login
-        const response = await fetch("http://localhost:8081/api/user/info", {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the request headers
-          },
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include the token in the request headers
+            },
+          }
+        );
         if (!response.ok) throw new Error("Failed to fetch user info");
         const fetchedData = await response.json();
         const sanitizedData = Object.keys(fetchedData).reduce((acc, key) => {
@@ -115,14 +118,17 @@ const UserInfoPage = () => {
     setIsLoading(true);
     try {
       const token = localStorage.getItem("token"); // Retrieve the auth token
-      const response = await fetch("http://localhost:8081/api/user/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include the token in the request headers
-        },
-        body: JSON.stringify(userInfo),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/api/user/update`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the token in the request headers
+          },
+          body: JSON.stringify(userInfo),
+        }
+      );
       if (!response.ok) throw new Error("Failed to update user info");
       alert("Profile updated successfully!");
     } catch (error) {

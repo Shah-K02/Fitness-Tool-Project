@@ -11,7 +11,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const navigate = useNavigate(); // Use this hook to navigate to other pages
+  const navigate = useNavigate();
   const [isSignUpActive, setIsSignUpActive] = useState(false);
   const [error, setError] = useState(null);
   const [userCredentials, setUserCredentials] = useState({
@@ -30,7 +30,6 @@ const LoginPage = () => {
   const displayError = (message) => {
     setError(message);
     setErrorVisible(true); // Make the error message visible
-    // Optionally, hide the message after some time
     setTimeout(() => {
       setErrorVisible(false);
     }, 5000); // Hide after 5 seconds
@@ -49,10 +48,13 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8081/api/register", {
-        email: userCredentials.signUpEmail,
-        password: userCredentials.signUpPassword,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/api/register`,
+        {
+          email: userCredentials.signUpEmail,
+          password: userCredentials.signUpPassword,
+        }
+      );
       console.log(response.data);
       // Handle success (e.g., show message, redirect)
 
@@ -68,13 +70,16 @@ const LoginPage = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8081/api/login", {
-        email: userCredentials.signInEmail,
-        password: userCredentials.signInPassword,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/api/login`,
+        {
+          email: userCredentials.signInEmail,
+          password: userCredentials.signInPassword,
+        }
+      );
       console.log(response.data);
-      localStorage.setItem("token", response.data.token); // Adjust based on your API response
-      // Handle success (e.g., redirect to dashboard)
+      localStorage.setItem("token", response.data.token);
+      // Handle success
       navigate("/user-home");
       displayError(null);
     } catch (error) {
@@ -89,8 +94,6 @@ const LoginPage = () => {
   const toggleLogin = () => setIsSignUpActive(false);
   const preventDefault = (event) => event.preventDefault();
 
-  // Component's JSX follows...
-
   return (
     <div
       className={`login-container ${isSignUpActive ? "active" : ""}`}
@@ -99,7 +102,6 @@ const LoginPage = () => {
       {error && errorVisible && (
         <div className="error-message error-visible">
           {" "}
-          {/* Ensure your CSS handles visibility based on just the presence of "error-message" or an additional class is not strictly necessary. */}
           {error}
           <button onClick={dismissError} className="dismiss-error">
             <LiaTimesSolid />

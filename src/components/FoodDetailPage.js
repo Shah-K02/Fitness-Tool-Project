@@ -17,7 +17,9 @@ const FoodDetailPage = () => {
     const fetchFoodDetails = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`http://localhost:8081/api/food/${id}`);
+        const response = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/food/${id}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch food details");
         }
