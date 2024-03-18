@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./FoodDetailPage.css";
+import BackButton from "./BackButton";
 
 const FoodDetailPage = () => {
   const { id } = useParams();
@@ -41,6 +42,7 @@ const FoodDetailPage = () => {
 
   return (
     <div>
+      <BackButton className="back-button" backText=" Back" />
       <h1>{foodDetails.description}</h1>
       <p>
         <strong>Food Category:</strong> {foodDetails.foodCategory}

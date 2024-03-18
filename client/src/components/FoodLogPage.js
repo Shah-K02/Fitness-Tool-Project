@@ -69,11 +69,11 @@ function FoodLogPage() {
     setServings(1);
     setShowSearch(false); // Hide the search/log form again
   };
-
+  const [results, setResults] = useState([]);
   return (
     <div>
-      <BackButton className="back-button" backText="Go Back" />
       <div className="food-log-page">
+        <BackButton className="back-button" backText=" Back" />
         <h1 className="food-log-title">Log Your Food</h1>
         <div className="date-navigation">
           {dateRange.map((date, index) => (
@@ -105,37 +105,33 @@ function FoodLogPage() {
                 </button>
                 {showSearch && selectedHour === index && (
                   <div className="search-bar-container">
-                    <form
-                      className="food-search-form"
-                      onSubmit={(e) => handleSubmit(e, index)}
+                    <SearchBar setResults={setResults} />
+                    <SearchResultList results={results} />
+                    <select
+                      className="meal-select"
+                      value={meal}
+                      onChange={(e) => setMeal(e.target.value)}
+                      required
                     >
-                      <SearchBar className="search-bar" />
-                      <select
-                        className="meal-select"
-                        value={meal}
-                        onChange={(e) => setMeal(e.target.value)}
-                        required
-                      >
-                        <option value="breakfast">Breakfast</option>
-                        <option value="lunch">Lunch</option>
-                        <option value="dinner">Dinner</option>
-                        <option value="snack">Snack</option>
-                      </select>
-                      <input
-                        className="servings-input"
-                        type="number"
-                        value={servings}
-                        onChange={(e) =>
-                          setServings(parseInt(e.target.value, 10))
-                        }
-                        min="1"
-                        max="10"
-                        required
-                      />
-                      <button className="submit-button" type="submit">
-                        Submit
-                      </button>
-                    </form>
+                      <option value="breakfast">Breakfast</option>
+                      <option value="lunch">Lunch</option>
+                      <option value="dinner">Dinner</option>
+                      <option value="snack">Snack</option>
+                    </select>
+                    <input
+                      className="servings-input"
+                      type="number"
+                      value={servings}
+                      onChange={(e) =>
+                        setServings(parseInt(e.target.value, 10))
+                      }
+                      min="1"
+                      max="10"
+                      required
+                    />
+                    <button className="submit-button" type="submit">
+                      Submit
+                    </button>
                   </div>
                 )}
               </div>

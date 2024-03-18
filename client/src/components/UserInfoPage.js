@@ -144,7 +144,7 @@ const UserInfoPage = () => {
 
   return (
     <div className="user-info-page">
-      <BackButton className="back-button" backText="Go Back" />
+      <BackButton className="back-button" backText=" Back" />
       <h1 className="user-info-title">Edit Profile</h1>
       <form className="user-info-form" onSubmit={handleSubmit}>
         <div className="form-field">

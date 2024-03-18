@@ -165,7 +165,7 @@ const MacroCalculator = () => {
 
   return (
     <div className="macro-container">
-      <BackButton className="back-button" backText="Go Back" />
+      <BackButton className="back-button" backText=" Back" />
       <h1>Macro Calculator</h1>
       <div className="macro-form-container">
         <form onSubmit={handleSubmit}>
