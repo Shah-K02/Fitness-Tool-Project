@@ -1,11 +1,16 @@
 .results-list {
-  width: 100%;
-  background-color: white;
+  position: absolute; /* Makes the list float above the rest of the content */
+  width: calc(50% - 10rem); /* Adjust width to account for padding or borders */
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 0px 8px #ddd;
-  border-radius: 10px;
-  margin-top: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Softer shadow for modern look */
+  border-radius: 8px; /* Slightly rounded corners for a softer look */
+  margin-top: 0.5rem;
   max-height: 300px;
-  overflow: scroll;
+  overflow-y: auto; /* Allows scrolling only vertically */
+  overflow-x: hidden; /* Prevents horizontal scroll */
+  padding: 8px 0; /* Top and bottom padding inside the list */
+  border: 1px solid #ddd; /* Subtle border for definition */
+  z-index: 100; /* Ensure it's above other content */
 }
