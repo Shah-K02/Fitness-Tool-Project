@@ -1,10 +1,19 @@
 /* Resetting some default styles for better consistency */
-body {
+body,
+html {
   margin: 0;
   padding: 0;
+  height: 100%;
   font-family: "Maison Neue", "Helvetica Neue", Helvetica, Arial,
     "Lucida Grande", sans-serif;
   background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 h1,
 h2,
@@ -235,80 +244,85 @@ nav {
   text-decoration: underline;
 }
 
-/* Style for footer */
-
+/* Base footer styles */
 .footer {
-  background-color: #36454f; /* Charcoal Gray */
-  color: #ffffff; /* White text color for better contrast */
-  padding: 20px 0;
+  background-color: #36454f; /* Dark background for contrast */
+  color: fff; /* White text for readability */
+  padding: 20px 0; /* Ample padding for spacing */
   text-align: center;
-  margin-top: auto; /* Ensure footer sticks to the bottom */
+  margin-top: auto; /* Ensures the footer sticks to the bottom */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* Consistent typography */
 }
 
+/* Footer content layout */
 .footer-content {
   display: flex;
-  justify-content: space-around; /* Distribute space evenly around items */
+  justify-content: space-around; /* Evenly space content */
   align-items: center;
-  flex-wrap: wrap; /* Wrap items to support responsiveness */
-  max-width: 1200px; /* Max width to prevent footer from stretching too far on large screens */
-  margin: auto; /* Center the footer content */
+  flex-wrap: wrap; /* Wrap content on smaller screens */
+  max-width: 1200px; /* Max width to constrain content on large screens */
+  margin: 0 auto; /* Center content */
   padding: 0 20px; /* Padding on the sides */
 }
 
 .footer-logo img {
-  max-width: 100px; /* Adjust logo size */
-  height: auto;
+  max-width: 100px; /* Logo size */
+  margin-bottom: 10px; /* Spacing below the logo */
 }
 
-.footer-links ul,
-.footer-social ul {
+/* Footer links */
+.footer-links ul {
   list-style: none; /* Remove default list styling */
   padding: 0;
   margin: 0;
-  display: flex; /* Display list items inline */
-  justify-content: center; /* Center list items */
 }
 
-.footer-links li,
+.footer-links a {
+  color: #ffffff; /* Link color */
+  text-decoration: none; /* No underline */
+  transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.footer-links a:hover {
+  color: #a8dadc; /* Lighter shade on hover for interactivity */
+}
+
+/* Social icons */
+.footer-social ul {
+  list-style: none; /* Remove default list styling */
+  display: flex; /* Layout icons in a row */
+  align-items: center;
+  justify-content: center; /* Center align icons */
+  padding: 0;
+}
+
 .footer-social li {
-  margin: 0 10px; /* Space out list items */
+  margin: 0 10px; /* Spacing between icons */
 }
 
-.footer-links a,
 .footer-social a {
-  color: #d3d3d3; /* Light Grey for links */
-  text-decoration: none;
-  transition: color 0.3s ease; /* Smooth transition for hover effects */
+  color: #ffffff; /* Icon color */
+  font-size: 24px; /* Icon size */
+  transition: color 0.3s ease; /* Smooth transition for hover effect */
 }
 
-.footer-links a:hover,
 .footer-social a:hover {
-  color: #ffa500; /* Orange for hover effect */
-  text-decoration: underline; /* Underline on hover for better visibility */
+  color: #a8dadc; /* Lighter shade on hover */
 }
 
-.social-icons {
-  font-size: 24px; /* Increase icon size */
+/* Footer bottom text */
+.footer-bottom p {
+  margin-top: 20px; /* Spacing above the bottom text */
+  font-size: 0.875rem; /* Smaller text size for the copyright notice */
 }
 
-.footer-bottom {
-  margin-top: 20px; /* Space between main footer content and footer bottom */
-  font-size: 14px; /* Adjust font size for copyright text */
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .footer-content {
-    flex-direction: column;
+    flex-direction: column; /* Stack content vertically on small screens */
   }
 
-  .footer-links ul,
-  .footer-social ul {
-    flex-direction: column;
-  }
-
-  .footer-links li,
-  .footer-social li {
-    margin: 5px 0; /* Adjust spacing for mobile */
+  .footer-links,
+  .footer-social {
+    margin-bottom: 20px; /* Extra spacing between sections */
   }
 }

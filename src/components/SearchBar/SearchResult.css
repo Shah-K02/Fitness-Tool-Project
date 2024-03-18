@@ -1,11 +1,10 @@
 .result {
-  padding: 10px 20px;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+  padding: 10px 15px; /* Ample padding for touch targets */
+  cursor: pointer; /* Indicates an interactive element */
+  transition: background-color 0.2s ease; /* Smooth transition for hover effect */
 }
 
-.result:hover {
+.result:hover,
+.result:focus {
   background-color: #efefef;
-  cursor: pointer;
 }

@@ -71,73 +71,67 @@ function FoodLogPage() {
   };
   const [results, setResults] = useState([]);
   return (
-    <div>
-      <div className="food-log-page">
-        <BackButton className="back-button" backText=" Back" />
-        <h1 className="food-log-title">Log Your Food</h1>
-        <div className="date-navigation">
-          {dateRange.map((date, index) => (
-            <button
-              key={index}
-              className={`date-button ${
-                date.toDateString() === currentDay.toDateString()
-                  ? "active"
-                  : ""
-              }`}
-              onClick={() => setCurrentDay(date)}
-            >
-              {date.getDate()}/{date.getMonth() + 1}
-            </button>
-          ))}
-        </div>
-        <div className="hour-logs-list">
-          {" "}
-          {Array.from({ length: 24 }, (_, index) => formatHour(index)).map(
-            (formattedHour, index) => (
-              <div className="hour-log" key={index}>
-                {" "}
-                <span className="hour-text">{formattedHour}</span>
-                <button
-                  className="log-button"
-                  onClick={() => handleLogFood(index)}
-                >
-                  +
-                </button>
-                {showSearch && selectedHour === index && (
-                  <div className="search-bar-container">
-                    <SearchBar setResults={setResults} />
-                    <SearchResultList results={results} />
-                    <select
-                      className="meal-select"
-                      value={meal}
-                      onChange={(e) => setMeal(e.target.value)}
-                      required
-                    >
-                      <option value="breakfast">Breakfast</option>
-                      <option value="lunch">Lunch</option>
-                      <option value="dinner">Dinner</option>
-                      <option value="snack">Snack</option>
-                    </select>
-                    <input
-                      className="servings-input"
-                      type="number"
-                      value={servings}
-                      onChange={(e) =>
-                        setServings(parseInt(e.target.value, 10))
-                      }
-                      min="1"
-                      max="10"
-                      required
-                    />
-                    <button className="submit-button" type="submit">
-                      Submit
-                    </button>
-                  </div>
-                )}
-              </div>
-            )
-          )}
-        </div>
+    <div className="food-log-page">
+      <BackButton className="back-button" backText=" Back" />
+      <h1 className="food-log-title">Log Your Food</h1>
+      <div className="date-navigation">
+        {dateRange.map((date, index) => (
+          <button
+            key={index}
+            className={`date-button ${
+              date.toDateString() === currentDay.toDateString() ? "active" : ""
+            }`}
+            onClick={() => setCurrentDay(date)}
+          >
+            {date.getDate()}/{date.getMonth() + 1}
+          </button>
+        ))}
+      </div>
+      <div className="hour-logs-list">
+        {" "}
+        {Array.from({ length: 24 }, (_, index) => formatHour(index)).map(
+          (formattedHour, index) => (
+            <div className="hour-log" key={index}>
+              {" "}
+              <span className="hour-text">{formattedHour}</span>
+              <button
+                className="log-button"
+                onClick={() => handleLogFood(index)}
+              >
+                +
+              </button>
+              {showSearch && selectedHour === index && (
+                <div className="search-bar-container">
+                  <SearchBar setResults={setResults} />
+                  <SearchResultList results={results} />
+                  <select
+                    className="meal-select"
+                    value={meal}
+                    onChange={(e) => setMeal(e.target.value)}
+                    required
+                  >
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="snack">Snack</option>
+                  </select>
+                  <input
+                    className="servings-input"
+                    type="number"
+                    value={servings}
+                    onChange={(e) => setServings(parseInt(e.target.value, 10))}
+                    min="1"
+                    max="10"
+                    required
+                  />
+                  <button className="submit-button" type="submit">
+                    Submit
+                  </button>
+                </div>
+              )}
+            </div>
+          )
+        )}
       </div>
     </div>
   );
