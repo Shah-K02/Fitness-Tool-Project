@@ -1,0 +1,122 @@
+.food-log-page {
+  color: #ffffff; /* White */
+  padding: 24px; /* Increased padding */
+  font-family: "Roboto", sans-serif;
+}
+
+.food-log-title {
+  color: black; /* White */
+  font-size: 2rem; /* Larger font size for the title */
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.date-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 16px; /* Increased gap for better spacing */
+  margin-bottom: 24px;
+  overflow-x: auto;
+  padding: 8px;
+}
+
+.date-button {
+  background-color: #40454f; /* Secondary background color */
+  color: #e0e0e0; /* Light gray for secondary text */
+  border: 1px solid #565a62; /* Border color */
+  padding: 12px; /* Increased padding for a larger button */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  font-size: 1rem; /* Normal font size */
+}
+
+.date-button.active,
+.date-button:hover {
+  background-color: #6c7078; /* Hover background color */
+  color: #ffffff; /* White text color on hover */
+  border-color: #565656; /* Darker border on hover */
+}
+
+.hour-logs-container {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(200px, 1fr)
+  ); /* Adjust for larger elements */
+  gap: 24px; /* Larger gap between elements */
+}
+
+.hour-log {
+  background-color: #303030; /* Primary background color */
+  color: #e0e0e0; /* Secondary text color */
+  padding: 16px; /* Increased padding */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #565a62; /* Border color */
+  transition: all 0.2s ease-in-out;
+  font-size: 1rem; /* Normal font size */
+}
+
+.hour-log:hover {
+  background-color: #6c7078; /* Hover background color */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Shadow for hover effect */
+}
+
+.log-button {
+  background-color: #3272b1; /* Accent color for button */
+  color: #ffffff; /* White text color */
+  border: none;
+  padding: 12px; /* Increased padding for a larger button */
+  cursor: pointer;
+  border-radius: 8px; /* Medium border-radius */
+  transition: background-color 0.2s ease-in-out;
+  font-size: 1rem; /* Normal font size */
+}
+
+.log-button:hover {
+  background-color: #69a0d8; /* Lighter blue on hover */
+}
+
+.search-bar-container {
+  margin-top: 16px; /* Increased margin for spacing */
+}
+
+.food-search-form {
+  display: flex;
+  gap: 16px; /* Increased gap between form elements */
+  background-color: #40454f; /* Secondary background color */
+  padding: 16px; /* Increased padding for spacing */
+  border-radius: 8px; /* Medium border-radius */
+}
+
+.search-bar,
+.meal-select,
+.servings-input,
+.submit-button {
+  padding: 12px; /* Increased padding for larger form elements */
+  border-radius: 4px; /* Small border-radius */
+  border: 1px solid #565a62; /* Border color */
+  font-size: 1rem; /* Normal font size */
+}
+
+.meal-select:focus,
+.servings-input:focus,
+.submit-button:focus {
+  outline: 3px solid #3272b1; /* Accent color for focus outline */
+}
+
+.servings-input {
+  width: 60px; /* Specific width for input */
+}
+
+.submit-button {
+  background-color: #3272b1; /* Accent color for submit button */
+  color: #ffffff; /* White text color */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.submit-button:hover {
+  background-color: #69a0d8; /* Lighter blue on hover */
+}
