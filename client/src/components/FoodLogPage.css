@@ -1,11 +1,15 @@
+/* CSS for FoodLogPage */
 .food-log-page {
-  color: #ffffff; /* White */
-  padding: 24px; /* Increased padding */
-  font-family: "Roboto", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  background-color: #ffffff;
 }
+
 .food-log-title {
-  color: black; /* White */
-  font-size: 2rem; /* Larger font size for the title */
+  color: #36454f; /* Charcoal Gray for titles */
+  font-size: 2rem;
   margin-bottom: 24px;
   text-align: center;
 }
@@ -13,109 +17,91 @@
 .date-navigation {
   display: flex;
   justify-content: center;
-  gap: 16px; /* Increased gap for better spacing */
+  gap: 10px;
   margin-bottom: 24px;
   overflow-x: auto;
-  padding: 8px;
 }
 
 .date-button {
-  background-color: #40454f; /* Secondary background color */
-  color: #e0e0e0; /* Light gray for secondary text */
-  border: 1px solid #565a62; /* Border color */
-  padding: 12px; /* Increased padding for a larger button */
+  background-color: #ffa500; /* Orange for buttons */
+  color: #ffffff; /* White text */
+  border: none;
+  padding: 10px 15px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-  font-size: 1rem; /* Normal font size */
+  font-size: 1rem;
+  border-radius: 5px;
 }
 
 .date-button.active,
 .date-button:hover {
-  background-color: #6c7078; /* Hover background color */
-  color: #ffffff; /* White text color on hover */
-  border-color: #565656; /* Darker border on hover */
+  background-color: #dc0000; /* Bright Red for active/hover state */
 }
 
-.hour-logs-container {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(200px, 1fr)
-  ); /* Adjust for larger elements */
-  gap: 24px; /* Larger gap between elements */
+.hour-logs-list {
+  width: 100%;
+  max-width: 600px; /* Adjust based on your layout */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .hour-log {
-  background-color: #303030; /* Primary background color */
-  color: #e0e0e0; /* Secondary text color */
-  padding: 16px; /* Increased padding */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #565a62; /* Border color */
-  transition: all 0.2s ease-in-out;
-  font-size: 1rem; /* Normal font size */
-}
-
-.hour-log:hover {
-  background-color: #6c7078; /* Hover background color */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Shadow for hover effect */
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #d3d3d3; /* Light Grey for items */
+  color: #000000; /* Black text */
 }
 
 .log-button {
-  background-color: #dc0000; /* Accent color for button */
-  color: #ffffff; /* White text color */
+  background-color: #dc0000; /* Bright Red */
+  color: #ffffff; /* White text */
   border: none;
-  padding: 12px; /* Increased padding for a larger button */
+  padding: 5px 10px;
   cursor: pointer;
-  border-radius: 8px; /* Medium border-radius */
-  transition: background-color 0.2s ease-in-out;
-  font-size: 1rem; /* Normal font size */
+  font-size: 1rem;
+  border-radius: 5px;
 }
 
 .log-button:hover {
-  background-color: #ffa500; /* Lighter blue on hover */
+  background-color: #ffa500; /* Orange on hover */
 }
 
 .search-bar-container {
-  margin-top: 16px; /* Increased margin for spacing */
+  width: 100%;
+  margin-top: 10px;
+  padding: 15px;
+  background-color: #f0f0f0; /* Slightly different grey to distinguish */
+  border-radius: 5px;
 }
 
 .food-search-form {
   display: flex;
-  gap: 16px; /* Increased gap between form elements */
-  background-color: #40454f; /* Secondary background color */
-  padding: 16px; /* Increased padding for spacing */
-  border-radius: 8px; /* Medium border-radius */
+  flex-direction: column;
+  gap: 10px;
 }
 
 .search-bar,
 .meal-select,
 .servings-input,
 .submit-button {
-  padding: 12px; /* Increased padding for larger form elements */
-  border-radius: 4px; /* Small border-radius */
-  border: 1px solid #565a62; /* Border color */
-  font-size: 1rem; /* Normal font size */
-}
-
-.meal-select:focus,
-.servings-input:focus,
-.submit-button:focus {
-  outline: 3px solid #3272b1; /* Accent color for focus outline */
-}
-
-.servings-input {
-  width: 60px; /* Specific width for input */
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .submit-button {
-  background-color: #3272b1; /* Accent color for submit button */
-  color: #ffffff; /* White text color */
+  background-color: #dc0000; /* Bright Red */
+  color: #ffffff; /* White text */
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  border: none;
+  transition: background-color 0.2s;
 }
 
 .submit-button:hover {
-  background-color: #69a0d8; /* Lighter blue on hover */
+  background-color: #ffa500; /* Orange */
 }

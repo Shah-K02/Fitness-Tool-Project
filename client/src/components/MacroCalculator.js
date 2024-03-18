@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Chart from "chart.js/auto";
 import "./Macro.css";
+import BackButton from "./BackButton";
 
 const MacroCalculator = () => {
   // Initial state for the form
@@ -164,6 +165,7 @@ const MacroCalculator = () => {
 
   return (
     <div className="macro-container">
+      <BackButton className="back-button" backText="Go Back" />
       <h1>Macro Calculator</h1>
       <div className="macro-form-container">
         <form onSubmit={handleSubmit}>

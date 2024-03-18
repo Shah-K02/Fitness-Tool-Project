@@ -90,19 +90,19 @@ function FoodLogPage() {
             </button>
           ))}
         </div>
-        <div className="hour-logs-container">
+        <div className="hour-logs-list">
+          {" "}
           {Array.from({ length: 24 }, (_, index) => formatHour(index)).map(
             (formattedHour, index) => (
-              <React.Fragment key={index}>
-                <div className="hour-log">
-                  <span className="hour-text">{formattedHour}</span>
-                  <button
-                    className="log-button"
-                    onClick={() => handleLogFood(index)}
-                  >
-                    +
-                  </button>
-                </div>
+              <div className="hour-log" key={index}>
+                {" "}
+                <span className="hour-text">{formattedHour}</span>
+                <button
+                  className="log-button"
+                  onClick={() => handleLogFood(index)}
+                >
+                  +
+                </button>
                 {showSearch && selectedHour === index && (
                   <div className="search-bar-container">
                     <form
@@ -138,7 +138,7 @@ function FoodLogPage() {
                     </form>
                   </div>
                 )}
-              </React.Fragment>
+              </div>
             )
           )}
         </div>
