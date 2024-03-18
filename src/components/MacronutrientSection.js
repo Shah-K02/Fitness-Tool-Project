@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 const MacronutrientSection = () => {
   return (
     <div className="flex-container">
+      <div className="secondimage">
+        <img src="girlyoga.png" alt="Image 4" />
+      </div>
       <div className="macrocalculator">
         <h2>Macro Calculator</h2>
         <p>
@@ -14,9 +17,6 @@ const MacronutrientSection = () => {
         <Link to="/macro-calculator">
           <button type="submit">Calculate</button>
         </Link>
-      </div>
-      <div className="secondimage">
-        <img src="girlyoga.png" alt="Image 4" />
       </div>
     </div>
   );
