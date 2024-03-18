@@ -63,7 +63,7 @@
 }
 
 .log-button {
-  background-color: #3272b1; /* Accent color for button */
+  background-color: #dc0000; /* Accent color for button */
   color: #ffffff; /* White text color */
   border: none;
   padding: 12px; /* Increased padding for a larger button */
@@ -74,7 +74,7 @@
 }
 
 .log-button:hover {
-  background-color: #69a0d8; /* Lighter blue on hover */
+  background-color: #ffa500; /* Lighter blue on hover */
 }
 
 .search-bar-container {
