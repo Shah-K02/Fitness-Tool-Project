@@ -40,13 +40,13 @@ router.post(
   postsController.createPost
 );
 // Fetching all posts
-router.get("/", authenticate, postsController.getAllPosts);
+router.get("/post", authenticate, postsController.getAllPosts);
 
 // Additional routes can be added here for updating, deleting, etc.
 // Example: Fetching a single post
-router.get("/:postId", authenticate, postsController.getPostById);
+router.get("/post/:postId", authenticate, postsController.getPostById);
 
 // Example: Deleting a post
-router.delete("/:postId", authenticate, postsController.deletePost);
+router.delete("/post/:postId", authenticate, postsController.deletePost);
 
 module.exports = router;
