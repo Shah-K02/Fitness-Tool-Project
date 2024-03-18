@@ -25,92 +25,124 @@ h6 {
   padding: 0px;
   font-family: Arial, Helvetica, sans-serif;
 }
-/* Style for the navigation bar */
+/* Navbar Styling */
 nav {
-  background-color: rgba(
-    247,
-    247,
-    247,
-    1
-  ); /* RGBA colour with 0.5 (i.e. 50%) opacity */
-  height: 8vh;
-  color: #d3d3d3;
+  color: #dc0000; /* White text for better contrast */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  z-index: 1000; /* Use a high value to ensure it's on top */
-  position: relative; /* z-index only works on positioned elements */
-  .nav-icon {
-    margin-right: 10px; /* Add spacing between the logo and the navigation links */
-  }
-
-  .nav-icon img {
-    width: 10vh;
-    height: auto;
-    margin-top: 10px;
-    margin-left: 10vh;
-  }
-  .nav-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
-
-  .nav-links li {
-    margin-right: 15px;
-  }
-  .nav-links a {
-    color: red;
-    text-decoration: none;
-  }
+  padding: 0 20px;
+  height: 60px; /* Adjusted for better visual spacing */
 }
-.burger {
-  height: 26px;
-  width: 30px;
-  position: relative;
-  border-radius: 5px;
-  cursor: pointer;
-  display: none; /* Hide the burger menu by default */
 
-  .bar {
-    width: 100%;
-    height: 5px;
-    background-color: #d3d3d3;
-    margin: 6px 0;
-    position: absolute;
-    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    &:nth-child(1) {
-      top: 0;
-    }
-    &:nth-child(2) {
-      top: 50%;
-      transform-origin: right;
-      transform: scaleX(0.8) translateY(-50%);
-    }
-    &:nth-child(3) {
-      top: 100%;
-      transform-origin: right;
-      transform: scaleX(1.1) translateY(-100%);
-    }
+.nav-icon img {
+  height: 40px; /* Adjust based on your logo's size for consistency */
+  width: auto;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px; /* Provides space between links */
+}
+
+.nav-links li a {
+  color: #dc0000; /* Light Grey */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+  color: #ffa500; /* Orange for active/hover state */
+  text-decoration: underline;
+}
+
+/* Burger Icon for Mobile */
+.burger {
+  display: none;
+  cursor: pointer;
+}
+
+.burger div {
+  background-color: #d3d3d3; /* Light Grey */
+  height: 3px;
+  width: 25px;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+}
+
+/* Dropdown Menu for Account Options */
+.account-dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  right: 0;
+  z-index: 1;
+}
+
+.account-dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-item {
+  color: #36454f; /* Charcoal Gray */
+  padding: 12px 16px;
+  display: block;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (max-width: 768px) {
+  .burger {
+    display: block;
   }
-  &.active {
-    .bar {
-      transform-origin: center;
-      top: 50%;
-      &:nth-child(1) {
-        transform: translateY(-50%) scale(1) rotate(45deg);
-        top: 50%;
-      }
-      &:nth-child(2) {
-        transform: scaleX(0);
-      }
-      &:nth-child(3) {
-        transform: translateY(-50%) scale(1) rotate(-45deg);
-        top: 50%;
-      }
-    }
+
+  .nav-links {
+    position: absolute;
+    right: 0;
+    height: 100vh;
+    top: 60px;
+    background-color: #36454f;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px;
+    width: 250px; /* Width of the sidebar menu */
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in;
+  }
+
+  .nav-links.active {
+    transform: translateX(0);
+  }
+
+  .nav-links li a {
+    padding: 10px;
+    color: #fff;
+  }
+
+  .burger.active div:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+
+  .burger.active div:nth-child(2) {
+    opacity: 0;
+  }
+
+  .burger.active div:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
   }
 }
 .account-dropdown {
@@ -208,6 +240,7 @@ nav {
 .nav-links a:hover {
   text-decoration: underline;
 }
+
 /* Style for footer */
 
 .footer {
