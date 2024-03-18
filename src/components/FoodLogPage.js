@@ -35,7 +35,7 @@ function FoodLogPage() {
   const fetchFoodLogForDay = async (date) => {
     console.log("Fetching food logs for ", date.toDateString());
     setFoodLogEntries([]);
-    // Here, you would fetch food log entries from your backend
+    // Here, I would fetch food log entries from my backend
   };
 
   useEffect(() => {
@@ -62,7 +62,7 @@ function FoodLogPage() {
       date: currentDay.toISOString().split("T")[0],
     };
     console.log(foodData);
-    // Here, you would send the foodData to your backend to log the food
+    // Here, I would send the foodData to my backend to log the food
     // Reset form fields/state as necessary after submission
     setFoodName("");
     setMeal("breakfast");
