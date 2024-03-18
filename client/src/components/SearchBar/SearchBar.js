@@ -40,6 +40,7 @@ function SearchBar() {
     <div className="food-search-container">
       <form onSubmit={handleSearch} className="search-form">
         <input
+          id="search-input"
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -50,7 +51,8 @@ function SearchBar() {
           Go
         </button>
       </form>
-      <SearchResultList results={results} />
+
+      {results.length > 0 && <SearchResultList results={results} />}
     </div>
   );
 }
