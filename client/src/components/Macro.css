@@ -4,61 +4,81 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
   padding: 20px;
+  background-color: #ffffff; /* White background for contrast */
 }
 
-.macro-form-container form {
+.macro-form-container {
   display: flex;
   flex-direction: column;
   max-width: 400px;
   width: 100%;
+  background: #f0f0f0; /* Light grey background for the form */
+  padding: 20px;
+  border-radius: 10px; /* Rounded corners for the form container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
   margin-bottom: 20px;
 }
 
 .macro-form-container input,
-.macro-form-container select,
-.macro-form-container button {
-  padding: 8px;
-  margin: -5px 0;
+.macro-form-container select {
+  padding: 10px;
+  margin-top: 10px; /* Increase spacing */
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #ccc; /* Slightly darker border for definition */
+  font-size: 16px; /* Larger font size for readability */
 }
 
 .macro-form-container button {
-  background-color: #dc0000;
+  padding: 10px;
+  margin-top: 15px; /* Increase spacing before the button */
+  background-color: #dc0000; /* Bright Red for action items */
   color: white;
+  font-weight: bold;
   border: none;
   cursor: pointer;
+  border-radius: 5px; /* Consistent rounded corners */
   transition: background-color 0.2s ease-in-out;
 }
 
 .macro-form-container button:hover {
-  background-color: #ffa500;
+  background-color: #ffa500; /* Orange on hover for interaction feedback */
 }
 
 .macro-form-container label {
-  margin-top: 10px;
+  font-weight: bold;
+  color: #36454f; /* Charcoal Gray for text */
+  margin-top: 15px;
 }
 
 .macro-results-container {
   text-align: center;
+  padding: 20px;
+  background: #f0f0f0; /* Light grey background for results */
+  border-radius: 10px; /* Rounded corners for the results container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  width: 100%;
+  max-width: 400px; /* Match form width */
+}
+
+.macro-results-container p {
+  color: #36454f; /* Charcoal Gray for a softer look */
+  font-size: 18px; /* Slightly reduced font size */
+  margin: 10px 0; /* Reduced spacing */
+}
+
+.macro-chart-container {
+  width: 100%;
+  max-width: 400px; /* Match form and results width */
+  height: 400px;
+  padding: 20px;
+  background: #ffffff; /* White background for contrast */
+  border-radius: 10px; /* Rounded corners for the chart container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
   margin-top: 20px;
 }
 
 .macro-chart-container canvas {
-  width: 400px;
-  height: 400px;
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.macro-results-container p {
-  color: #dc0000;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 20px;
-  overflow: hidden;
+  width: 100% !important;
+  height: 100% !important;
 }

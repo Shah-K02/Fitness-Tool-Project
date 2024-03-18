@@ -72,7 +72,7 @@ function FoodLogPage() {
 
   return (
     <div>
-      <BackButton className="my-custom-back-button" backText="Go Back" />
+      <BackButton className="back-button" backText="Go Back" />
       <div className="food-log-page">
         <h1 className="food-log-title">Log Your Food</h1>
         <div className="date-navigation">

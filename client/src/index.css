@@ -100,44 +100,69 @@
   box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 4px -6px;
 }
 
-/* Style for news section */
+/* Base style for the news section */
+.news {
+  padding: 40px; /* Increased padding for better spacing */
+  background-color: #f5f5f5; /* Lighter background for subtle contrast */
+  text-align: center;
+  margin-top: 5vh;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  border-radius: 8px; /* Rounded corners for a modern look */
+}
+
+/* Heading style within the news section */
+.news-heading h2 {
+  margin-bottom: 16px; /* Space between the title and the description */
+  color: #333; /* Darker text for contrast */
+  font-size: 24px; /* Larger font size for heading */
+}
+
+.news-heading p {
+  color: #666; /* Medium grey for readable contrast */
+  margin-bottom: 32px; /* More space below the heading description */
+}
+
+/* Container for individual news items */
 .news-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start; /* Align items to the top of the container */
-  margin-bottom: 20px;
+  flex-wrap: wrap; /* Allows items to wrap in smaller screens */
+  justify-content: space-around; /* Evenly distributes space around items */
+  gap: 20px; /* Adds space between items vertically and horizontally */
 }
 
+/* Individual news item styling */
 .news-item {
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  margin: 0 20px 20px 0;
-  margin-bottom: 20px; /* Space between rows */
+  flex: 0 1 calc(33% - 20px); /* Each item takes up a third of the container width minus the gap */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align items centrally in the flex container */
+  background-color: #ffffff; /* White background for each item */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  border-radius: 4px; /* Slight rounding of corners */
+  padding: 20px; /* Padding inside each news item */
+  transition: transform 0.3s ease-in-out; /* Smooth transformation on hover */
 }
 
-.news-item:nth-child(3n + 1) {
-  margin-right: 20px; /* Space between items, only applied to the first and second item in the row */
+.news-item:hover {
+  transform: translateY(
+    -5px
+  ); /* Slight upward movement on hover for interaction feedback */
 }
 
-.news-item:nth-child(3n) {
-  margin-right: 0; /* Ensures the third item in the row doesn't have right margin */
-}
-
-.news {
-  padding: 20px;
-  background-color: white;
-  text-align: center;
-  margin-top: 10vh;
-}
-
+/* Styling for images within news items */
 .news img {
-  width: 100%;
-  height: 550px;
-  object-fit: cover;
-  object-position: 50% 50%;
-  margin-top: 25px;
-  margin-bottom: 25px;
+  width: 100%; /* Ensures the image fills the container */
+  max-height: 200px; /* Limits the height of the image for uniformity */
+  object-fit: cover; /* Ensures the image covers the space without distortion */
+  border-radius: 4px; /* Matches the rounding of the item container */
+  margin-bottom: 16px; /* Space between the image and the text below */
+}
+
+/* Adjusting the paragraph style within news items for better readability */
+.news-item p {
+  text-align: justify; /* Justifies the text for a clean, uniform appearance */
+  color: #666; /* Medium grey for easy reading */
+  line-height: 1.5; /* Increases line height for readability */
 }
 
 /* Style for the container of Macro Calculator and Image*/
