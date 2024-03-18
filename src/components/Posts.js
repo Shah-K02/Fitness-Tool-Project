@@ -10,11 +10,14 @@ const Posts = () => {
     const fetchPosts = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:8081/api/posts", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/api/posts`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setPosts(response.data.posts);
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -34,7 +37,7 @@ const Posts = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8081/api/posts",
+        `${process.env.REACT_APP_API_BASE_URL}/api/posts`,
         formData,
         {
           headers: {

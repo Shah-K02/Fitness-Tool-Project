@@ -13,7 +13,7 @@ const Navbar = () => {
   const [currentUserName, setCurrentUserName] = useState("");
 
   const links = [
-    { name: "Home", url: "/user-home", icon: faHome },
+    { name: "", url: isLoggedIn ? "/user-home" : "/", icon: faHome },
     { name: "Link 2", url: "/link2" },
     { name: "Link 3", url: "/link3" },
   ];
@@ -93,7 +93,7 @@ const Navbar = () => {
           {links.map((link) => (
             <li key={link.name}>
               <a href={link.url} title={link.name}>
-                <FontAwesomeIcon icon={link.icon} />
+                {link.icon && <FontAwesomeIcon icon={link.icon} />}
                 {link.name}
               </a>
             </li>
