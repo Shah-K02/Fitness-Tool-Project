@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./Posts.css";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -59,8 +60,8 @@ const Posts = () => {
   };
 
   return (
-    <div className="news">
-      <div className="news-heading">
+    <div className="post-container">
+      <div className="post-heading">
         <h2>Posts</h2>
         <p>Explore the latest posts from our community.</p>
       </div>

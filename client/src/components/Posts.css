@@ -1,0 +1,88 @@
+/* Style for the overall post container */
+.post-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 1rem;
+}
+
+/* Style for the posts heading */
+.post-heading h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.news-heading p {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Style for the new post form */
+.new-post-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.new-post-form input[type="file"],
+.new-post-form textarea {
+  margin-bottom: 1rem;
+  width: 100%; /* Full width of form */
+  max-width: 500px; /* Max width to match the posts grid */
+}
+
+.new-post-form textarea {
+  height: 100px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  resize: vertical; /* Allow vertical resizing */
+}
+
+.new-post-form button {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  background-color: #0095f6; /* Instagram blue */
+  color: white;
+  cursor: pointer;
+}
+
+/* Grid layout for posts */
+.post-container {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Responsive grid */
+  gap: 1rem; /* Space between grid items */
+}
+
+/* Style for individual posts */
+.post-item {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden; /* Ensure the image doesn't break the border radius */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.post-item img {
+  width: 100%;
+  height: auto;
+  display: block; /* Remove any inline spacing */
+  transition: transform 0.3s ease; /* Smooth transform on hover */
+}
+
+.post-item img:hover {
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.post-item p {
+  padding: 0.5rem 1rem; /* Padding inside post item */
+  font-size: 0.9rem; /* Slightly smaller font size */
+  color: #333; /* Darker text for better readability */
+  overflow: hidden; /* Hide overflowed content */
+  text-overflow: ellipsis; /* Add an ellipsis at the end of overflowed content */
+  white-space: nowrap; /* Don't wrap text to the next line */
+}
