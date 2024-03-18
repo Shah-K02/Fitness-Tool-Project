@@ -5,9 +5,6 @@ body {
   font-family: "Maison Neue", "Helvetica Neue", Helvetica, Arial,
     "Lucida Grande", sans-serif;
   background-color: #f7f7f7;
-  display: flex; /* Use flexbox to make the body a flex container */
-  flex-direction: column; /* Stack child elements vertically */
-  min-height: 100vh; /* Set the minimum height of the body to 100% of the viewport height */
 }
 h1,
 h2,
@@ -21,116 +18,113 @@ h6 {
 
 * {
   box-sizing: border-box;
-  margin: 0px;
-  padding: 0px;
-  font-family: Arial, Helvetica, sans-serif;
 }
-/* Navbar Styling */
+/* Navbar Styles */
 nav {
-  color: #dc0000; /* White text for better contrast */
+  background-color: #f7f7f7;
+  height: 60px; /* Adjusted for better vertical spacing */
+  color: #36454f; /* Dark gray for better contrast */
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  height: 60px; /* Adjusted for better visual spacing */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .nav-icon img {
-  height: 80px;
-  width: auto;
+  height: 40px; /* Adjusted for a balanced size */
 }
 
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 20px; /* Provides space between links */
+  gap: 20px; /* Spacing between links for easier clicking */
 }
 
-.nav-links li a {
-  color: #dc0000; /* Light Grey */
+.nav-links a {
+  color: #36454f; /* Consistent with nav text color */
   text-decoration: none;
-  transition: color 0.3s ease;
+  padding: 10px 15px; /* Padding for larger click areas */
+  border-radius: 5px; /* Rounded corners for a modern look */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
 
-.nav-links li a:hover,
-.nav-links li a.active {
-  color: #ffa500; /* Orange for active/hover state */
-  text-decoration: underline;
+.nav-links a:hover,
+.nav-links a:focus {
+  background-color: #ddd; /* Subtle hover and focus effect */
 }
 
-/* Burger Icon for Mobile */
+/* Account Dropdown Styles */
+.account-dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none; /* Initially hidden */
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content .dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+.account-dropdown:hover .dropdown-content {
+  display: block; /* Show dropdown on hover */
+}
+
+/* Responsive Burger Menu */
 .burger {
-  display: none;
+  display: none; /* Hidden by default */
   cursor: pointer;
 }
 
 .burger div {
-  background-color: #d3d3d3; /* Light Grey */
+  background-color: #d3d3d3;
   height: 3px;
-  width: 25px;
   margin: 5px 0;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
 }
 
-/* Dropdown Menu for Account Options */
-.account-dropdown {
-  position: relative;
-  cursor: pointer;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  right: 0;
-  z-index: 1;
-}
-
-.account-dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.dropdown-item {
-  color: #36454f; /* Charcoal Gray */
-  padding: 12px 16px;
-  display: block;
-  text-decoration: none;
-}
-
-.dropdown-item:hover {
-  background-color: #f1f1f1;
-}
-
-/* Media Queries for Responsive Design */
 @media screen and (max-width: 768px) {
   .burger {
     display: block;
   }
 
   .nav-links {
-    position: absolute;
+    position: fixed;
     right: 0;
     height: 100vh;
-    top: 60px;
-    background-color: #36454f;
-    display: flex;
+    top: 60px; /* Height of the nav */
+    background-color: #f7f7f7;
     flex-direction: column;
-    align-items: start;
-    padding: 10px;
-    width: 250px; /* Width of the sidebar menu */
+    align-items: flex-start;
+    padding: 20px;
     transform: translateX(100%);
-    transition: transform 0.3s ease-in;
+    transition: transform 0.3s ease-in-out;
   }
 
   .nav-links.active {
     transform: translateX(0);
   }
 
-  .nav-links li a {
-    padding: 10px;
-    color: #fff;
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+
+  .account-dropdown,
+  .nav-icon {
+    margin: 20px 0;
   }
 
   .burger.active div:nth-child(1) {
