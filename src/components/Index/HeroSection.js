@@ -7,11 +7,17 @@ const HeroSection = () => {
   return (
     <div className="hero-image">
       <img src="hero-img.jpg" alt="Hero Image" />
-      <div className="button-container">
-        <Link to="/login">
-          <button className="login-button">Login</button>
-          <button className="signup-button">Signup</button>
-        </Link>
+      <div className="hero-content">
+        <h1>Welcome to Our Website!</h1>
+        <p>Join us and explore the possibilities.</p>
+        <div className="button-container">
+          <Link to="/login">
+            <button className="login-button">Login</button>
+          </Link>
+          <Link to="/signup">
+            <button className="signup-button">Signup</button>
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 /* Style for hero image */
 .hero-image {
   position: relative;
-  height: 40vh;
+  height: 60vh; /* Increased height for better visual impact */
   overflow: hidden;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
@@ -13,14 +13,31 @@
   object-fit: cover;
 }
 
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #ffffff;
+}
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #d3d3d3;
+  text-shadow: #dc0000 2px 2px 4px;
+}
+.hero-content p {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  text-shadow: #dc0000 2px 2px 4px;
+}
 /* Style for button container in the hero image */
 .button-container {
-  position: absolute;
-  bottom: 50px;
-  left: 80%;
-  transform: translateX(-50%);
-  text-align: center;
-  justify-content: space-between;
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Added space between buttons */
 }
 
 /* Style for login and signup buttons */
