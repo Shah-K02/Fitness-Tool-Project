@@ -11,7 +11,7 @@ const UserHomePage = () => {
       <h1>Home Page</h1>
       <div className="search-bar-container">
         <SearchBar setResults={setResults} />
-        <SearchResultsList results={results} />
+        {results.length > 0 && <SearchResultsList results={results} />}
       </div>
       <div className="home-buttons">
         <Link to="/profile">

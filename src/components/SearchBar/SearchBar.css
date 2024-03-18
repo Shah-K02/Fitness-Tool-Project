@@ -1,5 +1,5 @@
 /* Style for search bar */
-.search-container {
+.sfood-search-container {
   display: flex;
   justify-content: center;
   margin-bottom: 20px; /* Adjust margin as needed */
@@ -14,8 +14,8 @@
   width: 30rem;
   border-radius: 0.7rem;
 }
-.search-form input,
-.search-form button {
+.search-input,
+.search-button {
   padding-left: 1.5rem;
   height: 3rem;
   font-family: "Lato", sans-serif;
@@ -23,7 +23,7 @@
   color: #2f2f2f;
   font-size: 1.5rem;
 }
-.search-form input[type="search"] {
+.search-input[type="search"] {
   outline: 0;
   width: 100%;
   background: #fff;
@@ -35,7 +35,7 @@
   z-index: 1;
   position: relative;
 }
-.search-form button {
+.search-button {
   display: none;
   position: absolute;
   top: 0;
@@ -48,11 +48,11 @@
   border-style: solid;
   border: 1px solid black;
 }
-.search-form input:not(:placeholder-shown) {
+.search-input:not(:placeholder-shown) {
   border-radius: 0.7rem 0 0 0.7rem;
   width: calc(100% - 6rem);
 }
-.search-form input:not(:placeholder-shown) + button {
+.search-input:not(:placeholder-shown) + button {
   display: block;
 }
 .search-form label {
