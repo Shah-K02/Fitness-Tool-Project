@@ -62,8 +62,8 @@ const Posts = () => {
   return (
     <div className="post-container">
       <div className="post-heading">
-        <h2>Posts</h2>
-        <p>Explore the latest posts from our community.</p>
+        <h1>Posts</h1>
+        <strong>Explore the latest posts from our community.</strong>
       </div>
       <form
         onSubmit={handleSubmit}

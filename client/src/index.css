@@ -126,17 +126,12 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
   border-radius: 8px; /* Rounded corners for a modern look */
 }
-
-/* Heading style within the news section */
-.news-heading h2 {
-  margin-bottom: 16px; /* Space between the title and the description */
-  color: #333; /* Darker text for contrast */
-  font-size: 24px; /* Larger font size for heading */
+.news-heading {
+  margin-bottom: 2rem; /* Increased margin for better spacing */
 }
-
-.news-heading p {
+/* Heading style within the news section */
+.news-heading strong {
   color: #666; /* Medium grey for readable contrast */
-  margin-bottom: 32px; /* More space below the heading description */
 }
 
 /* Container for individual news items */
