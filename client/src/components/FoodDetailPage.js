@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./FoodDetailPage.css";
 import BackButton from "./BackButton";
+import NutrientRing from "./NutrientRing";
 
 const FoodDetailPage = () => {
   const { id } = useParams();
@@ -12,7 +13,6 @@ const FoodDetailPage = () => {
   const energyNutrient = foodDetails?.foodNutrients.find(
     (nutrientItem) => nutrientItem.nutrient.name === "Energy"
   );
-
   console.log(foodDetails);
   useEffect(() => {
     const fetchFoodDetails = async () => {
@@ -36,6 +36,34 @@ const FoodDetailPage = () => {
     fetchFoodDetails();
   }, [id]);
 
+  const nutrientValues = {
+    protein: 0,
+    carbs: 0,
+    fats: 0,
+    calories: 0,
+  };
+
+  if (foodDetails) {
+    foodDetails.foodNutrients.forEach((nutrient) => {
+      switch (nutrient.nutrient.name) {
+        case "Protein":
+          nutrientValues.protein = nutrient.amount;
+          break;
+        case "Total lipid (fat)":
+          nutrientValues.fats = nutrient.amount;
+          break;
+        case "Carbohydrate, by difference":
+          nutrientValues.carbs = nutrient.amount;
+          break;
+        case "Energy":
+          nutrientValues.calories = nutrient.amount;
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!foodDetails) return <div>No details available</div>;
@@ -43,6 +71,7 @@ const FoodDetailPage = () => {
   return (
     <div>
       <BackButton className="back-button" backText=" Back" />
+
       <h1>{foodDetails.description}</h1>
       <p>
         <strong>Food Category:</strong> {foodDetails.foodCategory}
@@ -51,7 +80,18 @@ const FoodDetailPage = () => {
         <strong>Additional Descriptions:</strong>{" "}
         {foodDetails.additionalDescriptions}
       </p>
-
+      <div>
+        <NutrientRing
+          values={{
+            protein: nutrientValues.protein,
+            carbs: nutrientValues.carbs,
+            fats: nutrientValues.fats,
+          }}
+          size={200}
+          strokeWidth={15}
+          calories={energyNutrient ? energyNutrient.amount : 0} // Pass the calories to the NutrientRing
+        />
+      </div>
       <div className="label">
         <header>
           <h2 className="bold">Nutrients:</h2>
@@ -92,7 +132,6 @@ const FoodDetailPage = () => {
               )
           )}
         </ul>
-        {/* Add more details here using the same pattern */}
       </div>
     </div>
   );

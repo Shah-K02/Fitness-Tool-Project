@@ -1,0 +1,52 @@
+.ring {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nutrient-protein {
+  stroke: #dc0000; /* Bright Red */
+}
+
+.nutrient-carbs {
+  stroke: #ffa500; /* Orange */
+}
+
+.nutrient-fats {
+  stroke: #36454f; /* Charcoal Gray */
+}
+
+.calories-text {
+  font-weight: bold;
+  /* The font-size is dynamically calculated based on the 'size' prop, 
+     so it's tricky to set it here without knowing 'size' beforehand.  */
+  font-size: relative;
+}
+/* Style for the legend and its items */
+.nutrient-legend {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.nutrient-legend p {
+  display: flex;
+  align-items: center;
+  font-size: 25px; /* Adjust size as needed */
+  margin: 5px 0; /* Spacing between legend items */
+  color: #36454f; /* Charcoal Gray */
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-left: 1.5rem;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 8px; /* Space between color circle and text */
+  display: inline-block;
+}
