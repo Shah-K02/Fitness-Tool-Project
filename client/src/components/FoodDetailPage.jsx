@@ -63,6 +63,34 @@ const FoodDetailPage = () => {
       }
     });
   }
+  const logFood = async () => {
+    const logData = {
+      food_id: id,
+      description: foodDetails.description,
+      log_time: new Date().toISOString(),
+      protein: nutrientValues.protein,
+      carbs: nutrientValues.carbs,
+      fats: nutrientValues.fats,
+      calories: nutrientValues.calories,
+      // user_id: currentUser.id,
+    };
+
+    try {
+      const response = await fetch("/api/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(logData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to log food");
+      }
+
+      alert("Food logged successfully!");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -92,6 +120,9 @@ const FoodDetailPage = () => {
           calories={energyNutrient ? energyNutrient.amount : 0} // Pass the calories to the NutrientRing
         />
       </div>
+      <button onClick={logFood} className="log-food-button">
+        Log This Food
+      </button>
       <div className="label">
         <header>
           <h2 className="bold">Nutrients:</h2>

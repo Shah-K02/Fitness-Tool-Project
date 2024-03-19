@@ -32,10 +32,13 @@ function FoodLogPage() {
   };
 
   // Placeholder: Fetch food log entries for the selected day
-  const fetchFoodLogForDay = async (date) => {
-    console.log("Fetching food logs for ", date.toDateString());
-    setFoodLogEntries([]);
-    // Here, I would fetch food log entries from my backend
+  const fetchFoodLogForDay = (date) => {
+    const allLogs = JSON.parse(localStorage.getItem("foodLogs")) || [];
+    const logsForDay = allLogs.filter((log) => {
+      const logDate = new Date(log.logTime);
+      return logDate.toDateString() === date.toDateString();
+    });
+    setFoodLogEntries(logsForDay);
   };
 
   useEffect(() => {
@@ -63,7 +66,7 @@ function FoodLogPage() {
     };
     console.log(foodData);
     // Here, I would send the foodData to my backend to log the food
-    // Reset form fields/state as necessary after submission
+    // Reset form fields/state after submission
     setFoodName("");
     setMeal("breakfast");
     setServings(1);
