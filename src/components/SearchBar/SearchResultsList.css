@@ -6,11 +6,39 @@
   flex-direction: column;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Softer shadow for modern look */
   border-radius: 8px; /* Slightly rounded corners for a softer look */
-  margin-top: 0.5rem;
+  margin-top: 4.3rem;
   max-height: 300px;
   overflow-y: auto; /* Allows scrolling only vertically */
   overflow-x: hidden; /* Prevents horizontal scroll */
   padding: 8px 0; /* Top and bottom padding inside the list */
   border: 1px solid #ddd; /* Subtle border for definition */
   z-index: 100; /* Ensure it's above other content */
+
+  &.hidden {
+    display: none; /* Hide the list when not needed */
+  }
+
+  .result {
+    padding: 8px 16px; /* Consistent padding for each result */
+    cursor: pointer; /* Show pointer on hover for better UX */
+    transition: background-color 0.2s; /* Smooth transition for hover effect */
+
+    &:hover {
+      background-color: #f5f5f5; /* Light grey background on hover */
+    }
+  }
+
+  .result:first-child {
+    border-top-left-radius: 8px; /* Rounded corners for the first result */
+    border-top-right-radius: 8px;
+  }
+
+  .result:last-child {
+    border-bottom-left-radius: 8px; /* Rounded corners for the last result */
+    border-bottom-right-radius: 8px;
+  }
+
+  .result:not(:last-child) {
+    border-bottom: 1px solid #ddd; /* Light grey border between results */
+  }
 }
