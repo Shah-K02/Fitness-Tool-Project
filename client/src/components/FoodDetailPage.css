@@ -1,44 +1,80 @@
-body {
-  font-family: Open Sans, sans-serif;
+/* Using website's color palette for improved consistency */
+:root {
+  --color-bright-red: #dc0000;
+  --color-orange: #ffa500;
+  --color-charcoal-gray: #36454f;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-light-grey: #d3d3d3;
+
+  /* Existing colors for reference */
+  --background-color: var(--color-charcoal-gray);
+  --text-color: var(--color-white);
+  --accent-color: var(--color-bright-red);
+  --secondary-text-color: var(--color-light-grey);
+  --divider-color: var(--color-light-grey);
+  --highlight-background: var(--color-orange);
 }
+
+body {
+  font-family: "Open Sans", sans-serif;
+  color: var(--text-color);
+}
+
 * {
   box-sizing: border-box;
 }
+
 .label {
-  border: 2px solid black;
-  width: 270px;
+  border: 1px solid var(--divider-color); /* Lighter border for a softer look */
+  background-color: var(--color-black); /* Using pure black for contrast */
+  width: 90%; /* Responsive width */
+  max-width: 500px; /* Maximum width to ensure readability */
   margin: 20px auto;
-  padding: 0 7px;
+  padding: 1rem; /* Consistent padding */
+  border-radius: 8px; /* Rounded corners for a modern look */
 }
-.header h2 {
+
+.header h2,
+.calories-info h2 {
   text-align: center;
-  margin: -4px 0px;
+  margin: 10px 0px; /* Adjusted for proper spacing */
   letter-spacing: 1.2px;
+  color: var(--color-orange); /* Orange color for highlights */
 }
+
 p {
-  margin: 0px;
+  margin: 10px 0; /* Increased margin for better readability */
+  color: var(--secondary-text-color); /* Light grey for secondary text */
 }
+
 .divider {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--divider-color); /* Light grey divider */
   margin: 2px 0;
-  clear: right;
+  clear: both; /* Ensure it clears floated elements */
 }
+
 .bold {
-  font-weight: 600;
+  font-weight: bold; /* Use bold for emphasis */
 }
+
 .right {
   float: right;
+  color: var(--color-white); /* White color for better contrast */
 }
-.lg {
-  height: 10px;
-}
-.lg {
-  background-color: black;
-}
-.md {
-  height: 5px;
-}
+
+/* Specific height classes for dividers not needed, instead use dynamic spacing */
+
 .calories-info span {
-  font-size: 1.2em;
-  margin-top: -5px;
+  font-size: 1.2em; /* Slightly larger font size for emphasis */
+  display: block; /* Use block to avoid negative margin hack */
+  margin-top: 5px; /* Proper spacing above */
+  color: var(--accent-color); /* Bright red for energy value */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .label {
+    width: 95%; /* More screen-width usage on smaller devices */
+  }
 }
