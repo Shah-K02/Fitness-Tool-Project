@@ -34,6 +34,7 @@
 
 .login-container span {
   font-size: 12px;
+  color: #36454f;
 }
 
 .login-container a {
@@ -202,6 +203,13 @@
 .toggle-right {
   right: 0;
   transform: translateX(0);
+}
+.toggle-panel p {
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.3px;
+  margin: 20px 0;
+  color: #36454f;
 }
 
 .login-container.active .toggle-right {
