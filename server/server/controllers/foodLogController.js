@@ -1,24 +1,28 @@
-const FoodLog = require("../models/FoodLog");
+const db = require("../../config/db");
 
 exports.createLog = async (req, res) => {
-  try {
-    const logData = req.body;
-    // Add logic to validate logData
+  const {
+    food_id,
+    description,
+    log_time,
+    protein,
+    carbs,
+    fats,
+    calories,
+    user_id,
+  } = req.body;
+  const query =
+    "INSERT INTO food_logs (food_id, description, log_time, protein, carbs, fats, calories, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-    await FoodLog.create(logData);
-    res.status(201).json({ message: "Food log created successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Error creating food log" });
-  }
-};
-
-exports.getLogsByDate = async (req, res) => {
-  try {
-    const { userId, date } = req.params;
-    const logs = await FoodLog.findByDate(userId, date);
-
-    res.json(logs);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching food logs" });
-  }
+  db.query(
+    query,
+    [food_id, description, log_time, protein, carbs, fats, calories, user_id],
+    (err, result) => {
+      if (err) {
+        console.error("Failed to log food:", err);
+        return res.status(500).send("Failed to log food");
+      }
+      res.status(201).json({ message: "Food logged successfully" });
+    }
+  );
 };

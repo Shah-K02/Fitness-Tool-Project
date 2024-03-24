@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const foodLogController = require("../controllers/foodLogController");
+const foodController = require("../controllers/foodLogController");
+const authenticate = require("../middleware/authenticate");
 
-router.post("/log", foodLogController.createLog);
-router.get("/logs/:userId/:date", foodLogController.getLogsByDate);
+router.post("/log/food", authenticate, foodController.createLog);
 
 module.exports = router;
