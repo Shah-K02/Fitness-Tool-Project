@@ -4,7 +4,7 @@ import SearchBar from "./SearchBar/SearchBar";
 import SearchResultList from "./SearchBar/SearchResultsList";
 import BackButton from "./BackButton";
 
-function FoodLogPage() {
+function FoodLogPage({ userId }) {
   const [foodName, setFoodName] = useState("");
   const [meal, setMeal] = useState("breakfast");
   const [servings, setServings] = useState(1);
@@ -31,19 +31,43 @@ function FoodLogPage() {
     return dates;
   };
 
-  // Placeholder: Fetch food log entries for the selected day
-  const fetchFoodLogForDay = (date) => {
-    const allLogs = JSON.parse(localStorage.getItem("foodLogs")) || [];
-    const logsForDay = allLogs.filter((log) => {
-      const logDate = new Date(log.logTime);
-      return logDate.toDateString() === date.toDateString();
-    });
-    setFoodLogEntries(logsForDay);
+  //Fetch food log entries for the selected day
+  const fetchFoodLogForDay = async (date, userId) => {
+    try {
+      const formattedDate = currentDay.toISOString().split("T")[0]; // YYYY-MM-DD format
+      const response = await fetch(`/api/logs/${userId}/${formattedDate}`);
+      if (!response.ok) throw new Error("Failed to fetch logs");
+      const logs = await response.json();
+      setFoodLogEntries(logs);
+    } catch (error) {
+      console.error("Error fetching food logs:", error);
+    }
   };
 
+  // Simplified useEffect hook to fetch food logs
   useEffect(() => {
-    fetchFoodLogForDay(currentDay);
-  }, [currentDay]);
+    const fetchFoodLogForDay = async () => {
+      const token = localStorage.getItem("token");
+      const formattedDate = currentDay.toISOString().split("T")[0]; // YYYY-MM-DD format
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/logs/${userId}/${formattedDate}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (!response.ok) throw new Error("Failed to fetch logs");
+        const logs = await response.json();
+        setFoodLogEntries(logs);
+      } catch (error) {
+        console.error("Error fetching food logs:", error);
+      }
+    };
+
+    if (userId) {
+      fetchFoodLogForDay();
+    }
+  }, [currentDay, userId]);
 
   const dateRange = generateDateRange();
 

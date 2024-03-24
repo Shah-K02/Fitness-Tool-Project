@@ -8,15 +8,13 @@ import NutrientRing from "./NutrientRing";
 const FoodDetailPage = () => {
   const { id } = useParams();
   const [foodDetails, setFoodDetails] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const energyNutrient = foodDetails?.foodNutrients.find(
-    (nutrientItem) => nutrientItem.nutrient.name === "Energy"
-  );
   console.log(foodDetails);
+
   useEffect(() => {
     const fetchFoodDetails = async () => {
-      setIsLoading(true);
       try {
         const response = await fetch(
           `${process.env.REACT_APP_API_BASE_URL}/api/food/${id}`
@@ -32,10 +30,39 @@ const FoodDetailPage = () => {
         setIsLoading(false);
       }
     };
+    // Fetching user information
+    const fetchUserInfo = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("Token not found");
+        return;
+      }
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch user info");
+        }
+        const userData = await response.json();
+        setUserInfo(userData);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
 
     fetchFoodDetails();
+    fetchUserInfo();
   }, [id]);
 
+  const energyNutrient = foodDetails?.foodNutrients.find(
+    (nutrientItem) => nutrientItem.nutrient.name === "Energy"
+  );
   const nutrientValues = {
     protein: 0,
     carbs: 0,
@@ -64,30 +91,35 @@ const FoodDetailPage = () => {
     });
   }
   const logFood = async () => {
-    const logData = {
+    const logTimeMySQLFormat = new Date()
+      .toISOString()
+      .replace("T", " ")
+      .substring(0, 19);
+    const logDetails = {
       food_id: id,
       description: foodDetails.description,
-      log_time: new Date().toISOString(),
+      log_time: logTimeMySQLFormat,
       protein: nutrientValues.protein,
       carbs: nutrientValues.carbs,
       fats: nutrientValues.fats,
       calories: nutrientValues.calories,
-      // user_id: currentUser.id,
+      user_id: userInfo?.id,
     };
 
     try {
-      const response = await fetch("/api/log", {
+      const response = await fetch("/api/log/food", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(logData),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Authorization header
+        },
+        body: JSON.stringify(logDetails),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to log food");
-      }
-
+      if (!response.ok) throw new Error("Failed to log food");
       alert("Food logged successfully!");
     } catch (error) {
+      console.error("Error logging food:", error);
       alert(error.message);
     }
   };
