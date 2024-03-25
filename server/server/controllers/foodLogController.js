@@ -1,4 +1,5 @@
 const db = require("../../config/db");
+const FoodLog = require("../models/FoodLog");
 
 exports.createLog = async (req, res) => {
   const { food_id, description, log_time, protein, carbs, fats, calories } =
@@ -18,4 +19,25 @@ exports.createLog = async (req, res) => {
       res.status(201).json({ message: "Food logged successfully" });
     }
   );
+};
+
+exports.getLogsByDate = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const date = new Date(req.params.date);
+    const logs = await FoodLog.findByDate(
+      user_id,
+      date.toISOString().split("T")[0]
+    );
+    res.json(
+      logs.map((log) => {
+        return {
+          ...log,
+          log_time: new Date(log.log_time).toISOString(),
+        };
+      })
+    );
+  } catch (error) {
+    res.status(500).send("Error fetching food logs");
+  }
 };
