@@ -3,6 +3,7 @@ import "./FoodLogPage.css";
 import SearchBar from "./SearchBar/SearchBar";
 import SearchResultList from "./SearchBar/SearchResultsList";
 import BackButton from "./BackButton";
+import LogEntry from "./LogEntry";
 
 function FoodLogPage({ userId }) {
   const [foodName, setFoodName] = useState("");
@@ -31,22 +32,9 @@ function FoodLogPage({ userId }) {
     return dates;
   };
 
-  //Fetch food log entries for the selected day
-  const fetchFoodLogForDay = async (date, userId) => {
-    try {
-      const formattedDate = currentDay.toISOString().split("T")[0]; // YYYY-MM-DD format
-      const response = await fetch(`/api/logs/${userId}/${formattedDate}`);
-      if (!response.ok) throw new Error("Failed to fetch logs");
-      const logs = await response.json();
-      setFoodLogEntries(logs);
-    } catch (error) {
-      console.error("Error fetching food logs:", error);
-    }
-  };
-
-  // Simplified useEffect hook to fetch food logs
+  // useEffect hook to fetch food logs
   useEffect(() => {
-    const fetchFoodLogForDay = async () => {
+    const fetchLogs = async () => {
       const token = localStorage.getItem("token");
       const formattedDate = currentDay.toISOString().split("T")[0]; // YYYY-MM-DD format
       try {
@@ -65,7 +53,7 @@ function FoodLogPage({ userId }) {
     };
 
     if (userId) {
-      fetchFoodLogForDay();
+      fetchLogs();
     }
   }, [currentDay, userId]);
 
@@ -121,6 +109,13 @@ function FoodLogPage({ userId }) {
             <div className="hour-log" key={index}>
               {" "}
               <span className="hour-text">{formattedHour}</span>
+              {foodLogEntries.map((entry) => (
+                <LogEntry
+                  key={entry.id}
+                  entry={entry}
+                  formatHour={formatHour}
+                />
+              ))}{" "}
               <button
                 className="log-button"
                 onClick={() => handleLogFood(index)}
