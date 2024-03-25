@@ -1,16 +1,9 @@
 const db = require("../../config/db");
 
 exports.createLog = async (req, res) => {
-  const {
-    food_id,
-    description,
-    log_time,
-    protein,
-    carbs,
-    fats,
-    calories,
-    user_id,
-  } = req.body;
+  const { food_id, description, log_time, protein, carbs, fats, calories } =
+    req.body;
+  const user_id = req.userId;
   const query =
     "INSERT INTO food_logs (food_id, description, log_time, protein, carbs, fats, calories, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
