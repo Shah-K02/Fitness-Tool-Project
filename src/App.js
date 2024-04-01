@@ -15,6 +15,7 @@ import Posts from "./components/Posts";
 import "@fontsource/bebas-neue";
 import FoodDetailPage from "./components/FoodDetailPage";
 import FoodLogPage from "./components/FoodLogPage";
+import SearchExercises from "./components/SearchBar/SearchExercises";
 
 function App() {
   return (
@@ -52,6 +53,8 @@ function App() {
         <Route path="/posts" element={<Posts />} />
         <Route path="/food/:id" element={<FoodDetailPage />} />
         {/* Add other routes here if needed */}
+        <Route path="*" element={<h1>Not Found</h1>} />
+        <Route path="/exercises" element={<SearchExercises />} />
       </Routes>
       <Footer />
     </Router>
