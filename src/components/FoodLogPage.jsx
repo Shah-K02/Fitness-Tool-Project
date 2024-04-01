@@ -125,6 +125,7 @@ function FoodLogPage({ userId }) {
               {showSearch && selectedHour === index && (
                 <div className="search-bar-container">
                   <SearchBar setResults={setResults} />
+                  {results.length > 0 && <SearchResultList results={results} />}
                   <select
                     className="meal-select"
                     value={meal}
