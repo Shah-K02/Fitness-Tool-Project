@@ -42,14 +42,18 @@ class FoodLog {
       SELECT * FROM food_logs
       WHERE user_id = ? AND DATE(log_time) = ?
     `;
-    try {
-      const { rows } = await db.query(query, [userId, date]);
-      console.log(rows);
-      return rows; // Return the rows from the query
-    } catch (error) {
-      console.error("Failed to find food logs by date:", error);
-      throw error;
-    }
+
+    return new Promise((resolve, reject) => {
+      db.query(query, [userId, date], (error, results) => {
+        if (error) {
+          console.error("Failed to execute query:", error);
+          reject(error);
+        } else {
+          console.log("Query result:", results);
+          resolve(results);
+        }
+      });
+    });
   }
 }
 

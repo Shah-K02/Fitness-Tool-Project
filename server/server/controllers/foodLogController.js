@@ -22,23 +22,18 @@ exports.createLog = async (req, res) => {
 };
 
 exports.getLogsByDate = async (req, res) => {
-  const user_id = req.userId;
+  const userId = req.userId;
   const date = req.params.date;
+  console.log(
+    `Fetching logs for user ${req.userId} and date ${req.params.date}`
+  );
 
   try {
-    const logs = await FoodLog.findByDate(
-      user_id,
-      date.toISOString().split("T")[0]
-    );
-    res.json(
-      logs.map((logs) => {
-        return {
-          ...logs,
-          log_time: new Date(log.log_time).toISOString(),
-        };
-      })
-    );
+    const logs = await FoodLog.findByDate(userId, date);
+    console.log(`Found logs: ${logs.length}`);
+    res.json(logs);
   } catch (error) {
+    console.error("Error fetching food logs:", error);
     res.status(500).send("Error fetching food logs");
   }
 };
