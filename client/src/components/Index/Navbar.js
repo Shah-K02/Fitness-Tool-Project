@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import SideBar from "./SideBar";
-import { faHome, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome, faUser, faDumbbell } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 const Navbar = () => {
@@ -13,9 +13,8 @@ const Navbar = () => {
   const [currentUserName, setCurrentUserName] = useState("");
 
   const links = [
-    { name: "", url: isLoggedIn ? "/user-home" : "/", icon: faHome },
-    { name: "Link 2", url: "/link2" },
-    { name: "Link 3", url: "/link3" },
+    { name: " Home", url: isLoggedIn ? "/user-home" : "/", icon: faHome },
+    { name: " Workouts", url: "/workoutspage", icon: faDumbbell },
   ];
 
   useEffect(() => {
