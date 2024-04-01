@@ -8,7 +8,7 @@ exports.createPost = async (req, res) => {
     const image = req.file.path; // Path where the image is saved
     const userId = req.userId;
 
-    const [result] = await db.execute(
+    const [result] = await db.query(
       "INSERT INTO posts (description, image, user_id) VALUES (?, ?, ?)",
       [description, image, userId]
     );

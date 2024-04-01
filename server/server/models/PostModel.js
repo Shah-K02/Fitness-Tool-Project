@@ -25,7 +25,7 @@ class PostModel {
   // Create a new post
   static async create({ description, image, userId }) {
     try {
-      const [result] = await db.execute(
+      const [result] = await db.query(
         "INSERT INTO posts (description, image, user_id) VALUES (?, ?, ?)",
         [description, image, userId]
       );
@@ -38,7 +38,7 @@ class PostModel {
   // Update a post by ID
   static async updateById(id, { description, image }) {
     try {
-      await db.execute(
+      await db.query(
         "UPDATE posts SET description = ?, image = ? WHERE id = ?",
         [description, image, id]
       );
@@ -51,7 +51,7 @@ class PostModel {
   // Delete a post by ID
   static async deleteById(id) {
     try {
-      await db.execute("DELETE FROM posts WHERE id = ?", [id]);
+      await db.query("DELETE FROM posts WHERE id = ?", [id]);
       return { message: "Post deleted successfully" };
     } catch (error) {
       throw error;

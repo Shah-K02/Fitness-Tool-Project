@@ -43,9 +43,9 @@ class FoodLog {
       WHERE user_id = ? AND DATE(log_time) = ?
     `;
     try {
-      const result = await db.query(query, [userId, date]);
-      console.log(result);
-      return result.rows; // Return the rows from the query
+      const { rows } = await db.query(query, [userId, date]);
+      console.log(rows);
+      return rows; // Return the rows from the query
     } catch (error) {
       console.error("Failed to find food logs by date:", error);
       throw error;

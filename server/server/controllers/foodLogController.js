@@ -22,17 +22,18 @@ exports.createLog = async (req, res) => {
 };
 
 exports.getLogsByDate = async (req, res) => {
+  const user_id = req.userId;
+  const date = req.params.date;
+
   try {
-    const { user_id } = req.params;
-    const date = new Date(req.params.date);
     const logs = await FoodLog.findByDate(
       user_id,
       date.toISOString().split("T")[0]
     );
     res.json(
-      logs.map((log) => {
+      logs.map((logs) => {
         return {
-          ...log,
+          ...logs,
           log_time: new Date(log.log_time).toISOString(),
         };
       })
