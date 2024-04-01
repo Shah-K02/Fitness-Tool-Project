@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import "./FoodDetailPage.css";
 import BackButton from "./BackButton";
 import NutrientRing from "./NutrientRing";
+import axios from "axios";
 
 const FoodDetailPage = () => {
   const { id } = useParams();
