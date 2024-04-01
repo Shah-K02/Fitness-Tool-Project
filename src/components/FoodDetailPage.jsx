@@ -1,5 +1,5 @@
 // FoodDetailPage.js
-import React, { useState, useEffect, useId } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./FoodDetailPage.css";
 import BackButton from "./BackButton";

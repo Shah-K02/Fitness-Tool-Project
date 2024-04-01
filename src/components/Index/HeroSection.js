@@ -8,7 +8,11 @@ const HeroSection = () => {
     <div className="hero-image">
       <img src="hero-img.jpg" alt="Hero Image" />
       <div className="hero-content">
-        <h1>Welcome to Our Website!</h1>
+        <h1>
+          Eat <br />
+          Track <br />
+          Stay Fit!
+        </h1>
         <p>Join us and explore the possibilities.</p>
         <div className="button-container">
           <Link to="/login">

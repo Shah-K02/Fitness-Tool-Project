@@ -97,9 +97,11 @@ function FoodLogPage({ userId }) {
               </button>
               <div className="log-entries-container">
                 {foodLogEntries.length > 0 ? (
-                  foodLogEntries.map((entry) => (
-                    <LogEntry key={entry.id} entry={entry} />
-                  ))
+                  foodLogEntries
+                    .filter(
+                      (entry) => new Date(entry.log_time).getHours() === index
+                    )
+                    .map((entry) => <LogEntry key={entry.id} entry={entry} />)
                 ) : (
                   <p>No food logs for this day.</p>
                 )}
