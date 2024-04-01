@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar/SearchBar";
 import SearchResultList from "./SearchBar/SearchResultsList";
 import BackButton from "./BackButton";
 import LogEntry from "./LogEntry";
+import axios from "axios";
 
 function FoodLogPage({ userId }) {
   const [foodName, setFoodName] = useState("");
@@ -37,21 +38,19 @@ function FoodLogPage({ userId }) {
     const fetchLogs = async () => {
       const token = localStorage.getItem("token");
       const formattedDate = currentDay.toISOString().split("T")[0]; // YYYY-MM-DD format
+      const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/api/logs/${formattedDate}`;
       try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/logs/${userId}/${formattedDate}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (!response.ok) throw new Error("Failed to fetch logs");
-        const logs = await response.json();
-        setFoodLogEntries(logs);
+        const response = await axios.get(apiUrl, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setFoodLogEntries(response.data);
       } catch (error) {
-        console.error("Error fetching food logs:", error);
+        console.error(
+          "Error fetching food logs:",
+          error.response ? error.response.data : error.message
+        );
       }
     };
-
     if (userId) {
       fetchLogs();
     }
@@ -70,14 +69,30 @@ function FoodLogPage({ userId }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const foodData = {
-      foodName,
-      meal,
-      servings,
-      date: currentDay.toISOString().split("T")[0],
-    };
-    console.log(foodData);
-    // Here, I would send the foodData to my backend to log the food
+    const token = localStorage.getItem("token");
+    const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/api/logs`;
+
+    try {
+      await axios.post(
+        apiUrl,
+        {
+          foodName,
+          meal,
+          servings,
+          date: currentDay.toISOString().split("T")[0],
+          userId,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      alert("Food logged successfully");
+    } catch (error) {
+      console.error(
+        "Failed to log food:",
+        error.response ? error.response.data : error.message
+      );
+    }
     // Reset form fields/state after submission
     setFoodName("");
     setMeal("breakfast");
@@ -126,29 +141,33 @@ function FoodLogPage({ userId }) {
                 <div className="search-bar-container">
                   <SearchBar setResults={setResults} />
                   {results.length > 0 && <SearchResultList results={results} />}
-                  <select
-                    className="meal-select"
-                    value={meal}
-                    onChange={(e) => setMeal(e.target.value)}
-                    required
-                  >
-                    <option value="breakfast">Breakfast</option>
-                    <option value="lunch">Lunch</option>
-                    <option value="dinner">Dinner</option>
-                    <option value="snack">Snack</option>
-                  </select>
-                  <input
-                    className="servings-input"
-                    type="number"
-                    value={servings}
-                    onChange={(e) => setServings(parseInt(e.target.value, 10))}
-                    min="1"
-                    max="10"
-                    required
-                  />
-                  <button className="submit-button" type="submit">
-                    Submit
-                  </button>
+                  <form className="log-form" onSubmit={handleSubmit}>
+                    <select
+                      className="meal-select"
+                      value={meal}
+                      onChange={(e) => setMeal(e.target.value)}
+                      required
+                    >
+                      <option value="breakfast">Breakfast</option>
+                      <option value="lunch">Lunch</option>
+                      <option value="dinner">Dinner</option>
+                      <option value="snack">Snack</option>
+                    </select>
+                    <input
+                      className="servings-input"
+                      type="number"
+                      value={servings}
+                      onChange={(e) =>
+                        setServings(parseInt(e.target.value, 10))
+                      }
+                      min="1"
+                      max="10"
+                      required
+                    />
+                    <button className="submit-button" type="submit">
+                      Submit
+                    </button>
+                  </form>
                 </div>
               )}
             </div>
