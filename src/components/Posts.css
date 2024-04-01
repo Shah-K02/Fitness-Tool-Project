@@ -3,6 +3,7 @@
   max-width: 100px;
   margin: auto;
   padding: 1rem;
+  color: #333; /* Darker text color */
 }
 
 /* Style for the posts heading */
