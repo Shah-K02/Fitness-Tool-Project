@@ -1,4 +1,5 @@
 /* CSS for FoodLogPage */
+
 .food-log-page {
   display: flex;
   flex-direction: column;
@@ -104,4 +105,9 @@
 
 .submit-button:hover {
   background-color: #ffa500; /* Orange */
+}
+
+.log-entries-container p {
+  margin: 10px;
+  color: #dc0000; /* Bright Red */
 }

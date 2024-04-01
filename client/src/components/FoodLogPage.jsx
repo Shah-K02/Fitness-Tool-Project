@@ -124,19 +124,21 @@ function FoodLogPage({ userId }) {
             <div className="hour-log" key={index}>
               {" "}
               <span className="hour-text">{formattedHour}</span>
-              {foodLogEntries.map((entry) => (
-                <LogEntry
-                  key={entry.id}
-                  entry={entry}
-                  formatHour={formatHour}
-                />
-              ))}{" "}
               <button
                 className="log-button"
                 onClick={() => handleLogFood(index)}
               >
                 +
               </button>
+              <div className="log-entries-container">
+                {foodLogEntries.length > 0 ? (
+                  foodLogEntries.map((entry) => (
+                    <LogEntry key={entry.id} entry={entry} />
+                  ))
+                ) : (
+                  <p>No food logs for this day.</p>
+                )}
+              </div>
               {showSearch && selectedHour === index && (
                 <div className="search-bar-container">
                   <SearchBar setResults={setResults} />
