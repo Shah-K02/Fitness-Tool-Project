@@ -1,5 +1,5 @@
 // FoodDetailPage.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useId } from "react";
 import { useParams } from "react-router-dom";
 import "./FoodDetailPage.css";
 import BackButton from "./BackButton";
@@ -10,55 +10,39 @@ const FoodDetailPage = () => {
   const { id } = useParams();
   const [foodDetails, setFoodDetails] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   console.log(foodDetails);
 
   useEffect(() => {
-    const fetchFoodDetails = async () => {
+    const fetchFoodDetailsAndUserInfo = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch(
+        const foodDetailsResponse = await axios.get(
           `${process.env.REACT_APP_API_BASE_URL}/api/food/${id}`
         );
-        if (!response.ok) {
-          throw new Error("Failed to fetch food details");
+        setFoodDetails(foodDetailsResponse.data);
+
+        const token = localStorage.getItem("token");
+        if (token) {
+          const userInfoResponse = await axios.get(
+            `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setUserInfo(userInfoResponse.data);
         }
-        const data = await response.json();
-        setFoodDetails(data);
       } catch (error) {
-        setError(error.message);
+        setError(error.response ? error.response.data.message : error.message);
       } finally {
         setIsLoading(false);
       }
     };
-    // Fetching user information
-    const fetchUserInfo = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("Token not found");
-        return;
-      }
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch user info");
-        }
-        const userData = await response.json();
-        setUserInfo(userData);
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    };
 
-    fetchFoodDetails();
-    fetchUserInfo();
+    fetchFoodDetailsAndUserInfo();
   }, [id]);
 
   const energyNutrient = foodDetails?.foodNutrients.find(
@@ -92,6 +76,11 @@ const FoodDetailPage = () => {
     });
   }
   const logFood = async () => {
+    if (!userInfo) {
+      alert("Please log in to log food");
+      return;
+    }
+
     const logTimeMySQLFormat = new Date()
       .toISOString()
       .replace("T", " ")
@@ -104,20 +93,17 @@ const FoodDetailPage = () => {
       carbs: nutrientValues.carbs,
       fats: nutrientValues.fats,
       calories: nutrientValues.calories,
-      user_id: userInfo?.id,
+      user_id: userInfo.id,
     };
 
     try {
-      const response = await fetch("/api/log/food", {
-        method: "POST",
+      await axios.post("/api/log/food", logDetails, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`, // Authorization header
         },
-        body: JSON.stringify(logDetails),
       });
 
-      if (!response.ok) throw new Error("Failed to log food");
       alert("Food logged successfully!");
     } catch (error) {
       console.error("Error logging food:", error);
@@ -135,11 +121,12 @@ const FoodDetailPage = () => {
 
       <h1>{foodDetails.description}</h1>
       <p>
-        <strong>Food Category:</strong> {foodDetails.foodCategory}
+        <strong>Food Category:</strong>{" "}
+        {foodDetails.wweiaFoodCategory.wweiaFoodCategoryDescription}
       </p>
       <p>
-        <strong>Additional Descriptions:</strong>{" "}
-        {foodDetails.additionalDescriptions}
+        <strong>Serving Size:</strong>{" "}
+        {foodDetails.foodPortions[0].portionDescription}
       </p>
       <div>
         <NutrientRing
@@ -163,7 +150,8 @@ const FoodDetailPage = () => {
           <p className="bold">
             <strong>Serving Size:</strong>{" "}
             <span className="right">
-              {foodDetails.servingSize} {foodDetails.servingSizeUnit}
+              {foodDetails.foodPortions[0].portionDescription}{" "}
+              {foodDetails.servingSizeUnit}
             </span>
           </p>
         </header>
