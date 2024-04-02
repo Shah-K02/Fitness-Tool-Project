@@ -7,10 +7,11 @@ const SearchExercises = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+
     const exerciseOptions = {
       method: "GET",
       url: "https://exercises-by-api-ninjas.p.rapidapi.com/v1/exercises",
-      params: { muscle: search },
+      params: { muscles: search },
       headers: {
         "X-RapidAPI-Key": "b6a2a2f57dmshb6e6fb5c56b5b07p1cd2d8jsnd6ce99b5dc6d",
         "X-RapidAPI-Host": "exercises-by-api-ninjas.p.rapidapi.com",
