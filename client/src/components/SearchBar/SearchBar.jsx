@@ -11,7 +11,6 @@ function SearchBar() {
     if (!query.trim()) return;
 
     try {
-      // Make sure this URL matches your backend route
       const response = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/api/food/search`,
         {
@@ -32,7 +31,7 @@ function SearchBar() {
       setResults(data.foods);
     } catch (error) {
       console.error("Error during the search:", error);
-      setResults([]); // Reset results or handle the error as needed
+      setResults([]); // Clear the results
     }
   };
 

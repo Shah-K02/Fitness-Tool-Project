@@ -20,8 +20,6 @@
 
 .calories-text {
   font-weight: bold;
-  /* The font-size is dynamically calculated based on the 'size' prop, 
-     so it's tricky to set it here without knowing 'size' beforehand.  */
   font-size: relative;
 }
 /* Style for the legend and its items */

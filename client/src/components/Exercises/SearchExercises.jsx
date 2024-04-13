@@ -62,15 +62,6 @@ const SearchExercises = () => {
             </div>
           ))}
       </div>
-      <div className="body-parts">
-        {bodyParts.map((part, index) => (
-          <button key={index} onClick={() => setSearch(part)}>
-            {part}
-          </button>
-        ))}
-
-        <button onClick={() => setExercises([])}>Clear</button>
-      </div>
     </div>
   );
 };

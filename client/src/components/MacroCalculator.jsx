@@ -40,7 +40,6 @@ const MacroCalculator = () => {
 
   // Calculate macros based on form data
   const calculateMacros = () => {
-    // Example calculations, replace these with your actual macro calculation logic
     const { weight, goal } = formData;
     let protein, carbs, fats;
 

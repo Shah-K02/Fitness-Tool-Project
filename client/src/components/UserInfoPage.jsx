@@ -49,7 +49,7 @@ const UserInfoPage = () => {
     const fetchUserInfo = async () => {
       setIsLoading(true);
       try {
-        const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage after login
+        const token = localStorage.getItem("token");
         const response = await fetch(
           `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
           {
@@ -64,8 +64,6 @@ const UserInfoPage = () => {
           acc[key] = fetchedData[key] === null ? "" : fetchedData[key];
           return acc;
         }, {});
-
-        // Now use sanitizedData to set your component's state
         setUserInfo(sanitizedData);
       } catch (error) {
         setError(error.message);
