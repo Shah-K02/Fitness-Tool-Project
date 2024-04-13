@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const USDA_API_KEY = process.env.USDA_API_KEY; // Make sure to set this in your .env file
+const USDA_API_KEY = process.env.USDA_API_KEY; // Get the API key from the environment variables
 const USDA_API_URL = "https://api.nal.usda.gov/fdc/v1/foods/search";
 const USDA_DETAIL_URL = "https://api.nal.usda.gov/fdc/v1/food/";
 

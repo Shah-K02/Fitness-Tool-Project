@@ -6,7 +6,7 @@ exports.fetchUserInfo = (req, res) => {
   const userId = req.userId;
   const query =
     "SELECT name, email, birthday, gender, height, weight, bmi, activityLevel FROM users_info WHERE user_id = ?";
-
+  // Fetch user info from the database
   db.query(query, [userId], (err, result) => {
     if (err) {
       console.error("Failed to fetch user info:", err);
@@ -16,6 +16,7 @@ exports.fetchUserInfo = (req, res) => {
       return res.json(result[0]);
     } else {
       return res.json({
+        // Return an empty object if no user info is found
         name: "",
         email: "",
         birthday: "",
@@ -33,7 +34,7 @@ exports.updateUserInfo = (req, res) => {
   let { name, email, birthday, gender, height, weight, bmi, activityLevel } =
     req.body;
   const userId = req.userId;
-
+  // Validate the gender and activity level values
   const validGenders = ["male", "female", "other"];
   const validActivityLevels = [
     "sedentary",
@@ -54,7 +55,7 @@ exports.updateUserInfo = (req, res) => {
       .status(400)
       .send("Invalid activity level value. Please select a valid option.");
   }
-
+  // Update the user info in the database
   const query =
     "UPDATE users_info SET name = ?, email = ?, birthday = ?, gender = ?, height = ?, weight = ?, bmi = ?, activityLevel = ? WHERE user_id = ?";
   db.query(

@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("../../config/db");
 
-// Assuming db is a pool from mysql or similar package that supports promise-based interaction
 const { promisify } = require("util");
 const dbQuery = promisify(db.query).bind(db);
 
