@@ -1,12 +1,12 @@
 // HeroSection.js
 import React from "react";
 import { Link } from "react-router-dom";
-// import "./HeroSection.css"; // Assume you have CSS for the HeroSection
+import heroImage from "../../assets/hero-img.jpg";
 
 const HeroSection = () => {
   return (
     <div className="hero-image">
-      <img src="hero-img.jpg" alt="Hero Image" />
+      <img src={heroImage} alt="Hero" />
       <div className="hero-content">
         <h1>
           Eat <br />

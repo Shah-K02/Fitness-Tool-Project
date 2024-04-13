@@ -3,18 +3,18 @@ import SideBar from "./SideBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faUser, faDumbbell } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const isLoggedIn = localStorage.getItem("token") !== null;
-  // Dummy user data - replace with actual data from your auth system
   const [currentUserName, setCurrentUserName] = useState("");
 
   const links = [
     { name: " Home", url: isLoggedIn ? "/user-home" : "/", icon: faHome },
-    { name: " Exercises", url: "/searchExercises", icon: faDumbbell },
+    { name: " Workouts", url: "/searchexercises", icon: faDumbbell },
   ];
 
   useEffect(() => {
@@ -78,14 +78,14 @@ const Navbar = () => {
     if (isLoggedIn) {
       fetchUserInfo();
     }
-  }, [isLoggedIn]); // Add isLoggedIn as a dependency if its value changes over time
+  }, [isLoggedIn]);
 
   return (
     <>
       <nav>
         <a href="/">
           <div className="nav-icon">
-            <img src="logo.png" alt="logo" />
+            <img src={logo} alt="logo" />
           </div>
         </a>
         <ul className="nav-links">
