@@ -6,6 +6,7 @@ const foodRoutes = require("./routes/foodRoutes");
 const postsRoutes = require("./routes/postsRoutes");
 const foodLogRoutes = require("./routes/foodLogRoutes");
 const authenticate = require("./middleware/authenticate");
+const exerciseRoutes = require("./routes/exerciseRoutes");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
@@ -26,6 +27,7 @@ app.use("/api/user", authenticate);
 app.use("/api", foodRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api", foodLogRoutes);
+app.use("/api/exercises", exerciseRoutes);
 
 app.listen(8081, () => {
   console.log("Server is running on port 8081");
