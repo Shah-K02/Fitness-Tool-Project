@@ -53,11 +53,15 @@ function App() {
           <Route path="/macro-calculator" element={<MacroCalculator />} />
           <Route path="/nutrition-tips" element={<NutritionTips />} />
           <Route path="/posts" element={<Posts />} />
-          <Route path="/food/:id" element={<FoodDetailPage />} />
-          {/* Add other routes here if needed */}
           <Route path="*" element={<h1>Not Found</h1>} />
-          <Route path="/searchexercises" element={<SearchExercises />} />
-          <Route path="/exercisespage" element={<ExercisesPage />} />
+          <Route
+            path="/exercisespage"
+            element={
+              <>
+                <SearchExercises />
+              </>
+            }
+          />
         </Routes>
       </Suspense>
       <Footer />

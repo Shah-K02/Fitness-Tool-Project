@@ -1,68 +1,113 @@
-import React, { useEffect, useState } from "react";
-import { exerciseOptions, fetchData } from "../utils/fetchData"; // Import fetchData and exerciseOptions
+// src/components/ExerciseSearch.js
+import React, { useState } from "react";
+import axios from "axios";
+import {
+  Stack,
+  Box,
+  TextField,
+  Button,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  CardMedia,
+} from "@mui/material";
 
 const SearchExercises = () => {
-  const [search, setSearch] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchType, setSearchType] = useState("name");
   const [exercises, setExercises] = useState([]);
-  const [bodyParts, setBodyParts] = useState([]);
 
-  useEffect(() => {
-    const fetchExercisesData = async () => {
-      const bodyPartsData = await fetchData(
-        `https://exercisedb.p.rapidapi.com/exercises/bodyPartList`,
-        exerciseOptions
-      );
-      setBodyParts(["all", ...bodyPartsData.data]);
-    };
-
-    fetchExercisesData();
-  }, []);
-  const handleSearch = async (e) => {
-    e.preventDefault();
-
-    if (search) {
-      const exerciseData = await fetchData(
-        `https://exercisedb.p.rapidapi.com/exercises`,
-        exerciseOptions
-      );
-      const searchedExercises = exerciseData.data.filter(
-        (exercise) =>
-          exercise.name.toLowerCase().includes(search) ||
-          exercise.target.toLowerCase().includes(search) ||
-          exercise.equipment.toLowerCase().includes(search) ||
-          exercise.bodyPart.toLowerCase().includes(search)
-      );
-      setSearch("");
-      setExercises(searchedExercises);
+  const handleSearch = async () => {
+    try {
+      const endpoint = `/api/exercises/${searchType}/${encodeURIComponent(
+        searchTerm
+      )}`;
+      const response = await axios.get(endpoint);
+      setExercises(response.data);
+    } catch (error) {
+      console.error("Error fetching exercises:", error);
     }
   };
 
   return (
-    <div>
-      <h1>Search Exercises</h1>
-      <form onSubmit={handleSearch} className="search-form">
-        <input
-          id="search-input"
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search by muscle group..."
-          className="search-input"
-        />
-        <button type="submit" className="search-button">
-          Go
-        </button>
-      </form>
-      <div>
-        {exercises &&
-          exercises.map((exercise, index) => (
-            <div key={index} className="exercise-card">
-              <h2>{exercise.name}</h2>
-              <p>{exercise.description}</p>
-            </div>
+    <Box>
+      <Stack
+        alignItems="center"
+        justifyContent="center"
+        sx={{ mt: "37px", p: "20px" }}
+      >
+        <Typography
+          fontWeight={700}
+          sx={{ fontSize: { lg: "44px", xs: "30px" } }}
+          mb="49px"
+          textAlign="center"
+        >
+          Discover New Exercises
+        </Typography>
+        <Box position="relative" mb="72px">
+          <TextField
+            height="76px"
+            sx={{
+              input: { fontWeight: "700", border: "none", borderRadius: "4px" },
+              width: { lg: "1170px", xs: "350px" },
+              backgroundColor: "#fff",
+              borderRadius: "40px",
+            }}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+            placeholder="Search Exercises"
+            type="text"
+          />
+          <Button
+            sx={{
+              bgcolor: "#FF2625",
+              color: "#fff",
+              textTransform: "none",
+              position: "absolute",
+              right: 0,
+              top: 0, // Align with the top of the TextField
+              width: { lg: "173px", xs: "80px" },
+              height: "56px",
+              fontSize: { lg: "20px", xs: "14px" },
+            }}
+            onClick={handleSearch}
+          >
+            Search
+          </Button>
+        </Box>
+      </Stack>
+      <Box sx={{ p: 3 }}>
+        <Grid container spacing={3}>
+          {exercises.map((exercise, index) => (
+            <Grid item key={index} xs={12} sm={6} md={4}>
+              <Card>
+                <CardMedia
+                  component="img"
+                  sx={{ height: 240, objectFit: "cover" }}
+                  image={exercise.gifUrl}
+                  alt={`Gif showing ${exercise.name}`} // Corrected syntax for template literals
+                />
+                <CardContent>
+                  <Typography variant="h5" component="div">
+                    {exercise.name}
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Body Part: {exercise.bodyPart}
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Equipment: {exercise.equipment}
+                  </Typography>
+                  <Typography color="text.secondary">
+                    Target Muscle: {exercise.target}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-      </div>
-    </div>
+        </Grid>
+      </Box>
+    </Box>
   );
 };
 
