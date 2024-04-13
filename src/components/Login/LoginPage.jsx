@@ -56,10 +56,7 @@ const LoginPage = () => {
         }
       );
       console.log(response.data);
-      // Handle success (e.g., show message, redirect)
-
       displayError(null);
-      // Optionally, redirect the user or update UI to show login
     } catch (error) {
       displayError("Failed to sign up. Please try again.");
       console.error("Sign Up Error:", error);

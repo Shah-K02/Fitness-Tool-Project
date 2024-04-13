@@ -51,7 +51,7 @@ p {
 .divider {
   border-bottom: 1px solid var(--divider-color); /* Light grey divider */
   margin: 2px 0;
-  clear: both; /* Ensure it clears floated elements */
+  clear: both; /* Clear float for proper alignment */
 }
 
 .bold {

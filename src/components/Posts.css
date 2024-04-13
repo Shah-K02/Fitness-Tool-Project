@@ -84,6 +84,6 @@
   font-size: 0.9rem; /* Slightly smaller font size */
   color: #333; /* Darker text for better readability */
   overflow: hidden; /* Hide overflowed content */
-  text-overflow: ellipsis; /* Add an ellipsis at the end of overflowed content */
-  white-space: nowrap; /* Don't wrap text to the next line */
+  text-overflow: ellipsis; /* Show ellipsis for overflowed text */
+  white-space: nowrap; /* Prevent wrapping */
 }

@@ -31,7 +31,6 @@ function App() {
                 <HeroSection />
                 <NewsSection />
                 <MacronutrientSection />
-                {/* Other components that you want to render on the homepage */}
               </>
             }
           />
