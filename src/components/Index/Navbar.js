@@ -14,7 +14,7 @@ const Navbar = () => {
 
   const links = [
     { name: " Home", url: isLoggedIn ? "/user-home" : "/", icon: faHome },
-    { name: " Exercises", url: "/exercises", icon: faDumbbell },
+    { name: " Exercises", url: "/searchExercises", icon: faDumbbell },
   ];
 
   useEffect(() => {

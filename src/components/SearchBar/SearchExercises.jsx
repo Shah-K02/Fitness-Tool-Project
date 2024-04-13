@@ -1,30 +1,39 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { exerciseOptions, fetchData } from "../util/fetchData"; // Import fetchData and exerciseOptions
 
 const SearchExercises = () => {
   const [search, setSearch] = useState("");
   const [exercises, setExercises] = useState([]);
+  const [bodyParts, setBodyParts] = useState([]);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const exerciseOptions = {
-      method: "GET",
-      url: "https://exercises-by-api-ninjas.p.rapidapi.com/v1/exercises",
-      params: { muscle: search },
-      headers: {
-        "X-RapidAPI-Key": "b6a2a2f57dmshb6e6fb5c56b5b07p1cd2d8jsnd6ce99b5dc6d",
-        "X-RapidAPI-Host": "exercises-by-api-ninjas.p.rapidapi.com",
-      },
+  useEffect(() => {
+    const fetchExercisesData = async () => {
+      const bodyPartsData = await fetchData(
+        `https://exercisedb.p.rapidapi.com/exercises/bodyPartList`,
+        exerciseOptions
+      );
+      setBodyParts(["all", ...bodyPartsData.data]);
     };
 
+    fetchExercisesData();
+  }, []);
+  const handleSearch = async (e) => {
+    e.preventDefault();
+
     if (search) {
-      try {
-        const response = await axios.request(exerciseOptions);
-        setExercises(response.data); // Update the exercises state with the fetched data
-        console.log(response.data); // Log the fetched data
-      } catch (error) {
-        console.error(error); // Log any errors
-      }
+      const exerciseData = await fetchData(
+        `https://exercisedb.p.rapidapi.com/exercises`,
+        exerciseOptions
+      );
+      const searchedExercises = exerciseData.data.filter(
+        (exercise) =>
+          exercise.name.toLowerCase().includes(search) ||
+          exercise.target.toLowerCase().includes(search) ||
+          exercise.equipment.toLowerCase().includes(search) ||
+          exercise.bodyPart.toLowerCase().includes(search)
+      );
+      setSearch("");
+      setExercises(searchedExercises);
     }
   };
 
@@ -52,6 +61,15 @@ const SearchExercises = () => {
               <p>{exercise.description}</p>
             </div>
           ))}
+      </div>
+      <div className="body-parts">
+        {bodyParts.map((part, index) => (
+          <button key={index} onClick={() => setSearch(part)}>
+            {part}
+          </button>
+        ))}
+
+        <button onClick={() => setExercises([])}>Clear</button>
       </div>
     </div>
   );
