@@ -1,4 +1,7 @@
 import React from "react";
+import NewsImg1 from "../../assets/NewsImg1.jpg";
+import NewsImg2 from "../../assets/Mediterranean-food.jpg";
+import NewsImg3 from "../../assets/NewsImg3.jpg";
 
 const NewsSection = () => {
   return (
@@ -12,14 +15,14 @@ const NewsSection = () => {
       </div>
       <div className="news-container">
         <div className="news-item">
-          <img src="NewsImg1.jpg" alt="Image 1" />
+          <img src={NewsImg1} alt="Image 1" />
           <h2>
             Study Finds High-Intensity Interval Training (HIIT) Most Effective
             for Rapid Fitness Gains
           </h2>
         </div>
         <div className="news-item">
-          <img src="Mediterrenean-food.jpg" alt="Image 2" />
+          <img src={NewsImg2} alt="Image 2" />
           <a href="https://www.freepik.com/free-vector/illustration-gallery-icon_2922280.htm#query=placeholder&position=0&from_view=keyword&track=sph&uuid=a218c410-d8f6-45ef-89aa-b36719c05cdb"></a>{" "}
           <h2>
             Major Study Reveals the Long-Term Benefits of Mediterranean Diet on
@@ -27,7 +30,7 @@ const NewsSection = () => {
           </h2>
         </div>
         <div className="news-item">
-          <img src="NewsImg3.jpg" alt="Image 3" />
+          <img src={NewsImg3} alt="Image 3" />
           <h2>
             Global Fitness Challenge Promotes Physical Activity with Charitable
             Giving

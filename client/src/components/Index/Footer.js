@@ -1,13 +1,13 @@
 import React from "react";
 import { FaFacebook, FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
-//import "./Footer.css"; // Your global styles
+import logo from "../../assets/logo.png";
 
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-logo">
-          <img src="logo.png" alt="Your Logo" />
+          <img src={logo} alt="Your Logo" />
         </div>
 
         <div className="footer-links">

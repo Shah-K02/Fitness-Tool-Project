@@ -6,8 +6,8 @@ import FoodLogPage from "./components/FoodLogPage";
 import MacroCalculator from "./components/MacroCalculator";
 import Navbar from "./components/Index/Navbar";
 import Footer from "./components/Index/Footer";
-import SearchExercises from "./components/SearchBar/SearchExercises";
-import Exercises from "./components/Exercises";
+import SearchExercises from "./components/Exercises/SearchExercises";
+import ExercisesPage from "./components/Exercises/ExercisesPage";
 const HeroSection = lazy(() => import("./components/Index/HeroSection"));
 const NewsSection = lazy(() => import("./components/Index/NewsSection"));
 const MacronutrientSection = lazy(() =>
@@ -57,8 +57,8 @@ function App() {
           <Route path="/food/:id" element={<FoodDetailPage />} />
           {/* Add other routes here if needed */}
           <Route path="*" element={<h1>Not Found</h1>} />
-          <Route path="/searchExercises" element={<SearchExercises />} />
-          <Route path="/exercises" element={<Exercises />} />
+          <Route path="/searchexercises" element={<SearchExercises />} />
+          <Route path="/exercisespage" element={<ExercisesPage />} />
         </Routes>
       </Suspense>
       <Footer />

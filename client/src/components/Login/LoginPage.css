@@ -1,6 +1,6 @@
 /* Login page styling */
 .login-page {
-  background: url("../../../public/LoginBackground.jpg") no-repeat center center
+  background: url("../../assets/LoginBackground.jpg") no-repeat center center
     fixed;
   background-size: cover;
   height: 100vh;

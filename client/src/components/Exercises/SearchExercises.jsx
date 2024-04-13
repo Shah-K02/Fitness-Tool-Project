@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { exerciseOptions, fetchData } from "../util/fetchData"; // Import fetchData and exerciseOptions
+import { exerciseOptions, fetchData } from "../utils/fetchData"; // Import fetchData and exerciseOptions
 
 const SearchExercises = () => {
   const [search, setSearch] = useState("");
