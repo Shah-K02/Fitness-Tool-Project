@@ -17,8 +17,6 @@ const HeroSection = () => {
         <div className="button-container">
           <Link to="/login">
             <button className="login-button">Login</button>
-          </Link>
-          <Link to="/signup">
             <button className="signup-button">Signup</button>
           </Link>
         </div>
