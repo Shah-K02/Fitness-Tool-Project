@@ -1,4 +1,9 @@
 /* Resetting some default styles for better consistency */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 body,
 html {
   margin: 0;
@@ -325,10 +330,4 @@ nav {
   .footer-social {
     margin-bottom: 20px; /* Extra spacing between sections */
   }
-}
-
-#root {
-  display: flex;
-  flex-direction: column; /* Stack children vertically */
-  min-height: 100vh; /* Full height of the viewport */
 }

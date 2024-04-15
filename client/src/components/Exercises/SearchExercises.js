@@ -12,10 +12,14 @@ const SearchExercises = ({ onSearch }) => {
         sx={{ mt: "37px", p: "20px" }}
       >
         <Typography
-          fontWeight={700}
-          sx={{ fontSize: { lg: "44px", xs: "30px" } }}
-          mb="49px"
-          textAlign="center"
+          fontWeight="700"
+          sx={{
+            fontSize: { lg: "44px", xs: "30px" },
+            mb: "49px",
+            textAlign: "center",
+            fontFamily: '"Bebas Neue", sans-serif',
+            color: "#36454f",
+          }}
         >
           Discover New Exercises
         </Typography>
@@ -36,7 +40,7 @@ const SearchExercises = ({ onSearch }) => {
           <Button
             sx={{
               bgcolor: "#dc0000",
-              color: "#36454f",
+              color: "#ffff",
               textTransform: "none",
               position: "absolute",
               right: 0,
