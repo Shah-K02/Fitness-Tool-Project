@@ -82,6 +82,8 @@ const LoginPage = () => {
       );
       console.log(response.data);
       localStorage.setItem("token", response.data.token);
+      navigate("/user-home");
+      displayError(null);
     } catch (error) {
       displayError(
         "Failed to log in. Please check your credentials and try again."
