@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SearchResultList from "./SearchResultsList";
 import "./SearchBar.css";
+import { Box, TextField, Button, Stack } from "@mui/material";
 
 function SearchBar() {
   const [query, setQuery] = useState("");
