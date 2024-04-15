@@ -1,4 +1,3 @@
-// HeroSection.js
 import React from "react";
 import { Link } from "react-router-dom";
 import heroImage from "../../assets/hero-img.jpg";
@@ -15,8 +14,10 @@ const HeroSection = () => {
         </h1>
         <p>Join us and explore the possibilities.</p>
         <div className="button-container">
-          <Link to="/login">
+          <Link to="/login" state={{ activeForm: "login" }}>
             <button className="login-button">Login</button>
+          </Link>
+          <Link to="/login" state={{ activeForm: "signup" }}>
             <button className="signup-button">Signup</button>
           </Link>
         </div>

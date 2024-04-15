@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaGooglePlusG,
   FaFacebookF,
@@ -8,10 +8,11 @@ import {
 import { LiaTimesSolid } from "react-icons/lia";
 import "./LoginPage.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSignUpActive, setIsSignUpActive] = useState(false);
   const [error, setError] = useState(null);
   const [userCredentials, setUserCredentials] = useState({
@@ -21,11 +22,20 @@ const LoginPage = () => {
     signInEmail: "",
     signInPassword: "",
   });
+  const [errorVisible, setErrorVisible] = useState(false);
+
+  useEffect(() => {
+    const state = location.state?.activeForm;
+    if (state === "signup") {
+      setIsSignUpActive(true);
+    } else if (state === "login") {
+      setIsSignUpActive(false);
+    }
+  }, [location.state]);
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserCredentials({ ...userCredentials, [name]: value });
   };
-  const [errorVisible, setErrorVisible] = useState(false);
 
   const displayError = (message) => {
     setError(message);
