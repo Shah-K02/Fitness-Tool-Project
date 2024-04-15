@@ -253,81 +253,8 @@ nav {
 .footer {
   background-color: #36454f; /* Dark background for contrast */
   color: fff; /* White text for readability */
-  padding: 20px 0; /* Ample padding for spacing */
   text-align: center;
   margin-top: auto; /* Ensures the footer sticks to the bottom */
+  color: #ffff;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; /* Consistent typography */
-}
-
-/* Footer content layout */
-.footer-content {
-  display: flex;
-  justify-content: space-around; /* Evenly space content */
-  align-items: center;
-  flex-wrap: wrap; /* Wrap content on smaller screens */
-  max-width: 1200px; /* Max width to constrain content on large screens */
-  margin: 0 auto; /* Center content */
-  padding: 0 20px; /* Padding on the sides */
-}
-
-.footer-logo img {
-  max-width: 100px; /* Logo size */
-  margin-bottom: 10px; /* Spacing below the logo */
-}
-
-/* Footer links */
-.footer-links ul {
-  list-style: none; /* Remove default list styling */
-  padding: 0;
-  margin: 0;
-}
-
-.footer-links a {
-  color: #ffffff; /* Link color */
-  text-decoration: none; /* No underline */
-  transition: color 0.3s ease; /* Smooth transition for hover effect */
-}
-
-.footer-links a:hover {
-  color: #a8dadc; /* Lighter shade on hover for interactivity */
-}
-
-/* Social icons */
-.footer-social ul {
-  list-style: none; /* Remove default list styling */
-  display: flex; /* Layout icons in a row */
-  align-items: center;
-  justify-content: center; /* Center align icons */
-  padding: 0;
-}
-
-.footer-social li {
-  margin: 0 10px; /* Spacing between icons */
-}
-
-.footer-social a {
-  color: #ffffff; /* Icon color */
-  font-size: 24px; /* Icon size */
-  transition: color 0.3s ease; /* Smooth transition for hover effect */
-}
-
-.footer-social a:hover {
-  color: #a8dadc; /* Lighter shade on hover */
-}
-
-/* Footer bottom text */
-.footer-bottom p {
-  margin-top: 20px; /* Spacing above the bottom text */
-  font-size: 0.875rem; /* Smaller text size for the copyright notice */
-}
-
-@media screen and (max-width: 768px) {
-  .footer-content {
-    flex-direction: column; /* Stack content vertically on small screens */
-  }
-
-  .footer-links,
-  .footer-social {
-    margin-bottom: 20px; /* Extra spacing between sections */
-  }
 }
