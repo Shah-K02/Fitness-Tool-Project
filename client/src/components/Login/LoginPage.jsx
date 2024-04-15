@@ -65,7 +65,9 @@ const LoginPage = () => {
           password: userCredentials.signUpPassword,
         }
       );
+      localStorage.setItem("token", response.data.token);
       console.log(response.data);
+      navigate("/user-home");
       displayError(null);
     } catch (error) {
       displayError("Failed to sign up. Please try again.");
@@ -86,9 +88,6 @@ const LoginPage = () => {
       );
       console.log(response.data);
       localStorage.setItem("token", response.data.token);
-      // Handle success
-      navigate("/user-home");
-      displayError(null);
     } catch (error) {
       displayError(
         "Failed to log in. Please check your credentials and try again."
