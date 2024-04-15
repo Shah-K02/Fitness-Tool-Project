@@ -45,7 +45,8 @@ const SearchExercises = ({ onSearch }) => {
               height: "56px",
               fontSize: { lg: "20px", xs: "14px" },
               "&:hover": {
-                bgcolor: "#36454f",
+                bgcolor: "#ffa500",
+                color: "#ffff",
               },
             }}
             onClick={() => onSearch(searchTerm)}

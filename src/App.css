@@ -326,3 +326,9 @@ nav {
     margin-bottom: 20px; /* Extra spacing between sections */
   }
 }
+
+#root {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  min-height: 100vh; /* Full height of the viewport */
+}
