@@ -7,7 +7,7 @@ import SearchResultsList from "./SearchBar/SearchResultsList";
 const UserHomePage = () => {
   const [results, setResults] = useState([]);
   return (
-    <div>
+    <div className="content">
       <h1>Home Page</h1>
       <div className="search-bar-container">
         <SearchBar setResults={setResults} />

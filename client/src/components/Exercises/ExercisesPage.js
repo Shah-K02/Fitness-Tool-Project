@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Box, Grid } from "@mui/material";
+import axios from "axios";
 import SearchExercises from "./SearchExercises";
 import ExerciseCard from "./ExerciseCard";
-import axios from "axios";
 
 const ExercisesPage = () => {
   const [exercises, setExercises] = useState([]);
-
   const handleSearch = async (searchTerm) => {
     try {
       const endpoint = `/api/exercises/name/${encodeURIComponent(searchTerm)}`;
