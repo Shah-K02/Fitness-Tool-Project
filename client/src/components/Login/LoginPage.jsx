@@ -1,10 +1,4 @@
 import React, { useState, useEffect } from "react";
-import {
-  FaGooglePlusG,
-  FaFacebookF,
-  FaGithub,
-  FaLinkedinIn,
-} from "react-icons/fa";
 import { LiaTimesSolid } from "react-icons/lia";
 import "./LoginPage.css";
 import axios from "axios";
@@ -119,21 +113,6 @@ const LoginPage = () => {
         <div className="form-container sign-up-container">
           <form id="signup-form" onSubmit={handleSignup}>
             <h1>Create Account</h1>
-            <div className="social-icons">
-              <a href="#" className="icon">
-                <FaGooglePlusG />
-              </a>
-              <a href="#" className="icon">
-                <FaFacebookF />
-              </a>
-              <a href="#" className="icon">
-                <FaGithub />
-              </a>
-              <a href="#" className="icon">
-                <FaLinkedinIn />
-              </a>
-            </div>
-            <span>or use your email for registration</span>
             <input
               type="email"
               id="email"
@@ -170,22 +149,7 @@ const LoginPage = () => {
         {/* Sign In Form */}
         <div className="form-container sign-in-container">
           <form onSubmit={handleLogin}>
-            <h1>Sign In</h1>
-            <div className="social-icons">
-              <a href="#" className="icon">
-                <FaGooglePlusG />
-              </a>
-              <a href="#" className="icon">
-                <FaFacebookF />
-              </a>
-              <a href="#" className="icon">
-                <FaGithub />
-              </a>
-              <a href="#" className="icon">
-                <FaLinkedinIn />
-              </a>
-            </div>
-            <span>or use your email password</span>
+            <h1>Sign in</h1>
             <input
               type="email"
               name="signInEmail"
