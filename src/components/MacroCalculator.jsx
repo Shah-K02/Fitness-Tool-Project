@@ -213,7 +213,7 @@ const MacroCalculator = () => {
             </select>
           </label>
           <br />
-          <label>Goal:</label>
+          <label htmlFor="Goal">Goal:</label>
           <br />
           <label>
             <input
@@ -275,7 +275,7 @@ const MacroCalculator = () => {
         className="macro-chart-container"
         style={{ width: 400, height: 400 }}
       >
-        <canvas id="macroChart"></canvas>
+        <canvas id="macroChart" data-testid="macroChart"></canvas>
       </div>
     </div>
   );
