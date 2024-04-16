@@ -15,9 +15,12 @@
   --divider-color: var(--color-light-grey);
   --highlight-background: var(--color-orange);
 }
-
+h1 {
+  color: var(--color-black);
+  text-align: center;
+}
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Bebas Neue", sans-serif;
   color: var(--text-color);
 }
 
@@ -35,14 +38,42 @@ body {
   border-radius: 8px; /* Rounded corners for a modern look */
 }
 
-.header h2,
 .calories-info h2 {
   text-align: center;
   margin: 10px 0px; /* Adjusted for proper spacing */
   letter-spacing: 1.2px;
   color: var(--color-orange); /* Orange color for highlights */
 }
-
+.food-info {
+  display: flex;
+  justify-content: space-between; /* Proper alignment */
+  margin: 10px 20px; /* Adjusted for proper spacing */
+  padding: 10px;
+  text-align: center;
+  box-shadow: var(--background-color) 10px 10px 0px; /* Red shadow for contrast */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  strong {
+    color: var(--color-black);
+    text-align: left;
+    text-transform: capitalize;
+  }
+  p {
+    padding: 10px;
+    color: var(--color-bright-red);
+    text-transform: lowercase;
+  }
+}
+.log-food-button2 {
+  width: 15%;
+  margin-top: 40px;
+  background-color: var(--color-bright-red);
+  color: var(--color-white);
+  border-radius: 100px;
+}
+.log-food-button2:hover {
+  background-color: var(--color-orange);
+  color: var(--color-black);
+}
 p {
   margin: 10px 0; /* Increased margin for better readability */
   color: var(--secondary-text-color); /* Light grey for secondary text */
@@ -55,6 +86,7 @@ p {
 }
 
 .bold {
+  color: var(--color-white);
   font-weight: bold; /* Use bold for emphasis */
 }
 
