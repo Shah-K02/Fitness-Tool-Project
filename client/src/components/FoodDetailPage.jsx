@@ -1,5 +1,5 @@
 // FoodDetailPage.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import "./FoodDetailPage.css";
 import BackButton from "./BackButton";
@@ -12,9 +12,10 @@ const FoodDetailPage = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  console.log(foodDetails);
+  console.log("foodDetails", foodDetails);
 
   useEffect(() => {
+    console.log("Effect running due to id change:", id);
     const fetchFoodDetailsAndUserInfo = async () => {
       setIsLoading(true);
       try {
@@ -35,6 +36,7 @@ const FoodDetailPage = () => {
           );
           setUserInfo(userInfoResponse.data);
         }
+        setIsLoading(false);
       } catch (error) {
         setError(error.response ? error.response.data.message : error.message);
       } finally {
@@ -48,12 +50,16 @@ const FoodDetailPage = () => {
   const energyNutrient = foodDetails?.foodNutrients.find(
     (nutrientItem) => nutrientItem.nutrient.name === "Energy"
   );
-  const nutrientValues = {
-    protein: 0,
-    carbs: 0,
-    fats: 0,
-    calories: 0,
-  };
+  const nutrientValues = useMemo(() => {
+    return {
+      protein: 0,
+      carbs: 0,
+      fats: 0,
+      calories:
+        foodDetails?.foodNutrients.find((n) => n.nutrient.name === "Energy")
+          ?.amount || 0,
+    };
+  }, [foodDetails]);
 
   if (foodDetails) {
     foodDetails.foodNutrients.forEach((nutrient) => {
@@ -75,6 +81,7 @@ const FoodDetailPage = () => {
       }
     });
   }
+
   const logFood = async () => {
     if (!userInfo) {
       alert("Please log in to log food");
@@ -100,7 +107,7 @@ const FoodDetailPage = () => {
       await axios.post("/api/log/food", logDetails, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // Authorization header
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
@@ -119,30 +126,48 @@ const FoodDetailPage = () => {
     <div>
       <BackButton className="back-button" backText=" Back" />
 
-      <h1>{foodDetails.description}</h1>
-      <p>
-        <strong>Food Category:</strong>{" "}
-        {foodDetails.wweiaFoodCategory.wweiaFoodCategoryDescription}
-      </p>
-      <p>
-        <strong>Serving Size:</strong>{" "}
-        {foodDetails.foodPortions[0].portionDescription}
-      </p>
-      <div>
-        <NutrientRing
-          values={{
-            protein: nutrientValues.protein,
-            carbs: nutrientValues.carbs,
-            fats: nutrientValues.fats,
-          }}
-          size={200}
-          strokeWidth={15}
-          calories={energyNutrient ? energyNutrient.amount : 0} // Pass the calories to the NutrientRing
-        />
+      <h1>{foodDetails?.description || "N/A"}</h1>
+      <NutrientRing
+        values={{
+          protein: nutrientValues.protein,
+          carbs: nutrientValues.carbs,
+          fats: nutrientValues.fats,
+        }}
+        size={200}
+        strokeWidth={15}
+        calories={energyNutrient ? energyNutrient.amount : 0} // Pass the calories to the NutrientRing
+      />
+      <br />
+      <div className="food-info">
+        <p>
+          <strong>Food Category:</strong>
+          <br />{" "}
+          {foodDetails?.wweiaFoodCategory?.wweiaFoodCategoryDescription ||
+            foodDetails?.brandedFoodCategory ||
+            "N/A"}
+        </p>
+        <p>
+          <strong>Brand Name:</strong> <br /> {foodDetails?.brandName ?? "N/A"}
+        </p>
+        <p>
+          <strong>Food Description:</strong> <br />
+          {foodDetails?.description ?? "N/A"}
+        </p>
+        <p>
+          <strong>Serving Size:</strong>
+          <br />{" "}
+          {foodDetails?.servingSize
+            ? `${foodDetails.servingSize} ${
+                foodDetails?.servingSizeUnit ?? ""
+              }`.trim()
+            : foodDetails?.foodPortions?.[0]?.portionDescription ?? "N/A"}
+        </p>
+
+        <button onClick={logFood} className="log-food-button2">
+          Log This Food
+        </button>
       </div>
-      <button onClick={logFood} className="log-food-button">
-        Log This Food
-      </button>
+      <br />
       <div className="label">
         <header>
           <h2 className="bold">Nutrients:</h2>
@@ -150,8 +175,7 @@ const FoodDetailPage = () => {
           <p className="bold">
             <strong>Serving Size:</strong>{" "}
             <span className="right">
-              {foodDetails.foodPortions[0].portionDescription}{" "}
-              {foodDetails.servingSizeUnit}
+              {foodDetails?.servingSize ?? "N/A"} {foodDetails.servingSizeUnit}
             </span>
           </p>
         </header>

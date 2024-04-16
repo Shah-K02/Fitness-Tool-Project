@@ -6,13 +6,14 @@ import BackButton from "./BackButton";
 import LogEntry from "./LogEntry";
 import axios from "axios";
 
-function FoodLogPage({ userId }) {
+function FoodLogPage() {
   const [currentDay, setCurrentDay] = useState(new Date());
   const [foodLogEntries, setFoodLogEntries] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
   const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedHour, setSelectedHour] = useState(null);
-
+  const [error, setError] = useState(null);
   // Function to format hour in 12-hour format with AM/PM
   const formatHour = (hour) => {
     const suffix = hour >= 12 ? "PM" : "AM";
@@ -34,25 +35,30 @@ function FoodLogPage({ userId }) {
   // useEffect hook to fetch food logs
   useEffect(() => {
     const fetchLogs = async () => {
+      setIsLoading(true);
       const token = localStorage.getItem("token");
       const formattedDate = currentDay.toISOString().split("T")[0]; // YYYY-MM-DD format
       const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/api/logs/${formattedDate}`;
       try {
+        console.log(`Fetching logs for date: ${formattedDate}`); // Debugging
         const response = await axios.get(apiUrl, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setFoodLogEntries(response.data);
+        if (response.data) {
+          setFoodLogEntries(response.data);
+          console.log("Logs received:", response.data); // Debugging
+        } else {
+          throw new Error("No logs found");
+        }
       } catch (error) {
-        console.error(
-          "Error fetching food logs:",
-          error.response ? error.response.data : error.message
-        );
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
-    if (userId) {
-      fetchLogs();
-    }
-  }, [currentDay, userId]);
+
+    fetchLogs();
+  }, [currentDay]); // Dependency array to control effect triggering
 
   const dateRange = generateDateRange();
 
@@ -64,6 +70,13 @@ function FoodLogPage({ userId }) {
     }
     setSelectedHour(hour);
   };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div className="food-log-page">
