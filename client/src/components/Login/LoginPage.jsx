@@ -103,8 +103,10 @@ const LoginPage = () => {
         id="container"
       >
         {error && errorVisible && (
-          <div className="error-message error-visible">
-            {" "}
+          <div
+            className="error-message error-visible"
+            data-testid="error-message"
+          >
             {error}
             <button onClick={dismissError} className="dismiss-error">
               <LiaTimesSolid />
@@ -117,35 +119,40 @@ const LoginPage = () => {
             <h1>Create Account</h1>
             <input
               type="email"
-              id="email"
+              id="email-signup"
               name="signUpEmail"
               placeholder="Email"
               required
               aria-label="Email"
               onChange={handleInputChange}
               value={userCredentials.signUpEmail}
+              data-testid="signup-email"
             />
             <input
               type="password"
-              id="password"
+              id="password-signup"
               name="signUpPassword"
               placeholder="Password"
               required
               aria-label="Password"
               onChange={handleInputChange}
               value={userCredentials.signUpPassword}
+              data-testid="signup-password"
             />
             <input
               type="password"
-              id="confirmPassword"
+              id="confirm-password"
               name="confirmPassword"
               placeholder="Confirm Password"
               required
               aria-label="Confirm Password"
               onChange={handleInputChange}
               value={userCredentials.confirmPassword}
+              data-testid="signup-confirm-password"
             />
-            <button type="submit">Sign Up</button>
+            <button type="submit" data-testid="signup-submit">
+              Sign Up
+            </button>
           </form>
         </div>
         {/* Sign In Form */}
@@ -154,43 +161,61 @@ const LoginPage = () => {
             <h1>Sign in</h1>
             <input
               type="email"
+              id="email-signin"
               name="signInEmail"
               placeholder="Email"
               required
               aria-label="Email"
               onChange={handleInputChange}
               value={userCredentials.signInEmail}
+              data-testid="signin-email"
             />
             <input
               type="password"
+              id="password-signin"
               name="signInPassword"
               placeholder="Password"
               required
               aria-label="Password"
               onChange={handleInputChange}
               value={userCredentials.signInPassword}
+              data-testid="signin-password"
             />
-            <a href="#" onClick={preventDefault}>
+            <a
+              href="#"
+              onClick={preventDefault}
+              data-testid="forgot-password-link"
+            >
               Forgot Your Password?
             </a>
-            <button type="submit">Sign In</button>
+            <button type="submit" data-testid="signin-submit">
+              Sign In
+            </button>
           </form>
         </div>
         <div className="toggle-container">
           <div className="toggle">
-            <div className="toggle-panel toggle-left" onClick={toggleLogin}>
+            <div
+              className="toggle-panel toggle-left"
+              onClick={toggleLogin}
+              data-testid="toggle-signin"
+            >
               <h1>Welcome Back!</h1>
               <p>
                 To keep connected with us please login with your personal info
               </p>
-              <button className="ghost" id="signIn">
+              <button className="ghost" id="signIn" data-testid="button-signin">
                 Sign In
               </button>
             </div>
-            <div className="toggle-panel toggle-right" onClick={toggleSignUp}>
+            <div
+              className="toggle-panel toggle-right"
+              onClick={toggleSignUp}
+              data-testid="toggle-signup"
+            >
               <h1>Hello, Friend!</h1>
               <p>Enter your personal details and start journey with us</p>
-              <button className="ghost" id="signUp">
+              <button className="ghost" id="signUp" data-testid="button-signup">
                 Sign Up
               </button>
             </div>
