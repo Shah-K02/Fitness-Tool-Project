@@ -146,8 +146,9 @@ const UserInfoPage = () => {
       <h1 className="user-info-title">Edit Profile</h1>
       <form className="user-info-form" onSubmit={handleSubmit}>
         <div className="form-field">
-          <label>Name:</label>
+          <label htmlFor="name">Name:</label>
           <input
+            id="name"
             type="text"
             name="name"
             value={userInfo.name || ""}
@@ -155,8 +156,9 @@ const UserInfoPage = () => {
           />
         </div>
         <div className="form-field">
-          <label>Email:</label>
+          <label htmlFor="email">Email:</label>
           <input
+            id="email"
             type="email"
             name="email"
             value={userInfo.email || ""}
@@ -164,8 +166,9 @@ const UserInfoPage = () => {
           />
         </div>
         <div className="form-field">
-          <label>Birthday:</label>
+          <label htmlFor="birthday">Birthday:</label>
           <input
+            id="birthday"
             type="date"
             name="birthday"
             value={userInfo.birthday || ""}
@@ -173,8 +176,13 @@ const UserInfoPage = () => {
           />
         </div>
         <div className="form-field">
-          <label>Gender:</label>
-          <select name="gender" value={userInfo.gender} onChange={handleChange}>
+          <label htmlFor="gender">Gender:</label>
+          <select
+            id="gender"
+            name="gender"
+            value={userInfo.gender}
+            onChange={handleChange}
+          >
             {genderOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -183,8 +191,9 @@ const UserInfoPage = () => {
           </select>
         </div>
         <div className="form-field">
-          <label>Height:</label>
+          <label htmlFor="height">Height:</label>
           <input
+            id="height"
             type="text"
             name="height"
             value={userInfo.height || ""}
@@ -192,8 +201,9 @@ const UserInfoPage = () => {
           />
         </div>
         <div className="form-field">
-          <label>Weight:</label>
+          <label htmlFor="weight">Weight:</label>
           <input
+            id="weight"
             type="text"
             name="weight"
             value={userInfo.weight || ""}
@@ -201,8 +211,9 @@ const UserInfoPage = () => {
           />
         </div>
         <div className="form-field">
-          <label>BMI:</label>
+          <label htmlFor="bmi">BMI:</label>
           <input
+            id="bmi"
             type="text"
             name="bmi"
             value={userInfo.bmi || ""}
@@ -210,8 +221,9 @@ const UserInfoPage = () => {
           />
         </div>
         <div className="form-field">
-          <label>Activity Level:</label>
+          <label htmlFor="activityLevel">Activity Level:</label>
           <select
+            id="activityLevel"
             name="activityLevel"
             value={userInfo.activityLevel}
             onChange={handleChange}

@@ -68,8 +68,9 @@ describe("LoginPage", () => {
   });
 
   test("successful signup navigates to user home and stores token", async () => {
-    axios.post.mockResolvedValue({ data: { token: "12345" } });
+    axios.post.mockResolvedValue({ data: { token: "12345" } }); // Mock the axios post request
     Object.defineProperty(window, "localStorage", {
+      // Mock the local storage
       value: {
         setItem: jest.fn(),
       },
