@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { LiaTimesSolid } from "react-icons/lia";
 import "./LoginPage.css";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
+import ErrorMessage from "../ErrorMessage";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isSignUpActive, setIsSignUpActive] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
+  const [errorTimestamp, setErrorTimestamp] = useState(null);
   const [userCredentials, setUserCredentials] = useState({
     signUpEmail: "",
     signUpPassword: "",
@@ -16,7 +17,6 @@ const LoginPage = () => {
     signInEmail: "",
     signInPassword: "",
   });
-  const [errorVisible, setErrorVisible] = useState(false);
 
   useEffect(() => {
     const state = location.state?.activeForm;
@@ -31,23 +31,11 @@ const LoginPage = () => {
     setUserCredentials({ ...userCredentials, [name]: value });
   };
 
-  const displayError = (message) => {
-    setError(message);
-    setErrorVisible(true); // Make the error message visible
-    setTimeout(() => {
-      setErrorVisible(false);
-    }, 5000); // Hide after 5 seconds
-  };
-
-  const dismissError = () => {
-    setError(null);
-    setErrorVisible(false); // Hide the error message
-  };
-
   const handleSignup = async (event) => {
     event.preventDefault();
     if (userCredentials.signUpPassword !== userCredentials.confirmPassword) {
-      displayError("Passwords do not match.");
+      setError("Passwords do not match.");
+      setErrorTimestamp(Date.now());
       return;
     }
 
@@ -62,9 +50,10 @@ const LoginPage = () => {
       localStorage.setItem("token", response.data.token);
       console.log(response.data);
       navigate("/user-home");
-      displayError(null);
+      setError(null);
     } catch (error) {
-      displayError("Failed to sign up. Please try again.");
+      setError("Failed to sign up. Please try again.");
+      setErrorTimestamp(Date.now());
       console.error("Sign Up Error:", error);
     }
   };
@@ -83,11 +72,13 @@ const LoginPage = () => {
       console.log(response.data);
       localStorage.setItem("token", response.data.token);
       navigate("/user-home");
-      displayError(null);
+      setError(null);
+      setErrorTimestamp(Date.now());
     } catch (error) {
-      displayError(
+      setError(
         "Failed to log in. Please check your credentials and try again."
       );
+      setErrorTimestamp(Date.now());
       console.error("Login Error:", error);
     }
   };
@@ -98,21 +89,15 @@ const LoginPage = () => {
 
   return (
     <div className="login-page">
+      <ErrorMessage
+        message={error}
+        timestamp={errorTimestamp}
+        data-testid="error-message"
+      />
       <div
         className={`login-container ${isSignUpActive ? "active" : ""}`}
         id="container"
       >
-        {error && errorVisible && (
-          <div
-            className="error-message error-visible"
-            data-testid="error-message"
-          >
-            {error}
-            <button onClick={dismissError} className="dismiss-error">
-              <LiaTimesSolid />
-            </button>
-          </div>
-        )}
         {/* Sign Up Form */}
         <div className="form-container sign-up-container">
           <form id="signup-form" onSubmit={handleSignup}>
