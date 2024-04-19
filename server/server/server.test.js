@@ -48,6 +48,4 @@ describe("API tests", () => {
     expect(response.statusCode).toBe(201);
     expect(response.body.message).toContain("User registered successfully");
   });
-
-  // Additional tests for /login etc.
 });

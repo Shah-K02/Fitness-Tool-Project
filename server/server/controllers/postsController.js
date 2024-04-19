@@ -1,5 +1,5 @@
-const path = require("path");
 const Post = require("../models/postModel");
+const CommentModel = require("../models/commentModel");
 const db = require("../../config/db");
 
 exports.createPost = async (req, res) => {
@@ -35,8 +35,8 @@ exports.createPost = async (req, res) => {
 // Fetch all posts
 exports.getAllPosts = async (req, res) => {
   try {
-    const [posts] = await db.query("SELECT * FROM posts");
-
+    const posts = (await Post.findAll()) || [];
+    console.log(posts); // Check the content of posts
     res.status(200).json({
       status: "success",
       results: posts.length,
@@ -95,6 +95,29 @@ exports.deletePost = async (req, res) => {
       status: "fail",
       message: error.message,
     });
+  }
+};
+
+exports.createComment = async (req, res) => {
+  try {
+    const { text } = req.body;
+    const postId = req.params.postId;
+    const userId = req.userId;
+
+    const comment = await CommentModel.create(postId, userId, text);
+    res.status(201).json({ status: "success", data: { comment } });
+  } catch (error) {
+    res.status(400).json({ status: "fail", message: error.message });
+  }
+};
+
+exports.getCommentsByPostId = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const comments = await CommentModel.findByPostId(postId);
+    res.status(200).json({ status: "success", data: { comments } });
+  } catch (error) {
+    res.status(404).json({ status: "fail", message: error.message });
   }
 };
 

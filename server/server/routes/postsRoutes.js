@@ -1,4 +1,3 @@
-// postRoutes.js
 const express = require("express");
 const multer = require("multer");
 const postsController = require("../controllers/postsController");
@@ -11,12 +10,12 @@ const storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + "-" + file.originalname);
+    const date = new Date().toISOString().replace(/:/g, "-"); // Replacing colons
+    cb(null, date + "-" + file.originalname);
   },
 });
 
 const fileFilter = (req, file, cb) => {
-  // Accept images only
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
@@ -32,21 +31,23 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
-// Creating a post with an image
 router.post(
   "/",
   authenticate,
   upload.single("image"),
   postsController.createPost
-);
-// Fetching all posts
-router.get("/post", authenticate, postsController.getAllPosts);
-
-// Additional routes can be added here for updating, deleting, etc.
-// Example: Fetching a single post
-router.get("/post/:postId", authenticate, postsController.getPostById);
-
-// Example: Deleting a post
-router.delete("/post/:postId", authenticate, postsController.deletePost);
+); // Create a post
+router.get("/", authenticate, (req, res) => {
+  console.log("Fetching posts");
+  postsController.getAllPosts(req, res);
+}); // Fetch all posts
+router.get("/:postId", authenticate, postsController.getPostById); // Fetch a single post by ID
+router.delete("/:postId", authenticate, postsController.deletePost); // Delete a post by ID
+router.post("/:postId/comment", authenticate, postsController.createComment); // Create a comment
+router.get(
+  "/:postId/comments",
+  authenticate,
+  postsController.getCommentsByPostId
+); // Fetch all comments for a post
 
 module.exports = router;

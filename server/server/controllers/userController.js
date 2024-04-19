@@ -74,13 +74,11 @@ exports.registerUser = (req, res) => {
                   });
 
                   connection.release();
-                  res
-                    .status(201)
-                    .send({
-                      message: "User registered successfully!",
-                      token,
-                      userId,
-                    });
+                  res.status(201).send({
+                    message: "User registered successfully!",
+                    token,
+                    userId,
+                  });
                 });
               }
             );
