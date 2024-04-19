@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Chart from "chart.js/auto";
 import "./Macro.css";
 import BackButton from "./BackButton";
+import ErrorMessage from "./ErrorMessage";
 
 const MacroCalculator = () => {
   // Initial state for the form
@@ -21,6 +22,8 @@ const MacroCalculator = () => {
   });
   // State for the chart data
   const [chartData, setChartData] = useState([0, 0, 0]);
+  const [error, setError] = useState(null);
+  const [errorTimestamp, setErrorTimestamp] = useState(null);
 
   // Update form data
   const handleChange = (e) => {
@@ -31,9 +34,20 @@ const MacroCalculator = () => {
     }));
   };
 
+  const validateInputs = () => {
+    const { height, weight, age } = formData;
+    if (height <= 0 || weight <= 0 || age <= 0) {
+      setError("All values must be greater than 0.");
+      setErrorTimestamp(Date.now());
+      return false;
+    }
+    return true;
+  };
+
   // Submit form
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validateInputs()) return;
     calculateResults();
     calculateMacros();
   };
@@ -124,6 +138,8 @@ const MacroCalculator = () => {
       calories: caloriesNeeded.toFixed(0),
     });
     setChartData([proteinGrams, carbsGrams, fatsGrams]);
+    setError("");
+    setErrorTimestamp(Date.now());
   };
 
   // Initialize or update the chart
@@ -166,6 +182,7 @@ const MacroCalculator = () => {
     <div className="macro-container">
       <BackButton className="back-button" backText=" Back" />
       <h1>Macro Calculator</h1>
+      <ErrorMessage message={error} timestamp={errorTimestamp} />
       <div className="macro-form-container">
         <form onSubmit={handleSubmit}>
           <label>

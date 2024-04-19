@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./UserInfoPage.css";
 import BackButton from "./BackButton";
+import ErrorMessage from "./ErrorMessage";
 
 // Define gender options
 const genderOptions = [
@@ -44,6 +45,7 @@ const UserInfoPage = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [errorTimestamp, setErrorTimestamp] = useState(null);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -67,6 +69,7 @@ const UserInfoPage = () => {
         setUserInfo(sanitizedData);
       } catch (error) {
         setError(error.message);
+        setErrorTimestamp(Date.now());
       } finally {
         setIsLoading(false);
       }
@@ -89,6 +92,7 @@ const UserInfoPage = () => {
     // Validate the email
     if (!userInfo.email.includes("@")) {
       setError("Please enter a valid email address.");
+      setErrorTimestamp(Date.now());
       return;
     }
 
@@ -108,6 +112,7 @@ const UserInfoPage = () => {
       !validActivityLevels.includes(userInfo.activityLevel)
     ) {
       setError("Please select both your gender and activity level.");
+      setErrorTimestamp(Date.now());
       return;
     }
     console.log(
@@ -132,6 +137,7 @@ const UserInfoPage = () => {
       alert("Profile updated successfully!");
     } catch (error) {
       setError(error.message);
+      setErrorTimestamp(Date.now());
     } finally {
       setIsLoading(false);
     }
@@ -143,6 +149,7 @@ const UserInfoPage = () => {
   return (
     <div className="user-info-page">
       <BackButton className="back-button" backText=" Back" />
+      <ErrorMessage message={error} timestamp={errorTimestamp} />
       <h1 className="user-info-title">Edit Profile</h1>
       <form className="user-info-form" onSubmit={handleSubmit}>
         <div className="form-field">

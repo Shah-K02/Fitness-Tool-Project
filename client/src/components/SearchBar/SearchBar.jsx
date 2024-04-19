@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import SearchResultList from "./SearchResultsList";
 import "./SearchBar.css";
+import ErrorMessage from "../ErrorMessage";
 
 function SearchBar() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [error, setError] = useState(null);
+  const [errorTimestamp, setErrorTimestamp] = useState(null);
 
   const handleSearch = async (event) => {
     event.preventDefault();
@@ -23,20 +26,21 @@ function SearchBar() {
       );
 
       if (!response.ok) {
-        throw new Error("Search failed");
+        throw new setError("Search failed");
       }
 
       const data = await response.json();
-      console.log(data);
       setResults(data.foods);
     } catch (error) {
-      console.error("Error during the search:", error);
+      setError("Error during the search:", error);
+      setErrorTimestamp(Date.now());
       setResults([]); // Clear the results
     }
   };
 
   return (
     <div className="food-search-container">
+      <ErrorMessage message={error} timestamp={errorTimestamp} />
       <form onSubmit={handleSearch} className="search-form">
         <input
           id="search-input"

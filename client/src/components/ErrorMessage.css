@@ -1,0 +1,39 @@
+.error-message {
+  position: fixed; /* Fix position relative to the viewport */
+  top: 60px; /* Distance from the top of the viewport */
+  right: 20px; /* Distance from the right of the viewport */
+  z-index: 2000; /* Ensure it's above other content */
+  color: #ff3860;
+  background-color: #ffebe6;
+  border: 1px solid #ff3860;
+  padding: 15px;
+  padding-top: 20px;
+  border-radius: 8px; /* Softer corners */
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  max-width: 300px; /* Ensure it doesn't span too wide */
+  word-wrap: break-word; /* Ensure text wraps within the container */
+  opacity: 0; /* Start invisible for animation */
+  transition: opacity 0.5s ease-in-out; /* Smooth transition for the opacity */
+}
+
+.error-visible {
+  opacity: 1; /* Make it fully visible */
+}
+.error-message button {
+  position: absolute;
+  right: 10px;
+  top: 0.1px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit; /* Inherit the color from the .error-message for consistency */
+  padding: 0;
+  font-size: 15px; /* Slightly larger font for better clickability */
+}
+
+.dismiss-error:hover,
+.dismiss-error:focus {
+  color: #f00;
+  outline: none; /* Remove focus outline to keep the UI clean */
+}
