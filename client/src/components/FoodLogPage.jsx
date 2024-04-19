@@ -75,7 +75,7 @@ function FoodLogPage() {
     return <p>Loading...</p>;
   }
   if (error) {
-    return <p>{error}</p>;
+    return <p>Error: {error}</p>;
   }
 
   return (

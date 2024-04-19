@@ -8,10 +8,15 @@ const PostItem = ({ post }) => {
   const axios = useAxios();
 
   const fetchComments = async () => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_BASE_URL}/api/posts/${post.id}/comments`
-    );
-    setComments(response.data.data.comments);
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/api/posts/${post.id}/comments`
+      );
+      setComments(response.data.data.comments || []); // Ensure comments is always an array
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      setComments([]); // Set comments to an empty array in case of an error
+    }
   };
 
   const handleCommentSubmit = async (e) => {
@@ -30,7 +35,7 @@ const PostItem = ({ post }) => {
 
   useEffect(() => {
     fetchComments();
-  }, []);
+  }, [post.id]); // Added dependency on post.id to refetch comments when the post changes
 
   return (
     <div className="post-item">
@@ -60,7 +65,7 @@ const Posts = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, []); // Dependency array left empty to only run once on mount
 
   const fetchPosts = async () => {
     try {
@@ -71,9 +76,10 @@ const Posts = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setPosts(response.data.posts);
+      setPosts(response.data.posts || []); // Ensure posts is always an array
     } catch (error) {
       console.error("Error fetching posts:", error);
+      setPosts([]); // Set posts to an empty array in case of an error
     }
   };
 
@@ -91,7 +97,11 @@ const Posts = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      setPosts([response.data.post, ...posts]);
+      if (response.data && response.data.post && response.data.post.imageUrl) {
+        setPosts([response.data.post, ...posts]);
+      } else {
+        console.error("Error uploading post:", response.data);
+      }
       setFile(null);
       setDescription("");
     } catch (error) {
@@ -104,13 +114,9 @@ const Posts = () => {
       await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/posts/like`, {
         postId,
       });
-      // Ideally, just increment the like count locally instead of refetching all posts
-      const updatedPosts = posts.map((post) => {
-        if (post.id === postId) {
-          return { ...post, likes: post.likes + 1 };
-        }
-        return post;
-      });
+      const updatedPosts = posts.map((post) =>
+        post.id === postId ? { ...post, likes: post.likes + 1 } : post
+      );
       setPosts(updatedPosts);
     } catch (error) {
       console.error("Error liking post:", error);
