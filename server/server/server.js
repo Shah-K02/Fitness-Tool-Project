@@ -17,6 +17,7 @@ app.use(
   cors({
     origin: "http://localhost:3000",
     credentials: true, // This allows sending cookies and credentials headers
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   })
 );
 app.use(cookieParser());
@@ -28,6 +29,7 @@ app.use("/api", foodRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api", foodLogRoutes);
 app.use("/api/exercises", exerciseRoutes);
+app.use("/uploads", express.static("uploads"));
 
 app.listen(8081, () => {
   console.log("Server is running on port 8081");

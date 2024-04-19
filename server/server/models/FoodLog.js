@@ -19,7 +19,7 @@ class FoodLog {
     `;
 
     try {
-      const result = await db.query(query, [
+      const [result] = await db.query(query, [
         food_id,
         description,
         log_time,
@@ -29,7 +29,7 @@ class FoodLog {
         calories,
         user_id,
       ]);
-      console.log(result);
+      console.log("Create food log result:", result);
       return result;
     } catch (error) {
       console.error("Failed to create food log:", error);
@@ -43,17 +43,14 @@ class FoodLog {
       WHERE user_id = ? AND DATE(log_time) = ?
     `;
 
-    return new Promise((resolve, reject) => {
-      db.query(query, [userId, date], (error, results) => {
-        if (error) {
-          console.error("Failed to execute query:", error);
-          reject(error);
-        } else {
-          console.log("Query result:", results);
-          resolve(results);
-        }
-      });
-    });
+    try {
+      const [results] = await db.query(query, [userId, date]);
+      console.log("FindByDate query results:", results);
+      return results;
+    } catch (error) {
+      console.error("Failed to fetch food logs by date:", error);
+      throw error; // Rethrow the error to be caught in the controller
+    }
   }
 }
 

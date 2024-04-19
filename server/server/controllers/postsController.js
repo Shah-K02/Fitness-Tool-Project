@@ -36,7 +36,7 @@ exports.createPost = async (req, res) => {
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = (await Post.findAll()) || [];
-    console.log(posts); // Check the content of posts
+    console.log("Posts fetched:", posts); // Check the content of posts
     res.status(200).json({
       status: "success",
       results: posts.length,
@@ -45,6 +45,7 @@ exports.getAllPosts = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log("Error fetching posts:", error);
     res.status(404).json({
       status: "fail",
       message: error.message,

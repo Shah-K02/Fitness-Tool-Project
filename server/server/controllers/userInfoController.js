@@ -1,22 +1,16 @@
-const mysql = require("mysql");
 const db = require("../../config/db");
-// Convert birthday to MySQL format
 
-exports.fetchUserInfo = (req, res) => {
+exports.fetchUserInfo = async (req, res) => {
   const userId = req.userId;
   const query =
     "SELECT name, email, birthday, gender, height, weight, bmi, activityLevel FROM users_info WHERE user_id = ?";
-  // Fetch user info from the database
-  db.query(query, [userId], (err, result) => {
-    if (err) {
-      console.error("Failed to fetch user info:", err);
-      return res.status(500).send("Failed to fetch user info");
-    }
-    if (result.length > 0) {
-      return res.json(result[0]);
+
+  try {
+    const [results] = await db.query(query, [userId]);
+    if (results.length > 0) {
+      return res.json(results[0]);
     } else {
       return res.json({
-        // Return an empty object if no user info is found
         name: "",
         email: "",
         birthday: "",
@@ -27,14 +21,18 @@ exports.fetchUserInfo = (req, res) => {
         activityLevel: "",
       });
     }
-  });
+  } catch (err) {
+    console.error("Failed to fetch user info:", err);
+    return res.status(500).send("Failed to fetch user info");
+  }
 };
 
-exports.updateUserInfo = (req, res) => {
-  let { name, email, birthday, gender, height, weight, bmi, activityLevel } =
+// Update user info using promises
+exports.updateUserInfo = async (req, res) => {
+  const { name, email, birthday, gender, height, weight, bmi, activityLevel } =
     req.body;
   const userId = req.userId;
-  // Validate the gender and activity level values
+
   const validGenders = ["male", "female", "other"];
   const validActivityLevels = [
     "sedentary",
@@ -55,18 +53,28 @@ exports.updateUserInfo = (req, res) => {
       .status(400)
       .send("Invalid activity level value. Please select a valid option.");
   }
-  // Update the user info in the database
+
   const query =
     "UPDATE users_info SET name = ?, email = ?, birthday = ?, gender = ?, height = ?, weight = ?, bmi = ?, activityLevel = ? WHERE user_id = ?";
-  db.query(
-    query,
-    [name, email, birthday, gender, height, weight, bmi, activityLevel, userId],
-    (err, result) => {
-      if (err) {
-        console.error("Failed to update user info:", err);
-        return res.status(500).send("Failed to update user info");
-      }
-      return res.send("Profile updated successfully");
+
+  try {
+    const [result] = await db.query(query, [
+      name,
+      email,
+      birthday,
+      gender,
+      height,
+      weight,
+      bmi,
+      activityLevel,
+      userId,
+    ]);
+    if (result.affectedRows === 0) {
+      return res.status(404).send("User not found");
     }
-  );
+    return res.send("Profile updated successfully");
+  } catch (err) {
+    console.error("Failed to update user info:", err);
+    return res.status(500).send("Failed to update user info");
+  }
 };
