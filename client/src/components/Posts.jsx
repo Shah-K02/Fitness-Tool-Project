@@ -39,7 +39,10 @@ const PostItem = ({ post }) => {
 
   return (
     <div className="post-item">
-      <img src={post.imageUrl} alt="Post" />
+      <img
+        src={`${process.env.REACT_APP_API_BASE_URL}/${post.image}`}
+        alt="Post"
+      />
       <p>{post.description}</p>
       <form onSubmit={handleCommentSubmit}>
         <input
@@ -76,7 +79,7 @@ const Posts = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setPosts(response.data.posts || []); // Ensure posts is always an array
+      setPosts(response.data.data.posts || []); // Ensure posts is always an array
     } catch (error) {
       console.error("Error fetching posts:", error);
       setPosts([]); // Set posts to an empty array in case of an error
