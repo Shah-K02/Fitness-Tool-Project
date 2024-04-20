@@ -37,6 +37,11 @@ exports.getAllPosts = async (req, res) => {
   try {
     const posts = (await Post.findAll()) || [];
     console.log("Posts fetched:", posts); // Check the content of posts
+    console.log("Sending posts data:", {
+      status: "success",
+      results: posts.length,
+      data: { posts },
+    });
     res.status(200).json({
       status: "success",
       results: posts.length,
