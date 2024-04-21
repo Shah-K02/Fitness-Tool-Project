@@ -5,9 +5,7 @@ class PostModel {
   // Fetch all posts
   static async findAll() {
     try {
-      console.log("Running query...");
       const [rows, fields] = await db.query("SELECT * FROM posts");
-      console.log("Query executed, rows:", rows);
       return rows;
     } catch (error) {
       console.error("Database query failed:", error);

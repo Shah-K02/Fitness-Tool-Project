@@ -36,12 +36,6 @@ exports.createPost = async (req, res) => {
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = (await Post.findAll()) || [];
-    console.log("Posts fetched:", posts); // Check the content of posts
-    console.log("Sending posts data:", {
-      status: "success",
-      results: posts.length,
-      data: { posts },
-    });
     res.status(200).json({
       status: "success",
       results: posts.length,
@@ -50,7 +44,6 @@ exports.getAllPosts = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log("Error fetching posts:", error);
     res.status(404).json({
       status: "fail",
       message: error.message,
@@ -127,4 +120,38 @@ exports.getCommentsByPostId = async (req, res) => {
   }
 };
 
-// Additional controller functions (e.g., updatePost) can be implemented here.
+// Like a post
+exports.likePost = async (req, res) => {
+  const postId = req.params.postId;
+  const userId = req.userId; // Assume this is extracted from some kind of authentication middleware
+
+  try {
+    // Attempt to insert a like, catching any errors (like duplicates)
+    const [result] = await db.query(
+      "INSERT INTO likes (post_id, user_id) VALUES (?, ?)",
+      [postId, userId]
+    );
+    res.status(201).json({ status: "success", message: "Liked successfully" });
+  } catch (error) {
+    if (error.code === "ER_DUP_ENTRY") {
+      res.status(409).json({ status: "fail", message: "Post already liked" });
+    } else {
+      res.status(500).json({ status: "fail", message: error.message });
+    }
+  }
+};
+
+// Get like count for a post
+exports.getLikeCount = async (req, res) => {
+  const postId = req.params.postId;
+
+  try {
+    const [likes] = await db.query(
+      "SELECT COUNT(*) AS likeCount FROM likes WHERE post_id = ?",
+      [postId]
+    );
+    res.status(200).json({ status: "success", data: likes[0] });
+  } catch (error) {
+    res.status(404).json({ status: "fail", message: error.message });
+  }
+};

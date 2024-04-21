@@ -29,7 +29,6 @@ class FoodLog {
         calories,
         user_id,
       ]);
-      console.log("Create food log result:", result);
       return result;
     } catch (error) {
       console.error("Failed to create food log:", error);
@@ -45,7 +44,6 @@ class FoodLog {
 
     try {
       const [results] = await db.query(query, [userId, date]);
-      console.log("FindByDate query results:", results);
       return results;
     } catch (error) {
       console.error("Failed to fetch food logs by date:", error);

@@ -39,11 +39,8 @@ exports.getLogsByDate = async (req, res) => {
     return res.status(400).send("Invalid date format. Please use YYYY-MM-DD.");
   }
 
-  console.log(`Fetching logs for user ${userId} and date ${date}`);
-
   try {
     const logs = await FoodLog.findByDate(userId, date);
-    console.log(`Found logs: ${logs.length}`);
     res.json(logs);
   } catch (error) {
     console.error("Error fetching food logs:", error);

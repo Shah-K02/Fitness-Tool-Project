@@ -38,7 +38,6 @@ router.post(
   postsController.createPost
 ); // Create a post
 router.get("/", authenticate, (req, res) => {
-  console.log("Fetching posts");
   postsController.getAllPosts(req, res);
 }); // Fetch all posts
 router.get("/:postId", authenticate, postsController.getPostById); // Fetch a single post by ID
@@ -49,5 +48,7 @@ router.get(
   authenticate,
   postsController.getCommentsByPostId
 ); // Fetch all comments for a post
+router.post("/:postId/like", authenticate, postsController.likePost); // Like a post
+router.get("/:postId/likes", authenticate, postsController.getLikeCount); // Get like count
 
 module.exports = router;
