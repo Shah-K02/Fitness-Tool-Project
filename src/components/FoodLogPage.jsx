@@ -40,13 +40,11 @@ function FoodLogPage() {
       const formattedDate = currentDay.toISOString().split("T")[0]; // YYYY-MM-DD format
       const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/api/logs/${formattedDate}`;
       try {
-        console.log(`Fetching logs for date: ${formattedDate}`); // Debugging
         const response = await axios.get(apiUrl, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data) {
           setFoodLogEntries(response.data);
-          console.log("Logs received:", response.data); // Debugging
         } else {
           throw new Error("No logs found");
         }

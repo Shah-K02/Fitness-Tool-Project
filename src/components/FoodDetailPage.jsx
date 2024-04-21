@@ -12,10 +12,8 @@ const FoodDetailPage = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  console.log("foodDetails", foodDetails);
 
   useEffect(() => {
-    console.log("Effect running due to id change:", id);
     const fetchFoodDetailsAndUserInfo = async () => {
       setIsLoading(true);
       try {

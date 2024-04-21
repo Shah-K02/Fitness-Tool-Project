@@ -1,0 +1,135 @@
+/* Overall layout for the post container */
+.post-container {
+  margin: auto;
+  padding: 1rem;
+  color: #333; /* Darker text color for better readability */
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Responsive grid */
+  gap: 1rem; /* Space between grid items */
+  background: #f5f5f5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* Style for the posts heading */
+.post-heading h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #36454f;
+}
+
+/* Style for the new post form */
+.new-post-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  align-items: center;
+  grid-column: 1 / -1; /* Makes the form span all columns */
+}
+
+.new-post-form input[type="file"],
+.new-post-form textarea {
+  width: 100%;
+  max-width: 500px; /* Ensures form elements do not exceed the post width */
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.new-post-form textarea {
+  height: 100px;
+  resize: vertical; /* Allows the textarea to be resized vertically */
+}
+
+.new-post-form button {
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  border: none;
+  background-color: #ffa500; /* Orange color */
+  color: #36454f;
+  cursor: pointer;
+}
+
+.new-post-form button:hover {
+  background-color: #ff8c00; /* Darker orange on hover */
+  transform: scale3d(1.05, 1.05, 1.05);
+}
+
+/* Style for individual posts */
+.post-item {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.post-item img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 1/1;
+  transition: transform 0.3s ease;
+}
+
+.post-item img:hover {
+  transform: scale(1.05);
+}
+
+.post-item p {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: #333;
+  text-overflow: ellipsis;
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.like-button {
+  height: 40px;
+  background-color: #ffa500;
+  color: #36454f;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto;
+  width: 80px;
+}
+
+.like-button:hover {
+  transform: scale3d(1.05, 1.05, 1.05);
+  background-color: #ff8c00;
+}
+
+.submit-comment-button {
+  background-color: #ffa500;
+  color: #36454f;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto;
+}
+
+.comment-input {
+  align-items: center;
+  display: flex;
+  width: 80%;
+  max-width: 500px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin: 10px auto;
+}
+
+.image-preview {
+  width: 50%;
+  display: block;
+  aspect-ratio: 1/1;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
