@@ -115,9 +115,6 @@ const UserInfoPage = () => {
       setErrorTimestamp(Date.now());
       return;
     }
-    console.log(
-      `Updating with gender: ${userInfo.gender}, activityLevel: ${userInfo.activityLevel}`
-    );
 
     setIsLoading(true);
     try {

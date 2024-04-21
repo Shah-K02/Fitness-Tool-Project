@@ -48,7 +48,6 @@ const LoginPage = () => {
         }
       );
       localStorage.setItem("token", response.data.token);
-      console.log(response.data);
       navigate("/user-home");
       setError(null);
     } catch (error) {
@@ -69,7 +68,6 @@ const LoginPage = () => {
           password: userCredentials.signInPassword,
         }
       );
-      console.log(response.data);
       localStorage.setItem("token", response.data.token);
       navigate("/user-home");
       setError(null);

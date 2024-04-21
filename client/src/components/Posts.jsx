@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import useAxios from "../helpers/useAxios";
 import "./Posts.css";
 
-const PostItem = ({ post }) => {
+const PostItem = ({ post, onLike }) => {
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(post.likes || 0);
+  const [showCommentInput, setShowCommentInput] = useState(false); // Added state to toggle comments visibility
   const axios = useAxios();
 
   const fetchComments = async () => {
@@ -28,31 +31,87 @@ const PostItem = ({ post }) => {
       );
       setComments([...comments, response.data.data.comment]);
       setCommentText("");
+      setShowCommentInput(false);
     } catch (error) {
       console.error("Error submitting comment:", error);
     }
   };
 
+  const checkIfLiked = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/api/posts/${post.id}/likes`
+      );
+      setLiked(response.data.data.liked);
+    } catch (error) {
+      console.error("Error fetching like status:", error);
+    }
+  };
+
+  const fetchLikeCount = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/api/posts/${post.id}/likes`
+      );
+      setLikeCount(response.data.data.likeCount);
+    } catch (error) {
+      console.error("Error fetching like count:", error);
+    }
+  };
+
+  const handleLike = async (postId) => {
+    if (!liked) {
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}/api/posts/${postId}/like`
+        );
+        setLiked(true);
+        setLikeCount(likeCount + 1);
+      } catch (error) {
+        console.error("Error liking post:", error);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchComments();
+    checkIfLiked();
+    fetchLikeCount();
   }, [post.id]); // Added dependency on post.id to refetch comments when the post changes
 
   return (
     <div className="post-item">
-      <img
-        src={`${process.env.REACT_APP_API_BASE_URL}/${post.image}`}
-        alt="Post"
-      />
-      <p>{post.description}</p>
-      <form onSubmit={handleCommentSubmit}>
-        <input
-          type="text"
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-          placeholder="Add a comment..."
+      <div>
+        <img
+          src={`${process.env.REACT_APP_API_BASE_URL}/${post.image}`}
+          alt="Post"
         />
-        <button type="submit">Comment</button>
-      </form>
+        <p>{post.description}</p>
+        <span>{likeCount} likes</span>
+        <button className="like-button" onClick={() => handleLike(post.id)}>
+          {liked ? "Unlike" : "Like"}
+        </button>
+      </div>
+      <button
+        className="like-button"
+        onClick={() => setShowCommentInput(!showCommentInput)}
+      >
+        Comment
+      </button>
+      {showCommentInput && (
+        <form onSubmit={handleCommentSubmit}>
+          <input
+            className="comment-input"
+            type="text"
+            value={commentText}
+            onChange={(e) => setCommentText(e.target.value)}
+            placeholder="Add a comment..."
+          />
+          <button className="submit-comment-button" type="submit">
+            Submit
+          </button>
+        </form>
+      )}
       {comments.map((comment) => (
         <div key={comment.id}>{comment.text}</div>
       ))}
@@ -63,6 +122,7 @@ const PostItem = ({ post }) => {
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [file, setFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(""); // Added state to preview image before uploading
   const [description, setDescription] = useState("");
   const axios = useAxios();
 
@@ -107,8 +167,21 @@ const Posts = () => {
       }
       setFile(null);
       setDescription("");
+      setImagePreview("");
     } catch (error) {
       console.error("Error uploading post:", error);
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -130,23 +203,24 @@ const Posts = () => {
     <div className="post-container">
       <h1>Posts</h1>
       <form onSubmit={handleSubmit} className="new-post-form">
-        <input
-          type="file"
-          onChange={(e) => setFile(e.target.files[0])}
-          required
-        />
+        {imagePreview && (
+          <img src={imagePreview} alt="Preview" className="image-preview" />
+        )}
+        <input type="file" onChange={handleImageChange} required />
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
+          placeholder="Add a description to your post..."
         />
-        <button type="submit">Post</button>
+        <button type="submit" disabled={!file}>
+          Post
+        </button>
       </form>
       {posts.length > 0 ? (
         posts.map((post) => (
           <React.Fragment key={post.id}>
-            <PostItem post={post} />
-            <button onClick={() => handleLike(post.id)}>Like</button>
+            <PostItem post={post} onLike={handleLike} />
           </React.Fragment>
         ))
       ) : (
