@@ -15,7 +15,12 @@ const ExerciseCard = ({ exercise }) => (
       <CardMedia
         component="img"
         loading="lazy"
-        sx={{ height: 240, objectFit: "cover" }}
+        sx={{
+          height: 240,
+          objectFit: "cover",
+          overflow: "hidden",
+          aspectRatio: "1/1",
+        }}
         image={exercise.gifUrl}
         alt={`Gif showing ${exercise.name}`}
       />
