@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import "./UserInfoPage.css";
 import BackButton from "./BackButton";
 import ErrorMessage from "./ErrorMessage";
+import useAxios from "../helpers/useAxios";
+import { useUser } from "../helpers/UserContext";
 
-// Define gender options
+// Define gender and activity level options
 const genderOptions = [
   { value: "male", label: "Male" },
   { value: "female", label: "Female" },
   { value: "other", label: "Other" },
 ];
-
-// Define activity level options
 const activityLevelOptions = [
   { value: "sedentary", label: "Sedentary: little or no exercise" },
   {
@@ -45,103 +45,93 @@ const UserInfoPage = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const axios = useAxios();
+  const { user } = useUser();
   const [errorTimestamp, setErrorTimestamp] = useState(null);
 
   useEffect(() => {
+    if (!user) {
+      setError("Please log in to view this page");
+      return;
+    }
+
     const fetchUserInfo = async () => {
+      console.log("Starting fetch for user info.");
       setIsLoading(true);
       try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/api/user/info`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the request headers
-            },
-          }
-        );
-        if (!response.ok) throw new Error("Failed to fetch user info");
-        const fetchedData = await response.json();
-        const sanitizedData = Object.keys(fetchedData).reduce((acc, key) => {
-          acc[key] = fetchedData[key] === null ? "" : fetchedData[key];
-          return acc;
-        }, {});
-        setUserInfo(sanitizedData);
+        const response = await axios.get("/api/user/info");
+        console.log("Data fetched successfully:", response.data);
+        setUserInfo({
+          ...response.data,
+          birthday: response.data.birthday
+            ? response.data.birthday.split("T")[0]
+            : "",
+        });
+        setIsLoading(false);
       } catch (error) {
-        setError(error.message);
-        setErrorTimestamp(Date.now());
-      } finally {
+        console.error("Error fetching data:", error);
+        setError(
+          error.response ? error.response.data.message : "Network error"
+        );
         setIsLoading(false);
       }
     };
 
     fetchUserInfo();
-  }, []);
+  }, [axios, user]); // Ensure 'user' and 'axios' are stable references
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserInfo((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+    setUserInfo((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validate the email
+    console.log("Submitting updated user info:", userInfo);
     if (!userInfo.email.includes("@")) {
       setError("Please enter a valid email address.");
       setErrorTimestamp(Date.now());
       return;
     }
-
-    // Validate the gender and activity level
-    const validGenders = ["male", "female", "other"];
-    const validActivityLevels = [
-      "sedentary",
-      "lightly_active",
-      "moderately_active",
-      "very_active",
-      "extra_active",
-    ];
-
-    // Validate gender and activityLevel selections
     if (
-      !validGenders.includes(userInfo.gender) ||
-      !validActivityLevels.includes(userInfo.activityLevel)
+      !["male", "female", "other"].includes(userInfo.gender) ||
+      ![
+        "sedentary",
+        "lightly_active",
+        "moderately_active",
+        "very_active",
+        "extra_active",
+      ].includes(userInfo.activityLevel)
     ) {
       setError("Please select both your gender and activity level.");
       setErrorTimestamp(Date.now());
       return;
     }
-
     setIsLoading(true);
     try {
-      const token = localStorage.getItem("token"); // Retrieve the auth token
-      const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/user/update`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the token in the request headers
-          },
-          body: JSON.stringify(userInfo),
-        }
-      );
-      if (!response.ok) throw new Error("Failed to update user info");
+      const updateResponse = await axios.post("/api/user/update", userInfo);
+      console.log("Profile updated successfully", updateResponse.data);
       alert("Profile updated successfully!");
     } catch (error) {
-      setError(error.message);
-      setErrorTimestamp(Date.now());
+      console.error("Failed to update user info:", error);
+      setError("Failed to update user info");
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (!user) {
+    console.log("Displaying login error message");
+    return <ErrorMessage message="Please log in to view this page." />;
+  }
+  if (isLoading) {
+    console.log("Displaying loading state");
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    console.log("Displaying error message");
+    return <ErrorMessage message={error} timestamp={errorTimestamp} />;
+  }
 
   return (
     <div className="user-info-page">

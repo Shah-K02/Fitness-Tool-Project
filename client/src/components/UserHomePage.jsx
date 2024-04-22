@@ -1,11 +1,21 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./UserHomePage.css";
 import SearchBar from "./SearchBar/SearchBar";
 import SearchResultsList from "./SearchBar/SearchResultsList";
+import { useUser } from "../helpers/UserContext";
 
 const UserHomePage = () => {
   const [results, setResults] = useState([]);
+  const { user } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
+
   return (
     <div className="content">
       <h1>Home Page</h1>
@@ -20,8 +30,6 @@ const UserHomePage = () => {
         <Link to="/log-food">
           <button className="log-food-button">Log Food</button>
         </Link>
-        <button className="your-foods-button">Your Foods</button>
-        <button className="your-exercises-button">Your Exercises</button>
         <Link to="/macro-calculator">
           <button className="macro-button" type="submit">
             Calculate Macros
