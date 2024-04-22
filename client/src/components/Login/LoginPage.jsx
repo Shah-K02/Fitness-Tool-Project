@@ -39,6 +39,37 @@ const LoginPage = () => {
       setError("Passwords do not match.");
       setErrorTimestamp(Date.now());
       return;
+    } else if (userCredentials.signUpPassword.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      setErrorTimestamp(Date.now());
+      return;
+    } else if (!userCredentials.signUpEmail.includes("@")) {
+      setError("Invalid email address.");
+      setErrorTimestamp(Date.now());
+      return;
+    } else {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_BASE_URL}/api/check-email`,
+          {
+            params: { email: userCredentials.signUpEmail },
+          }
+        );
+        if (response.status === 409) {
+          setError("Email is already registered.");
+          setErrorTimestamp(Date.now());
+          return;
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 409) {
+          setError("Email is already registered.");
+          setErrorTimestamp(Date.now());
+          return;
+        }
+        setError("Failed to check email. Please try again.");
+        setErrorTimestamp(Date.now());
+        console.error("Check Email Error:", error);
+      }
     }
 
     try {
@@ -80,7 +111,6 @@ const LoginPage = () => {
       navigate("/user-home");
       setError(null);
       setErrorTimestamp(Date.now());
-      console.log("Token received from server:", response.data.token);
       localStorage.setItem("token", response.data.token);
     } catch (error) {
       setError(

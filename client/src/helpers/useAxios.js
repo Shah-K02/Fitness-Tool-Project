@@ -23,9 +23,7 @@ const useAxios = () => {
       return response;
     },
     (error) => {
-      console.log("Error response:", error.response);
       if (error.response && error.response.status === 401) {
-        console.log("Handling 401 error, navigating to login...");
         localStorage.removeItem("token");
         navigate("/login");
         alert("Session timeout, please log in again.");
