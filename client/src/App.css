@@ -103,10 +103,10 @@ nav {
 /* Sidebar Styles */
 .sidebar {
   position: fixed;
+  width: fit-content;
   top: 0;
   left: 0;
   height: 100vh;
-  width: 200px;
   z-index: 1000;
   background-color: #36454f;
   box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.2), 3px 0 5px rgba(0, 0, 0, 0.2);
