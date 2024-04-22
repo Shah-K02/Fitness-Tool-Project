@@ -3,10 +3,24 @@ const db = require("../../config/db");
 
 class PostModel {
   // Fetch all posts
-  static async findAll() {
+  static async findAll(userId) {
     try {
-      const [rows, fields] = await db.query("SELECT * FROM posts");
-      return rows;
+      const [rows, fields] = await db.query(
+        `
+        SELECT p.*, 
+               EXISTS(
+                 SELECT 1 
+                 FROM likes 
+                 WHERE post_id = p.id AND user_id = ?
+               ) as liked
+        FROM posts p
+      `,
+        [userId]
+      );
+      return rows.map((post) => ({
+        ...post,
+        liked: post.liked === 1, // Convert to boolean for easier frontend handling
+      }));
     } catch (error) {
       console.error("Database query failed:", error);
       throw error;

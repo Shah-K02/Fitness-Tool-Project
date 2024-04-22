@@ -34,14 +34,13 @@ exports.createPost = async (req, res) => {
 
 // Fetch all posts
 exports.getAllPosts = async (req, res) => {
+  const userId = req.userId;
   try {
-    const posts = (await Post.findAll()) || [];
+    const posts = (await Post.findAll(userId)) || [];
     res.status(200).json({
       status: "success",
       results: posts.length,
-      data: {
-        posts,
-      },
+      data: { posts },
     });
   } catch (error) {
     res.status(404).json({
