@@ -2,6 +2,7 @@
 .post-container {
   margin: auto;
   padding: 1rem;
+  text-align: center;
   color: #333; /* Darker text color for better readability */
   display: grid;
   grid-template-columns: repeat(
@@ -14,11 +15,23 @@
 }
 
 /* Style for the posts heading */
-.post-heading h2 {
+.post-heading {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  color: #36454f;
+  margin-bottom: 2rem; /* Increased margin for better spacing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Heading style within the news section */
+.post-heading h1,
+.post-heading strong {
+  max-width: 80%; /* Adjust as needed */
+  margin: 0 auto; /* Center horizontally */
+}
+
+.post-heading strong {
+  color: #666; /* Medium grey for readable contrast */
 }
 
 /* Style for the new post form */
