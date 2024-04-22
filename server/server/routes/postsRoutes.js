@@ -42,7 +42,7 @@ router.get("/", authenticate, (req, res) => {
 }); // Fetch all posts
 router.get("/:postId", authenticate, postsController.getPostById); // Fetch a single post by ID
 router.delete("/:postId", authenticate, postsController.deletePost); // Delete a post by ID
-router.post("/:postId/comment", authenticate, postsController.createComment); // Create a comment
+router.post("/:postId/comments", authenticate, postsController.createComment); // Create a comment
 router.get(
   "/:postId/comments",
   authenticate,
@@ -50,5 +50,5 @@ router.get(
 ); // Fetch all comments for a post
 router.post("/:postId/like", authenticate, postsController.likePost); // Like a post
 router.get("/:postId/likes", authenticate, postsController.getLikeCount); // Get like count
-
+router.delete("/:postId/unlike", authenticate, postsController.unlikePost); // Unlike a post
 module.exports = router;

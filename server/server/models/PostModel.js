@@ -58,6 +58,44 @@ class PostModel {
       throw error;
     }
   }
+
+  // Like a post
+  static async like(postId, userId) {
+    try {
+      const [result] = await db.query(
+        "INSERT INTO likes (post_id, user_id) VALUES (?, ?)",
+        [postId, userId]
+      );
+      return {
+        message: "Post liked successfully",
+        affectedRows: result.affectedRows,
+      };
+    } catch (error) {
+      if (error.code === "ER_DUP_ENTRY") {
+        throw new Error("Post already liked by this user");
+      }
+      throw error;
+    }
+  }
+
+  // Unlike a post
+  static async unlike(postId, userId) {
+    try {
+      const [result] = await db.query(
+        "DELETE FROM likes WHERE post_id = ? AND user_id = ?",
+        [postId, userId]
+      );
+      if (result.affectedRows === 0) {
+        throw new Error("Like not found or already removed");
+      }
+      return {
+        message: "Post unliked successfully",
+        affectedRows: result.affectedRows,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = PostModel;

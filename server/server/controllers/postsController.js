@@ -98,46 +98,94 @@ exports.deletePost = async (req, res) => {
 };
 
 exports.createComment = async (req, res) => {
-  try {
-    const { text } = req.body;
-    const postId = req.params.postId;
-    const userId = req.userId;
+  const { text, userId } = req.body;
+  const { postId } = req.params;
 
+  if (!text || !userId || !postId) {
+    return res.status(400).json({
+      status: "fail",
+      message:
+        "Missing required fields. Ensure text, userId, and postId are provided.",
+    });
+  }
+
+  try {
     const comment = await CommentModel.create(postId, userId, text);
-    res.status(201).json({ status: "success", data: { comment } });
+    return res.status(201).json({
+      status: "success",
+      data: { comment },
+    });
   } catch (error) {
-    res.status(400).json({ status: "fail", message: error.message });
+    console.error("Error creating comment:", error);
+    return res.status(500).json({
+      status: "fail",
+      message: "Server error while creating comment: " + error.message,
+    });
   }
 };
 
 exports.getCommentsByPostId = async (req, res) => {
+  const postId = req.params.postId;
   try {
-    const { postId } = req.params;
-    const comments = await CommentModel.findByPostId(postId);
-    res.status(200).json({ status: "success", data: { comments } });
+    const [comments] = await db.query(
+      `SELECT c.id, c.postId, c.userId, c.text, c.createdAt, ui.name AS userName
+      FROM comments c
+      JOIN users_info ui ON c.userId = ui.user_id
+      WHERE c.postId = ?`,
+      [postId]
+    );
+    // Ensure comments is always an array
+    res.status(200).json({
+      status: "success",
+      data: { comments: comments || [] },
+    });
   } catch (error) {
-    res.status(404).json({ status: "fail", message: error.message });
+    console.error("Failed to fetch comments:", error);
+    res.status(500).json({
+      status: "fail",
+      message: "Error retrieving comments: " + error.message,
+    });
   }
 };
 
-// Like a post
+// In postsController.js
 exports.likePost = async (req, res) => {
   const postId = req.params.postId;
-  const userId = req.userId; // Assume this is extracted from some kind of authentication middleware
+  const userId = req.userId;
 
   try {
-    // Attempt to insert a like, catching any errors (like duplicates)
-    const [result] = await db.query(
-      "INSERT INTO likes (post_id, user_id) VALUES (?, ?)",
-      [postId, userId]
-    );
-    res.status(201).json({ status: "success", message: "Liked successfully" });
+    const result = await Post.like(postId, userId);
+    res
+      .status(201)
+      .json({ status: "success", message: "Liked successfully", data: result });
   } catch (error) {
-    if (error.code === "ER_DUP_ENTRY") {
-      res.status(409).json({ status: "fail", message: "Post already liked" });
+    console.error("Failed to like post:", error);
+    if (error.message === "Post already liked by this user") {
+      res.status(409).json({ status: "fail", message: error.message });
     } else {
-      res.status(500).json({ status: "fail", message: error.message });
+      res
+        .status(500)
+        .json({ status: "fail", message: "Server error: " + error.message });
     }
+  }
+};
+
+exports.unlikePost = async (req, res) => {
+  const postId = req.params.postId;
+  const userId = req.userId;
+
+  try {
+    const result = await Post.unlike(postId, userId);
+    res.status(204).json({
+      status: "success",
+      message: "Unliked successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error unliking the post:", error);
+    res
+      .status(500)
+      .json({ status: "fail", message: "Failed to unlike the post." });
   }
 };
 

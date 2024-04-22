@@ -3,11 +3,10 @@ const jwt = require("jsonwebtoken");
 const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith("Bearer ")) {
-    const token = authHeader.split(" ")[1]; // Extract the token from the header
-
+    const token = authHeader.split(" ")[1];
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
-        // Providing more specific feedback based on the error type
+        console.log("Token verification error:", err);
         const statusCode = err.name === "JsonWebTokenError" ? 401 : 403;
         return res.status(statusCode).json({
           status: "fail",
@@ -15,16 +14,15 @@ const authenticate = (req, res, next) => {
           error: err.message,
         });
       }
-
-      req.userId = decoded.userId; // The payload contains the userId
-      next(); // Proceed to the next middleware or route handler
+      req.userId = decoded.userId;
+      next();
     });
   } else {
     res.status(401).json({
       status: "fail",
       message:
         "No token provided. Authorization header is missing or improperly formatted.",
-    }); // No token or improper format
+    });
   }
 };
 

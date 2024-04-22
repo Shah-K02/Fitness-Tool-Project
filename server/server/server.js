@@ -31,7 +31,6 @@ app.use("/api/posts", postsRoutes);
 app.use("/api", foodLogRoutes);
 app.use("/api/exercises", exerciseRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 app.listen(8081, () => {
   console.log("Server is running on port 8081");
 });

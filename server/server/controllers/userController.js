@@ -6,7 +6,6 @@ exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Directly using the promise-based query method from mysql2
     const [results] = await db.query("SELECT * FROM users WHERE email = ?", [
       email,
     ]);
@@ -27,7 +26,6 @@ exports.loginUser = async (req, res) => {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-
     res.status(200).send({ message: "Login successful!", token });
   } catch (error) {
     console.error("Login Error:", error);
