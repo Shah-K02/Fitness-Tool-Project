@@ -9,6 +9,7 @@ const foodDataController = require("../controllers/foodDataController");
 // Public routes
 router.post("/register", userController.registerUser);
 router.post("/login", userController.loginUser);
+router.get("/check-email", userController.checkEmail);
 
 // Protected routes (use authenticate middleware) for user info management and fetching user info
 router.get("/user/info", authenticate, userInfoController.fetchUserInfo);

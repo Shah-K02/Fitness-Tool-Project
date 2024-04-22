@@ -35,9 +35,10 @@ exports.loginUser = async (req, res) => {
 
 exports.registerUser = async (req, res) => {
   const { email, password } = req.body;
+  let connection;
 
   try {
-    const connection = await db.getConnection();
+    connection = await db.getConnection();
     await connection.beginTransaction();
 
     const hash = await bcrypt.hash(password, 10);
@@ -68,5 +69,24 @@ exports.registerUser = async (req, res) => {
     }
     console.error("Registration Error:", error);
     res.status(500).send({ message: "Error registering user." });
+  }
+};
+
+exports.checkEmail = async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    const [results] = await db.query("SELECT * FROM users WHERE email = ?", [
+      email,
+    ]);
+
+    if (results.length > 0) {
+      return res.status(409).send({ message: "Email is already registered." });
+    }
+
+    res.status(200).send({ message: "Email is available." });
+  } catch (error) {
+    console.error("Check Email Error:", error);
+    res.status(500).send({ message: "Error checking email." });
   }
 };
