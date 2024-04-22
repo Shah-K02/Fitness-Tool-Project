@@ -123,8 +123,6 @@
   background-color: #f5f5f5; /* Lighter background for subtle contrast */
   text-align: center;
   margin-top: 5vh;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  border-radius: 8px; /* Rounded corners for a modern look */
 }
 .news-heading {
   margin-bottom: 2rem; /* Increased margin for better spacing */
@@ -149,11 +147,10 @@
   flex-direction: column;
   align-items: center; /* Align items centrally in the flex container */
   background-color: #ffffff; /* White background for each item */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-  border-radius: 4px; /* Slight rounding of corners */
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  border-radius: 0px 50px; /* Slight rounding of corners */
   padding: 20px; /* Padding inside each news item */
   transition: transform 0.3s ease-in-out; /* Smooth transformation on hover */
-  border-radius: 8px;
 }
 
 .news-item:hover {

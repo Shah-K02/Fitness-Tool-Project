@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import SideBar from "./SideBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faUser, faDumbbell } from "@fortawesome/free-solid-svg-icons";
-import useAxios from "../../helpers/useAxios";
 import { useUser } from "../../helpers/UserContext";
 import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, logout } = useUser();
-  const axios = useAxios();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -57,6 +55,7 @@ const Navbar = () => {
           {user && (
             <li className="account-dropdown" ref={dropdownRef}>
               <div
+                className="dropdown-icon"
                 onClick={() => setDropdownOpen(!isDropdownOpen)}
                 title="Account"
               >
@@ -82,7 +81,14 @@ const Navbar = () => {
           <div className="bar"></div>
         </div>
       </nav>
-      {isOpen && <SideBar close={() => setIsOpen(false)} links={links} />}
+      {isOpen && (
+        <SideBar
+          close={() => setIsOpen(false)}
+          links={links}
+          user={user}
+          logout={handleLogout}
+        />
+      )}
     </>
   );
 };

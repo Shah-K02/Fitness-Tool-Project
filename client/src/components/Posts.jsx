@@ -7,68 +7,10 @@ const PostItem = ({ post, onLike }) => {
   const [comments, setComments] = useState([]);
   const { user } = useUser();
   const [commentText, setCommentText] = useState("");
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(post.liked);
   const [likeCount, setLikeCount] = useState(post.likes || 0);
   const [showCommentInput, setShowCommentInput] = useState(false); // Added state to toggle comments visibility
   const axios = useAxios();
-
-  const fetchComments = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/api/posts/${post.id}/comments`
-      );
-
-      if (
-        response.data &&
-        response.data.data &&
-        Array.isArray(response.data.data.comments)
-      ) {
-        setComments(response.data.data.comments);
-      } else {
-        setComments([]);
-      }
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-      setComments([]);
-    }
-  };
-
-  const handleCommentSubmit = async (e) => {
-    e.preventDefault();
-    if (commentText.trim() === "") {
-      alert("Comment cannot be empty!");
-      return;
-    }
-
-    if (!user) {
-      alert("You must be logged in to comment!");
-      return;
-    }
-
-    const payload = { text: commentText, userId: user.id };
-
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/api/posts/${post.id}/comments`,
-        payload,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
-      if (response.data && response.data.data && response.data.data.comment) {
-        setComments([...comments, response.data.data.comment]);
-        setCommentText("");
-        setShowCommentInput(false);
-      } else {
-        console.error(
-          "Comment was not returned from the server:",
-          response.data
-        );
-      }
-    } catch (error) {
-      console.error("Error submitting comment:", error);
-    }
-  };
 
   const toggleCommentsVisibility = () => {
     setShowCommentInput(!showCommentInput);
@@ -77,47 +19,50 @@ const PostItem = ({ post, onLike }) => {
     }
   };
 
-  const checkIfLiked = async () => {
+  const fetchComments = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/api/posts/${post.id}/likes`
-      );
-      setLiked(response.data.data.liked);
+      const response = await axios.get(`/api/posts/${post.id}/comments`);
+      setComments(response.data.data.comments || []);
     } catch (error) {
-      console.error("Error fetching like status:", error);
+      console.error("Error fetching comments:", error);
+      setComments([]);
     }
   };
 
-  const fetchLikeCount = async () => {
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    if (!commentText.trim()) {
+      alert("Comment cannot be empty!");
+      return;
+    }
+    if (!user) {
+      alert("You must be logged in to comment!");
+      return;
+    }
+    const payload = { text: commentText, userId: user.id };
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/api/posts/${post.id}/likes`
+      const response = await axios.post(
+        `/api/posts/${post.id}/comments`,
+        payload
       );
-      setLikeCount(response.data.data.likeCount);
+      setComments([...comments, response.data.data.comment]);
+      setCommentText("");
+      setShowCommentInput(false);
     } catch (error) {
-      console.error("Error fetching like count:", error);
+      console.error("Error submitting comment:", error);
     }
   };
 
-  // In PostItem component
-  const handleLike = async (postId) => {
+  const handleLike = async () => {
     try {
       if (!liked) {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_BASE_URL}/api/posts/${postId}/like`
-        );
-        if (response.status === 201) {
-          setLiked(true);
-          setLikeCount(likeCount + 1);
-        }
+        const response = await axios.post(`/api/posts/${post.id}/like`);
+        setLiked(true);
+        setLikeCount(likeCount + 1);
       } else {
-        const response = await axios.delete(
-          `${process.env.REACT_APP_API_BASE_URL}/api/posts/${postId}/unlike`
-        );
-        if (response.status === 204) {
-          setLiked(false);
-          setLikeCount(likeCount - 1);
-        }
+        const response = await axios.delete(`/api/posts/${post.id}/unlike`);
+        setLiked(false);
+        setLikeCount(likeCount - 1);
       }
     } catch (error) {
       console.error(
@@ -126,13 +71,6 @@ const PostItem = ({ post, onLike }) => {
       );
     }
   };
-
-  useEffect(() => {
-    fetchComments();
-    checkIfLiked();
-    fetchLikeCount();
-  }, [post.id]); // Added dependency on post.id to refetch comments when the post changes
-
   return (
     <div className="post-item">
       <div>
@@ -261,7 +199,10 @@ const Posts = () => {
 
   return (
     <div className="post-container">
-      <h1>Posts</h1>
+      <div className="post-heading">
+        <h1>Posts</h1>
+        <strong>Share your progress or your meals with the community!</strong>
+      </div>
       <form onSubmit={handleSubmit} className="new-post-form">
         {imagePreview && (
           <img src={imagePreview} alt="Preview" className="image-preview" />
