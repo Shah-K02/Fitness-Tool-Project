@@ -3,10 +3,12 @@ import "./LoginPage.css";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import ErrorMessage from "../ErrorMessage";
+import { useUser } from "../../helpers/UserContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { login } = useUser();
   const [isSignUpActive, setIsSignUpActive] = useState(false);
   const [error, setError] = useState("");
   const [errorTimestamp, setErrorTimestamp] = useState(null);
@@ -47,7 +49,10 @@ const LoginPage = () => {
           password: userCredentials.signUpPassword,
         }
       );
-      localStorage.setItem("token", response.data.token);
+      login(
+        { id: response.data.userId, email: userCredentials.signUpEmail },
+        response.data.token
+      );
       navigate("/user-home");
       setError(null);
     } catch (error) {
@@ -68,10 +73,15 @@ const LoginPage = () => {
           password: userCredentials.signInPassword,
         }
       );
-      localStorage.setItem("token", response.data.token);
+      login(
+        { id: response.data.userId, email: userCredentials.signInEmail },
+        response.data.token
+      );
       navigate("/user-home");
       setError(null);
       setErrorTimestamp(Date.now());
+      console.log("Token received from server:", response.data.token);
+      localStorage.setItem("token", response.data.token);
     } catch (error) {
       setError(
         "Failed to log in. Please check your credentials and try again."

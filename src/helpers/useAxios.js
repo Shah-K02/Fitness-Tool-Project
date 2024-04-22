@@ -1,27 +1,34 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
 
 const useAxios = () => {
   const navigate = useNavigate();
 
-  const axiosInstance = axios.create({
-    // Create an instance of axios
-    baseURL: process.env.REACT_APP_API_BASE_URL,
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  // Retrieve the token once to set up the axios instance
+  const token = localStorage.getItem("token");
 
+  const axiosInstance = useMemo(
+    () =>
+      axios.create({
+        baseURL: process.env.REACT_APP_API_BASE_URL,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    [token]
+  );
   axiosInstance.interceptors.response.use(
     (response) => {
-      // Intercept the response to check for 401 status code
       return response;
     },
     (error) => {
+      console.log("Error response:", error.response);
       if (error.response && error.response.status === 401) {
-        localStorage.removeItem("token"); // Remove the expired token
-        navigate.push("/login"); // Redirect to the login page
-        alert("Session timeout, please log in again."); // Notify the user
+        console.log("Handling 401 error, navigating to login...");
+        localStorage.removeItem("token");
+        navigate("/login");
+        alert("Session timeout, please log in again.");
       }
       return Promise.reject(error);
     }
