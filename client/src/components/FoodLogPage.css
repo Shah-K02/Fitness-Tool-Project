@@ -1,0 +1,112 @@
+/* CSS for FoodLogPage */
+
+.food-log-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  background-color: #ffffff;
+}
+
+.food-log-title {
+  color: #36454f; /* Charcoal Gray for titles */
+  font-size: 2rem;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.date-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+}
+
+.date-button {
+  background-color: #ffa500; /* Orange for buttons */
+  color: #ffffff; /* White text */
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.date-button.active,
+.date-button:hover {
+  background-color: #dc0000; /* Bright Red for active/hover state */
+}
+
+.hour-logs-list {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hour-log {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #d3d3d3; /* Light Grey for items */
+  color: #000000; /* Black text */
+}
+
+.log-button {
+  background-color: #dc0000; /* Bright Red */
+  color: #ffffff; /* White text */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.log-button:hover {
+  background-color: #ffa500; /* Orange on hover */
+}
+
+.search-bar-container {
+  width: 100%;
+  margin-top: 10px;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.food-search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search-bar,
+.meal-select,
+.servings-input,
+.submit-button {
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.submit-button {
+  background-color: #dc0000; /* Bright Red */
+  color: #ffffff; /* White text */
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+  background-color: #ffa500; /* Orange */
+}
+
+.log-entries-container p {
+  margin: 10px;
+  color: #dc0000; /* Bright Red */
+}

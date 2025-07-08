@@ -1,0 +1,16 @@
+.back-button {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  background-color: none; /* Transparent background */
+  color: #36454f; /* Charcoal Gray */
+  border: none;
+  padding: 8px 12px;
+  margin: 20px;
+  border-radius: 6px; /* Rounded corners */
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: #d3d3d3;
+}

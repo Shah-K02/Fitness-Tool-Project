@@ -1,0 +1,240 @@
+/* Style for hero image */
+.hero-image {
+  position: relative;
+  height: 60vh; /* Increased height for better visual impact */
+  overflow: hidden;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #ffffff;
+}
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #d3d3d3;
+  text-shadow: #dc0000 2px 2px 4px;
+}
+.hero-content p {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  text-shadow: #dc0000 2px 2px 4px;
+}
+/* Style for button container in the hero image */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Added space between buttons */
+}
+
+/* Style for login and signup buttons */
+.login-button,
+.macrocalculator button {
+  align-self: center;
+  background-color: #dc0000;
+  background-image: none;
+  background-position: 0 90%;
+  background-repeat: repeat no-repeat;
+  background-size: 4px 3px;
+  border-radius: 15px 225px 255px 15px 15px 255px 225px 15px;
+  border-style: solid;
+  border-width: 2px;
+  box-shadow: rgba(0, 0, 0, 0.2) 15px 28px 25px -18px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Neucha, sans-serif;
+  font-size: 1rem;
+  line-height: 23px;
+  outline: none;
+  padding: 0.75rem;
+  text-decoration: none;
+  transition: all 235ms ease-in-out;
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 225px 15px;
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 15px 225px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-right: 10px;
+}
+
+.signup-button {
+  align-self: center;
+  background-color: #ffa500;
+  background-image: none;
+  background-position: 0 90%;
+  background-repeat: repeat no-repeat;
+  background-size: 4px 3px;
+  border-radius: 15px 225px 255px 15px 15px 255px 225px 15px;
+  border-style: solid;
+  border-width: 2px;
+  box-shadow: rgba(0, 0, 0, 0.2) 15px 28px 25px -18px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Neucha, sans-serif;
+  font-size: 1rem;
+  line-height: 23px;
+  outline: none;
+  padding: 0.75rem;
+  text-decoration: none;
+  transition: all 235ms ease-in-out;
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 225px 15px;
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 15px 225px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.signup-button:hover,
+.login-button:hover,
+.macrocalculator button:hover {
+  box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 8px -5px;
+  transform: translate3d(0, 2px, 0);
+}
+
+.login-button:focus,
+.signup-button:focus {
+  box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 4px -6px;
+}
+
+/* Base style for the news section */
+.news {
+  padding: 40px; /* Increased padding for better spacing */
+  background-color: #f5f5f5; /* Lighter background for subtle contrast */
+  text-align: center;
+  margin-top: 5vh;
+}
+.news-heading {
+  margin-bottom: 2rem; /* Increased margin for better spacing */
+}
+/* Heading style within the news section */
+.news-heading strong {
+  color: #666; /* Medium grey for readable contrast */
+}
+
+/* Container for individual news items */
+.news-container {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap in smaller screens */
+  justify-content: space-around; /* Evenly distributes space around items */
+  gap: 20px; /* Adds space between items vertically and horizontally */
+}
+
+/* Individual news item styling */
+.news-item {
+  flex: 0 1 calc(33% - 20px); /* Each item takes up a third of the container width minus the gap */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align items centrally in the flex container */
+  background-color: #ffffff; /* White background for each item */
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  border-radius: 0px 50px; /* Slight rounding of corners */
+  padding: 20px; /* Padding inside each news item */
+  transition: transform 0.3s ease-in-out; /* Smooth transformation on hover */
+}
+
+.news-item:hover {
+  transform: translateY(
+    -5px
+  ); /* Slight upward movement on hover for interaction feedback */
+}
+
+/* Styling for images within news items */
+.news img {
+  width: 100%; /* Ensures the image fills the container */
+  max-height: 200px; /* Limits the height of the image for uniformity */
+  object-fit: cover; /* Ensures the image covers the space without distortion */
+  border-radius: 4px; /* Matches the rounding of the item container */
+  margin-bottom: 16px; /* Space between the image and the text below */
+}
+
+/* Adjusting the paragraph style within news items for better readability */
+.news-item p {
+  text-align: justify; /* Justifies the text for a clean, uniform appearance */
+  color: #666; /* Medium grey for easy reading */
+  line-height: 1.5; /* Increases line height for readability */
+}
+
+/* Style for the container of Macro Calculator and Image */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap; /* Wrap children to the next line on smaller screens */
+  gap: 20px; /* Creates consistent space between children */
+  justify-content: center; /* Centers children when they wrap */
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Style for Macro Calculator section */
+.macrocalculator {
+  flex-basis: calc(50% - 10px); /* Subtract gap from 100% divided by two */
+  box-sizing: border-box;
+  padding: 20px;
+  background-color: #f8f8f8; /* Light grey background for subtle contrast */
+  text-align: center;
+  border-radius: 8px; /* Rounded corners for a modern look */
+}
+.macrocalculator button {
+  margin-top: 20px;
+}
+.macrocalculator h2 {
+  margin-bottom: 16px;
+  color: #333; /* Darker font color for headline */
+}
+
+.macrocalculator p {
+  margin-bottom: 16px;
+  color: #666; /* Lighter font color for body text */
+}
+
+.macrocalculator img {
+  max-width: 100%; /* Full width of the parent container */
+  height: auto; /* Maintain the aspect ratio of the image */
+  margin-top: 20px;
+  border-radius: 8px; /* Rounded corners for the image */
+}
+
+/* Style for the second image section */
+.secondimage {
+  flex-basis: calc(50% - 10px); /* Subtract gap from 100% divided by two */
+  box-sizing: border-box;
+  padding: 20px;
+  background-color: #f8f8f8;
+  text-align: center;
+  border-radius: 8px;
+  margin-top: 100px;
+}
+
+.secondimage img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .macrocalculator,
+  .secondimage {
+    flex-basis: 100%; /* Each section takes full width on smaller screens */
+  }
+}
