@@ -15,10 +15,10 @@ const HeroSection = () => {
         <p>Join us and explore the possibilities.</p>
         <div className="button-container">
           <Link to="/login" state={{ activeForm: "login" }}>
-            <button className="login-button">Login</button>
+            <button className="btn btn-primary">Login</button>
           </Link>
           <Link to="/login" state={{ activeForm: "signup" }}>
-            <button className="signup-button">Signup</button>
+            <button className="btn btn-secondary">Signup</button>
           </Link>
         </div>
       </div>

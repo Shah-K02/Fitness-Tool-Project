@@ -23,7 +23,6 @@ const NewsSection = () => {
         </div>
         <div className="news-item">
           <img src={NewsImg2} alt="Image 2" />
-          <a href="https://www.freepik.com/free-vector/illustration-gallery-icon_2922280.htm#query=placeholder&position=0&from_view=keyword&track=sph&uuid=a218c410-d8f6-45ef-89aa-b36719c05cdb"></a>{" "}
           <h2>
             Major Study Reveals the Long-Term Benefits of Mediterranean Diet on
             Heart Health

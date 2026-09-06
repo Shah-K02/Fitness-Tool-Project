@@ -17,7 +17,9 @@ const MacronutrientSection = () => {
         </p>
         <img src={MacroCalculator} alt="Macro Calculator" />
         <Link to="/macro-calculator">
-          <button type="submit">Calculate</button>
+          <button type="submit" className="btn btn-primary">
+            Calculate
+          </button>
         </Link>
       </div>
     </div>
