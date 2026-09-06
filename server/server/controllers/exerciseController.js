@@ -12,7 +12,7 @@ const getExerciseByName = async (req, res) => {
         headers: {
           "X-RapidAPI-Key": EXERCISE_DB_API_KEY,
         },
-      }
+      },
     );
     res.json(response.data);
   } catch (error) {
