@@ -73,7 +73,7 @@ describe("SearchExercises", () => {
     render(<SearchExercises onSearch={mockOnSearch} options={options} />);
     fireEvent.click(screen.getByRole("button", { name: "Body part" }));
 
-    fireEvent.mouseDown(screen.getByRole("button", { name: /choose body part/i }));
+    fireEvent.mouseDown(screen.getByRole("combobox", { name: /choose body part/i }));
     fireEvent.click(within(screen.getByRole("listbox")).getByText("chest"));
 
     expect(mockOnSearch).toHaveBeenCalledWith({
@@ -87,7 +87,7 @@ describe("SearchExercises", () => {
     render(<SearchExercises onSearch={mockOnSearch} options={options} />);
     fireEvent.click(screen.getByRole("button", { name: "Difficulty" }));
 
-    fireEvent.mouseDown(screen.getByRole("button", { name: /choose difficulty/i }));
+    fireEvent.mouseDown(screen.getByRole("combobox", { name: /choose difficulty/i }));
     fireEvent.click(within(screen.getByRole("listbox")).getByText("beginner"));
 
     expect(mockOnSearch).toHaveBeenCalledWith({

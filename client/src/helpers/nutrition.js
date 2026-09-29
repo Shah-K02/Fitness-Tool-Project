@@ -74,8 +74,20 @@ export const BMI_BANDS = [
 export const bmiCategory = (bmi) =>
   bmi == null ? null : BMI_BANDS.find((band) => bmi < band.max).label;
 
-// Mifflin-St Jeor resting energy, multiplied by the activity factor.
-// "Other" uses the midpoint of the male and female constants.
+// Resting energy expenditure, Mifflin-St Jeor (1990):
+//   10 × weight(kg) + 6.25 × height(cm) − 5 × age(y) + 5 (men) / −161 (women)
+// The Frankenfield et al. 2005 systematic review found it the most accurate
+// common prediction equation (within ±10% of measured for most adults).
+// The equation only has male and female constants; "other" uses their
+// midpoint as an approximation.
+const SEX_CONSTANT = { male: 5, female: -161, other: -78 };
+
+export const restingEnergy = ({ weight, height, age, sex }) =>
+  10 * weight + 6.25 * height - 5 * age + SEX_CONSTANT[sex];
+
+const roundTo10 = (n) => Math.round(n / 10) * 10;
+
+// Maintenance calories from the profile: resting energy × activity factor.
 export const estimateDailyCalories = ({
   birthday,
   gender,
@@ -87,12 +99,110 @@ export const estimateDailyCalories = ({
   const h = toNumber(height);
   const w = toNumber(weight);
   const activity = ACTIVITY_LEVELS.find((a) => a.value === activityLevel);
-  if (age == null || !activity || !gender) return null;
+  if (age == null || !activity || SEX_CONSTANT[gender] === undefined) return null;
   if (calculateBmi(h, w) == null) return null; // height/weight missing or out of range
-  const genderConstant = { male: 5, female: -161, other: -78 }[gender];
-  if (genderConstant === undefined) return null;
-  const resting = 10 * w + 6.25 * h - 5 * age + genderConstant;
-  return Math.round((resting * activity.factor) / 10) * 10;
+  return roundTo10(restingEnergy({ weight: w, height: h, age, sex: gender }) * activity.factor);
+};
+
+// Goals and how each changes calories and protein. Sources:
+// - lose: ~600 kcal/day deficit for 0.5–1 kg a week (NICE PH53 / NHS).
+// - gain muscle: ~10% surplus, the low end of the 10–20% range for lean
+//   gain (Iraki et al. 2019, Sports).
+// - gain weight: ~500 kcal/day surplus, roughly 0.5 kg a week.
+// - protein: 1.4–2.0 g/kg for exercising adults (ISSN position stand,
+//   Jäger et al. 2017), more when in a deficit to keep muscle; gains from
+//   extra protein plateau around 1.6 g/kg (Morton et al. 2018, BJSM).
+//   Sedentary adults maintaining weight get 1.0 g/kg, above the 0.8 g/kg RDA.
+export const GOALS = [
+  {
+    value: "lose",
+    label: "Lose weight",
+    description: "About 600 kcal under maintenance, for 0.5–1 kg a week",
+    adjust: (maintenance) => maintenance - 600,
+    proteinPerKg: () => 1.8,
+  },
+  {
+    value: "maintain",
+    label: "Maintain weight",
+    description: "Eat what you burn",
+    adjust: (maintenance) => maintenance,
+    proteinPerKg: (activityLevel) => (activityLevel === "sedentary" ? 1.0 : 1.4),
+  },
+  {
+    value: "gain_muscle",
+    label: "Build muscle",
+    description: "A small 10% surplus alongside strength training",
+    adjust: (maintenance) => maintenance * 1.1,
+    proteinPerKg: () => 1.6,
+  },
+  {
+    value: "gain",
+    label: "Gain weight",
+    description: "About 500 kcal over maintenance, roughly 0.5 kg a week",
+    adjust: (maintenance) => maintenance + 500,
+    proteinPerKg: () => 1.4,
+  },
+];
+
+// Lowest daily target the calculator will suggest. NHLBI low-calorie diets
+// run 1,000–1,200 kcal (women) and 1,200–1,500 kcal (men); going lower
+// needs medical supervision, so the calculator stops at the top of each
+// range. "Other" uses the midpoint.
+export const CALORIE_FLOOR = { male: 1500, female: 1200, other: 1350 };
+
+// Acceptable Macronutrient Distribution Ranges (Institute of Medicine):
+// protein 10–35%, fat 20–35%, carbohydrate 45–65% of calories.
+export const AMDR = {
+  protein: { min: 0.1, max: 0.35 },
+  fats: { min: 0.2, max: 0.35 },
+  carbs: { min: 0.45, max: 0.65 },
+};
+const DEFAULT_FAT_SHARE = 0.25;
+
+export const calculateMacroPlan = ({ height, weight, age, sex, activityLevel, goal }) => {
+  const activity = ACTIVITY_LEVELS.find((a) => a.value === activityLevel);
+  const goalInfo = GOALS.find((g) => g.value === goal);
+  if (!activity || !goalInfo || SEX_CONSTANT[sex] === undefined) return null;
+
+  const resting = restingEnergy({ weight, height, age, sex });
+  const maintenance = resting * activity.factor;
+  const goalCalories = goalInfo.adjust(maintenance);
+  const floor = CALORIE_FLOOR[sex];
+  const hitFloor = goalCalories < floor;
+  const calories = roundTo10(Math.max(goalCalories, floor));
+
+  // Protein by body weight, kept within its AMDR (10–35% of calories).
+  const proteinKcal = Math.min(
+    Math.max(goalInfo.proteinPerKg(activityLevel) * weight * 4, calories * AMDR.protein.min),
+    calories * AMDR.protein.max
+  );
+  // Fat at 25%, lowered towards 20% if carbohydrate would fall under 45%.
+  let fatKcal = calories * DEFAULT_FAT_SHARE;
+  const minCarbKcal = calories * AMDR.carbs.min;
+  if (calories - proteinKcal - fatKcal < minCarbKcal) {
+    fatKcal = Math.max(calories * AMDR.fats.min, calories - proteinKcal - minCarbKcal);
+  }
+  const carbKcal = calories - proteinKcal - fatKcal;
+
+  const macro = (kcal, perGram) => ({
+    grams: Math.round(kcal / perGram),
+    kcal: Math.round(kcal),
+    share: kcal / calories,
+  });
+
+  return {
+    bmi: calculateBmi(height, weight),
+    resting: Math.round(resting),
+    activityFactor: activity.factor,
+    maintenance: roundTo10(maintenance),
+    goalAdjustment: roundTo10(goalCalories - maintenance),
+    calories,
+    hitFloor,
+    floor,
+    protein: { ...macro(proteinKcal, 4), perKg: Math.round((proteinKcal / 4 / weight) * 10) / 10 },
+    carbs: macro(carbKcal, 4),
+    fats: macro(fatKcal, 9),
+  };
 };
 
 // Dates are handled in the user's local time zone throughout; toISOString()

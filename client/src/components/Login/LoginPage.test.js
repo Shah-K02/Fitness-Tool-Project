@@ -87,8 +87,11 @@ describe("LoginPage", () => {
   });
 
   test("successful signup navigates to user home and stores token", async () => {
-    axios.post.mockResolvedValue({ data: { token: "12345" } }); // Mock the axios post request
-    const setItemSpy = jest.spyOn(window.localStorage, "setItem");
+    // The email availability check runs first, then registration.
+    axios.get.mockResolvedValue({ status: 200, data: { message: "Email is available." } });
+    axios.post.mockResolvedValue({ data: { token: "12345", userId: 1 } });
+    // jsdom's localStorage methods live on Storage.prototype.
+    const setItemSpy = jest.spyOn(Storage.prototype, "setItem");
     setup();
     fireEvent.click(screen.getByTestId("toggle-signup"));
     fireEvent.change(screen.getByTestId("signup-email"), {

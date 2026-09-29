@@ -1,80 +1,91 @@
-/* eslint-disable testing-library/no-debugging-utils */ // remove once tests are complete
-
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import MacroCalculator from "./MacroCalculator";
 import { MemoryRouter } from "react-router-dom";
+import MacroCalculator from "./MacroCalculator";
 
-describe("MacroCalculator Component", () => {
-  // Describe the MacroCalculator component tests
+// axios is only used to prefill from a signed-in profile; these tests run
+// signed out. (CRA's Jest also can't parse axios's ES module build.)
+jest.mock("axios", () => ({
+  __esModule: true,
+  default: { get: jest.fn(() => Promise.resolve({ data: {} })) },
+}));
+
+describe("MacroCalculator", () => {
+  beforeEach(() => localStorage.clear());
+
   const setup = () =>
-    // Setup the component for testing purposes (render the component)
     render(
       <MemoryRouter>
-        {" "}
-        {/* Wrap the component in a MemoryRouter to avoid errors */}
-        <MacroCalculator /> {/* Render the MacroCalculator component */}
-      </MemoryRouter> // Close the MemoryRouter
+        <MacroCalculator />
+      </MemoryRouter>
     );
 
-  test("renders the macro calculator form", () => {
+  const fillIn = ({ height, weight, age, sex, activity, goal }) => {
+    fireEvent.change(screen.getByLabelText("Height"), { target: { value: height } });
+    fireEvent.change(screen.getByLabelText("Weight"), { target: { value: weight } });
+    fireEvent.change(screen.getByLabelText("Age"), { target: { value: age } });
+    fireEvent.click(screen.getByLabelText(sex));
+    fireEvent.click(screen.getByLabelText(new RegExp(`^${activity}`)));
+    fireEvent.click(screen.getByLabelText(new RegExp(`^${goal}`)));
+  };
+
+  // The results row (working ledger or macro table) whose label starts with `label`.
+  const row = (label) =>
+    screen
+      .getAllByText(label, { exact: false })
+      .map((el) => el.closest("tr, .ledger-row, .ledger-total"))
+      .find(Boolean);
+
+  test("renders every input, including activity level", () => {
     setup();
-    screen.debug(); // Debug here to check initial render state
-    expect(screen.getByText(/Macro Calculator/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Height \(cm\):/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Weight \(kg\):/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Age:/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Gender:/i)).toBeInTheDocument();
-    expect(screen.getByText(/Calculate/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /macro calculator/i })).toBeInTheDocument();
+    ["Height", "Weight", "Age"].forEach((label) =>
+      expect(screen.getByLabelText(label)).toBeInTheDocument()
+    );
+    ["Sedentary", "Lightly active", "Moderately active", "Very active", "Extra active"].forEach(
+      (level) => expect(screen.getByLabelText(new RegExp(`^${level}`))).toBeInTheDocument()
+    );
+    expect(screen.getByText(/fill in your height/i)).toBeInTheDocument();
   });
 
-  test("updates input values and submits form", () => {
+  test("shows the Mifflin-St Jeor working and macros for a real example", () => {
     setup();
-    const heightInput = screen.getByLabelText(/Height \(cm\):/i);
-    const weightInput = screen.getByLabelText(/Weight \(kg\):/i);
-    const ageInput = screen.getByLabelText(/Age:/i);
-    const genderSelect = screen.getByLabelText(/Gender:/i);
-    const loseWeightOption = screen.getByLabelText(/Lose weight/i);
+    // 30-year-old man, 180 cm, 80 kg, moderately active, losing weight:
+    // resting 1,780 kcal; × 1.55 = 2,759 → 2,760; − 600 → 2,160 kcal.
+    fillIn({ height: "180", weight: "80", age: "30", sex: "Male", activity: "Moderately active", goal: "Lose weight" });
 
-    fireEvent.change(heightInput, { target: { value: "180" } }); // Change the height input value
-    fireEvent.change(weightInput, { target: { value: "75" } }); // Change the weight input value
-    fireEvent.change(ageInput, { target: { value: "30" } }); // Change the age input value
-    fireEvent.change(genderSelect, { target: { value: "male" } }); // Change the gender input value
-    fireEvent.click(loseWeightOption); // Click the lose weight option
-    fireEvent.click(screen.getByText(/Calculate/i)); // Click the calculate button
-
-    expect(heightInput.value).toBe("180"); // Check if the height input value is updated
-    expect(weightInput.value).toBe("75");
-    expect(ageInput.value).toBe("30");
-    expect(genderSelect.value).toBe("male"); // Check if the gender input value is updated
-    expect(loseWeightOption.checked).toBeTruthy(); // Check if the lose weight option is checked
+    expect(within(row("Resting energy")).getByText("1,780 kcal")).toBeInTheDocument();
+    expect(within(row("Maintenance")).getByText("2,760 kcal")).toBeInTheDocument();
+    expect(within(row("Daily target")).getByText("2,160 kcal")).toBeInTheDocument();
+    // Protein 1.8 g/kg × 80 kg = 144 g
+    expect(within(row("Protein")).getByText(/144 g/)).toBeInTheDocument();
   });
 
-  test("displays results after form submission", async () => {
-    setup(); // Setup the component for testing purposes (render the component)
-    const button = screen.getByText(/Calculate/i); // Get the button element to submit the form
-    fireEvent.click(button); // Click the button to submit the form
+  test("changing activity level changes the result", () => {
+    setup();
+    fillIn({ height: "180", weight: "80", age: "30", sex: "Male", activity: "Sedentary", goal: "Maintain weight" });
+    // 1,780 × 1.2 = 2,136 → 2,140 kcal
+    expect(within(row("Daily target")).getByText("2,140 kcal")).toBeInTheDocument();
 
-    await waitFor(() => {
-      // Wait for the results to be displayed on the screen before making assertions
-      expect(screen.getByText(/BMI:/i)).toBeInTheDocument(); // Check if the BMI is displayed
-    });
-
-    expect(screen.getByText(/Protein:/i)).toBeInTheDocument(); // Check if the Protein is displayed
-    expect(screen.getByText(/Carbs:/i)).toBeInTheDocument(); // Check if the Carbs are displayed
-    expect(screen.getByText(/Fats:/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/Estimated Daily Calories Needed:/i)
-    ).toBeInTheDocument(); // Check if the Estimated Daily Calories Needed is displayed
+    fireEvent.click(screen.getByLabelText(/^Very active/));
+    // 1,780 × 1.725 = 3,070.5 → 3,070 kcal
+    expect(within(row("Daily target")).getByText("3,070 kcal")).toBeInTheDocument();
   });
 
-  test("initializes the chart with provided data", () => {
+  test("never suggests fewer calories than the safe minimum", () => {
     setup();
-    const chart = screen.getByTestId("macroChart"); // Get the chart element by its test id
-    expect(chart).toBeInTheDocument(); // Check if the chart element is rendered
-    expect(chart.nodeName).toBe("CANVAS"); // Check if the chart element is a canvas element
+    // 25-year-old woman, 165 cm, 60 kg, sedentary, losing weight:
+    // 1,345 × 1.2 − 600 = 1,014 kcal, raised to 1,200.
+    fillIn({ height: "165", weight: "60", age: "25", sex: "Female", activity: "Sedentary", goal: "Lose weight" });
+    expect(within(row("Daily target")).getByText("1,200 kcal")).toBeInTheDocument();
+    expect(screen.getByText(/raised to 1,200 kcal/i)).toBeInTheDocument();
+  });
 
-    screen.debug(); // Debug to check the chart element
+  test("flags out-of-range values instead of calculating", () => {
+    setup();
+    fillIn({ height: "1800", weight: "80", age: "30", sex: "Male", activity: "Sedentary", goal: "Maintain weight" });
+    expect(screen.getByText("Enter 100–250 cm.")).toBeInTheDocument();
+    expect(screen.queryByText("Daily target")).not.toBeInTheDocument();
   });
 });

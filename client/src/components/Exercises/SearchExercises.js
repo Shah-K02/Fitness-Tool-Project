@@ -158,7 +158,8 @@ const SearchExercises = ({
                 }}
                 SelectProps={{
                   displayEmpty: true,
-                  inputProps: {
+                  // Label the visible combobox, not MUI's hidden native input.
+                  SelectDisplayProps: {
                     "aria-label": `Choose ${SEARCH_MODES.find((m) => m.value === by).label.toLowerCase()}`,
                   },
                 }}
@@ -185,7 +186,7 @@ const SearchExercises = ({
                 }}
                 SelectProps={{
                   displayEmpty: true,
-                  inputProps: { "aria-label": "Filter by difficulty" },
+                  SelectDisplayProps: { "aria-label": "Filter by difficulty" },
                 }}
               >
                 <MenuItem value="" sx={menuItemSx}>
