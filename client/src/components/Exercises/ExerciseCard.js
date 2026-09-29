@@ -76,6 +76,7 @@ const ExerciseCard = ({ exercise }) => (
             textTransform="capitalize"
           >
             Equipment: {exercise.equipment}
+            {exercise.difficulty && ` · ${exercise.difficulty}`}
           </Typography>
         </CardContent>
       </CardActionArea>
