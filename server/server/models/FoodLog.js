@@ -40,6 +40,7 @@ class FoodLog {
     const query = `
       SELECT * FROM food_logs
       WHERE user_id = ? AND DATE(log_time) = ?
+      ORDER BY log_time
     `;
 
     try {

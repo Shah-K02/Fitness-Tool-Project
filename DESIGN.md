@@ -131,6 +131,18 @@ Corners are small and consistent: 4px (`--radius-sm`) on inputs, buttons, and sm
 ### Ledger Row
 The system's signature component, used for the food log's hourly entries, the cover page's sample day, and any other running list. A flex row with a fixed-width leading time/label column, flexible description, and a right-aligned tabular-numeral value; a `.ledger-total` row closes the list with a heavier top rule and bold weight. `.is-flagged` adds a 2px Flag-Red left border for an over-target row.
 
+### Day Balance
+The food log's daily statement: three figures (Eaten / Daily target / Remaining or Over target) on a Paper Card panel, a flat 8px calorie meter (ink fill, Flag Red once over target), and a macro split bar with a coded legend (protein = Ink, carbs = Logged Green, fat = Gold — the same mapping as the macro calculator chart). Remaining is Logged Green; Over target is Flag Red.
+
+### Meal Section
+Food log entries grouped by time of day (Breakfast until 11 AM, Lunch 11–3, Snacks 3–6, Dinner after 6). A heading row with the meal's hour range, its kcal subtotal and an outlined "Add food" button (which rotates its plus into a close mark when open), over an ink rule and ledger rows. Each row keeps the exact time in the leading column. Adding happens inline in a Paper Card panel under the meal — never a modal.
+
+### Measurement Inputs
+Numeric fields show their unit (cm, kg, g) inside the right edge of the input, with a hint line below giving the unit in words and an example. Out-of-range values show the hint in Flag Red with a red input border.
+
+### BMI Scale
+A read-only BMI reading (value + WHO band name) with a flat banded track (15–40), band ticks and an ink marker. Band names are neutral text: BMI is information, not an error, so no band is colored red or green.
+
 ### Index Row
 The "table of contents" pattern used on the Today page: a full-width row linking into a section, with a bold title, a muted one-line sub-description, and a trailing arrow. Hover fills with Paper Card.
 

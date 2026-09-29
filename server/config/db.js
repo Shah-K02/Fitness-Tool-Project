@@ -9,6 +9,10 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0,
   waitForConnections: true,
+  // Return DATE columns (users_info.birthday) as "YYYY-MM-DD". As JS Dates
+  // they were serialised in UTC, so a birthday read back a day early
+  // whenever the server was ahead of UTC (e.g. British Summer Time).
+  dateStrings: ["DATE"],
 });
 
 // Testing the connection using promises

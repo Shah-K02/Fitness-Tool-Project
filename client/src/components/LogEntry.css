@@ -1,34 +1,93 @@
+/* A single food entry: a ruled ledger row */
 .log-entry {
-  padding: 3px 0;
-}
-
-.log-entry:not(:last-child) {
-  border-bottom: 1px dashed var(--paper-line);
-  margin-bottom: 4px;
-  padding-bottom: 6px;
-}
-
-.log-entry-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto 28px;
   align-items: baseline;
-  justify-content: space-between;
   gap: 12px;
+  padding: 11px 2px;
+  border-bottom: 1px solid var(--paper-line);
+  transition: background-color 0.15s ease;
+}
+
+.log-entry:hover {
+  background-color: var(--paper-card);
+}
+
+.log-entry-time {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.log-entry-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .log-entry-desc {
   color: var(--ink);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.log-entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 10px;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.log-entry-meta span {
+  white-space: nowrap;
 }
 
 .log-entry-kcal {
   color: var(--ink);
-  font-size: 0.85rem;
-  flex: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.log-entry-meta {
-  margin: 2px 0 0;
-  font-size: 0.75rem;
+.log-entry-remove {
+  align-self: center;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
   color: var(--ink-soft);
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.log-entry:hover .log-entry-remove,
+.log-entry-remove:focus-visible {
+  opacity: 1;
+}
+
+.log-entry-remove:hover,
+.log-entry-remove:focus-visible {
+  color: var(--flag);
+  background: var(--flag-soft);
+}
+
+@media (hover: none) {
+  .log-entry-remove {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .log-entry {
+    grid-template-columns: 3.4rem minmax(0, 1fr) auto 28px;
+    gap: 8px;
+  }
 }

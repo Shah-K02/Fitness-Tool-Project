@@ -1,101 +1,430 @@
-/* CSS for FoodLogPage */
+/* Food log — one day of the training ledger */
 
 .food-log-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px 20px 64px;
-  max-width: 680px;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 760px;
   margin: 0 auto;
+  padding: 24px 20px 72px;
+}
+
+.food-log-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 28px 0 20px;
 }
 
 .food-log-title {
   font-size: 2rem;
-  margin: 40px 0 24px;
-  text-align: center;
+  line-height: 1.1;
+  margin: 0;
 }
 
-.date-navigation {
-  display: flex;
-  justify-content: center;
-  gap: 2px;
-  margin-bottom: 24px;
-  overflow-x: auto;
-  border-bottom: 1px solid var(--paper-line);
-  width: 100%;
-}
-
-.date-button {
-  background: none;
+.food-log-date {
+  margin: 6px 0 0;
   color: var(--ink-soft);
+  font-size: 1rem;
+}
+
+.today-button {
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+}
+
+/* Week strip: seven dated tabs with week steppers either side */
+.week-strip {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  border-bottom: 1px solid var(--paper-line);
+  margin-bottom: 24px;
+}
+
+.week-step {
+  flex: none;
+  width: 36px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.week-step:hover,
+.week-step:focus-visible {
+  color: var(--ink);
+  background: var(--paper-card);
+}
+
+.week-days {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.week-day {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 2px 10px;
+  background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  padding: 8px 12px;
+  margin-bottom: -1px;
+  color: var(--ink-soft);
+  font-family: var(--font-body);
   cursor: pointer;
-  font-weight: 600;
-  font-size: 0.85rem;
-  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease,
+    background-color 0.15s ease;
 }
 
-.date-button.active,
-.date-button:hover {
+.week-day:hover,
+.week-day:focus-visible {
+  color: var(--ink);
+  background: var(--paper-card);
+}
+
+.week-day.is-active {
   color: var(--ink);
   border-bottom-color: var(--ink);
 }
 
-.hour-logs-list {
-  width: 100%;
+.week-day-name {
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
-.hour-log {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 10px 2px;
-  border-bottom: 1px solid var(--paper-line);
+.week-day-num {
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
-.hour-text {
-  flex: none;
-  width: 4rem;
-  padding-top: 3px;
+/* Today is marked with a small ink dot under the date */
+.week-day.is-today .week-day-num::after {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 4px;
+  margin: 3px auto 0;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Day balance: eaten / target / remaining, then the macro split */
+.day-balance {
+  background: var(--paper-card);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-md);
+  padding: 20px 22px 18px;
+}
+
+.balance-figures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0 0 16px;
+}
+
+.balance-figures dt {
+  font-size: 0.78rem;
+  font-weight: 600;
   color: var(--ink-soft);
-  font-size: 0.85rem;
+  margin-bottom: 4px;
 }
 
-.log-entries-container {
-  flex: 1;
-  min-width: 0;
-}
-
-.hour-empty {
+.balance-figures dd {
   margin: 0;
-  padding-top: 3px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink);
+  transition: opacity 0.2s ease;
+}
+
+.balance-figures dd.is-logged {
+  color: var(--logged);
+}
+
+.balance-figures dd.is-flag {
+  color: var(--flag);
+}
+
+.balance-figures .unit {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.balance-empty {
   color: var(--paper-line);
 }
 
-.log-button {
-  flex: none;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 1px solid var(--ink);
-  background: transparent;
+.balance-setup {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 600;
   color: var(--ink);
-  cursor: pointer;
-  font-size: 1rem;
-  line-height: 1;
-  padding: 0;
+  text-underline-offset: 3px;
 }
 
-.log-button:hover {
+.balance-setup:hover {
+  color: var(--logged);
+}
+
+.day-balance.is-loading dd {
+  opacity: 0.35;
+}
+
+.calorie-meter {
+  height: 8px;
+  background: var(--paper-line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.calorie-meter span {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  transform-origin: left center;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.calorie-meter.is-over span {
+  background: var(--flag);
+}
+
+.macro-split {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--paper-line);
+}
+
+.macro-bar {
+  display: flex;
+  height: 6px;
+  background: var(--paper-line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.macro-bar span {
+  height: 100%;
+}
+
+.macro-bar span + span {
+  border-left: 2px solid var(--paper-card);
+}
+
+.macro-bar-protein,
+.macro-swatch-protein {
+  background: var(--ink);
+}
+
+.macro-bar-carbs,
+.macro-swatch-carbs {
+  background: var(--logged);
+}
+
+.macro-bar-fats,
+.macro-swatch-fats {
+  background: var(--gold);
+}
+
+.macro-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.macro-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.macro-legend strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.macro-share {
+  font-size: 0.78rem;
+}
+
+/* Meals */
+.meals {
+  margin-top: 36px;
+}
+
+.meal + .meal {
+  margin-top: 28px;
+}
+
+.meal-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.meal-head h2 {
+  font-size: 1.2rem;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.meal-range {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.meal-kcal {
+  margin-left: auto;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.meal-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.meal-add svg {
+  font-size: 0.7rem;
+  transition: transform 0.2s var(--ease-out-expo);
+}
+
+.meal-add:hover,
+.meal-add:focus-visible,
+.meal-add.is-open {
   background: var(--ink);
   color: var(--paper);
 }
 
-.search-bar-container {
-  width: 100%;
-  margin-top: 10px;
-  position: relative;
+.meal-add.is-open svg {
+  transform: rotate(45deg);
 }
 
+.meal-empty {
+  margin: 0;
+  padding: 12px 2px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--paper-line);
+}
+
+.entry-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--paper-line);
+}
+
+.entry-skeleton span {
+  display: block;
+  height: 10px;
+  width: 55%;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--paper-line) 0%,
+    var(--paper-card) 50%,
+    var(--paper-line) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-sweep 1.2s ease-in-out infinite;
+}
+
+.entry-skeleton span + span {
+  width: 30%;
+}
+
+@keyframes skeleton-sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.food-log-footnote {
+  margin: 32px 0 0;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  max-width: 60ch;
+}
+
+.food-log-page .state-message a {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  .food-log-title {
+    font-size: 1.75rem;
+  }
+
+  .day-balance {
+    padding: 16px;
+  }
+
+  .balance-figures {
+    gap: 10px;
+  }
+
+  .balance-figures dd {
+    font-size: 1.25rem;
+  }
+
+  .balance-figures .unit {
+    display: block;
+    font-size: 0.75rem;
+  }
+
+  .week-step {
+    width: 28px;
+  }
+
+  .week-day-name {
+    font-size: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry-skeleton span {
+    animation: none;
+  }
+}

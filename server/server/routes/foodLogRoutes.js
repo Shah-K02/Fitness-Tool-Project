@@ -5,5 +5,6 @@ const authenticate = require("../middleware/authenticate");
 // Routes for food log management (CRUD) and fetching logs by date for a user
 router.post("/log/food", authenticate, foodLogController.createLog);
 router.get("/logs/:date", authenticate, foodLogController.getLogsByDate);
+router.delete("/log/food/:id", authenticate, foodLogController.deleteLog);
 
 module.exports = router;

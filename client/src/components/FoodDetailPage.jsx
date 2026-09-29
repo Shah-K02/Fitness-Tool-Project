@@ -5,6 +5,7 @@ import "./FoodDetailPage.css";
 import BackButton from "./BackButton";
 import NutrientRing from "./NutrientRing";
 import axios from "axios";
+import { toMySqlDateTime } from "../helpers/nutrition";
 
 const FoodDetailPage = () => {
   const { id } = useParams();
@@ -86,10 +87,8 @@ const FoodDetailPage = () => {
       return;
     }
 
-    const logTimeMySQLFormat = new Date()
-      .toISOString()
-      .replace("T", " ")
-      .substring(0, 19);
+    // Local time: toISOString() stored UTC, shifting entries by the UTC offset.
+    const logTimeMySQLFormat = toMySqlDateTime(new Date());
     const logDetails = {
       food_id: id,
       description: foodDetails.description,

@@ -28,6 +28,23 @@ exports.createLog = async (req, res) => {
   }
 };
 
+exports.deleteLog = async (req, res) => {
+  try {
+    // Scoped to the signed-in user so nobody can delete another user's entry.
+    const [result] = await db.query(
+      "DELETE FROM food_logs WHERE id = ? AND user_id = ?",
+      [req.params.id, req.userId]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Entry not found" });
+    }
+    res.status(204).end();
+  } catch (err) {
+    console.error("Failed to delete food log:", err);
+    res.status(500).json({ message: "Failed to delete entry" });
+  }
+};
+
 const moment = require("moment");
 
 exports.getLogsByDate = async (req, res) => {
