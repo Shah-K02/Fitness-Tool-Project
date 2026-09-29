@@ -69,6 +69,7 @@ const LoginPage = () => {
         setError("Failed to check email. Please try again.");
         setErrorTimestamp(Date.now());
         console.error("Check Email Error:", error);
+        return;
       }
     }
 
@@ -87,7 +88,9 @@ const LoginPage = () => {
       navigate("/user-home");
       setError(null);
     } catch (error) {
-      setError("Failed to sign up. Please try again.");
+      setError(
+        error.response?.data?.message || "Failed to sign up. Please try again."
+      );
       setErrorTimestamp(Date.now());
       console.error("Sign Up Error:", error);
     }
@@ -110,11 +113,13 @@ const LoginPage = () => {
       );
       navigate("/user-home");
       setError(null);
-      setErrorTimestamp(Date.now());
-      localStorage.setItem("token", response.data.token);
     } catch (error) {
+      // 404 = unknown email, 401 = wrong password; the server's message says which.
+      const status = error.response?.status;
       setError(
-        "Failed to log in. Please check your credentials and try again."
+        status === 404 || status === 401
+          ? error.response.data.message
+          : "Failed to log in. Please check your credentials and try again."
       );
       setErrorTimestamp(Date.now());
       console.error("Login Error:", error);

@@ -8,29 +8,29 @@ const useAxios = () => {
   // Retrieve the token once to set up the axios instance
   const token = localStorage.getItem("token");
 
-  const axiosInstance = useMemo(
-    () =>
-      axios.create({
-        baseURL: process.env.REACT_APP_API_BASE_URL,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }),
-    [token]
-  );
-  axiosInstance.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      if (error.response && error.response.status === 401) {
-        localStorage.removeItem("token");
-        navigate("/login");
-        alert("Session timeout, please log in again.");
+  // The interceptor is attached when the instance is created. Adding it on
+  // every render stacked duplicate handlers, so one expired session showed
+  // the alert several times.
+  const axiosInstance = useMemo(() => {
+    const instance = axios.create({
+      baseURL: process.env.REACT_APP_API_BASE_URL,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    instance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          localStorage.removeItem("token");
+          navigate("/login");
+          alert("Session timeout, please log in again.");
+        }
+        return Promise.reject(error);
       }
-      return Promise.reject(error);
-    }
-  );
+    );
+    return instance;
+  }, [token, navigate]);
 
   return axiosInstance;
 };

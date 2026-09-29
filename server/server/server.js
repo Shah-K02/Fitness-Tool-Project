@@ -1,5 +1,13 @@
 // server.js
 require("dotenv").config();
+
+if (!process.env.JWT_SECRET) {
+  console.error(
+    "JWT_SECRET is not set. Add it to server/server/.env; login and registration cannot work without it."
+  );
+  process.exit(1);
+}
+
 const express = require("express");
 const userRoutes = require("./routes/userRoutes");
 const foodRoutes = require("./routes/foodRoutes");

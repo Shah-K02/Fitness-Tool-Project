@@ -5,6 +5,10 @@ const db = require("../../config/db");
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(400).send({ message: "Email and password are required." });
+  }
+
   try {
     const [results] = await db.query("SELECT * FROM users WHERE email = ?", [
       email,
@@ -26,7 +30,9 @@ exports.loginUser = async (req, res) => {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.status(200).send({ message: "Login successful!", token });
+    res
+      .status(200)
+      .send({ message: "Login successful!", token, userId: user.id });
   } catch (error) {
     console.error("Login Error:", error);
     res.status(500).send({ message: "Error on the server." });
@@ -36,6 +42,10 @@ exports.loginUser = async (req, res) => {
 exports.registerUser = async (req, res) => {
   const { email, password } = req.body;
   let connection;
+
+  if (!email || !password) {
+    return res.status(400).send({ message: "Email and password are required." });
+  }
 
   try {
     connection = await db.getConnection();
@@ -53,22 +63,25 @@ exports.registerUser = async (req, res) => {
       [userId, email]
     );
 
-    await connection.commit();
+    // Sign before committing so a signing failure rolls the new user back
+    // instead of leaving an account the person was told wasn't created.
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+    await connection.commit();
 
-    connection.release();
     res
       .status(201)
       .send({ message: "User registered successfully!", token, userId });
   } catch (error) {
-    if (connection) {
-      await connection.rollback();
-      connection.release();
+    if (connection) await connection.rollback();
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(409).send({ message: "Email is already registered." });
     }
     console.error("Registration Error:", error);
     res.status(500).send({ message: "Error registering user." });
+  } finally {
+    if (connection) connection.release();
   }
 };
 

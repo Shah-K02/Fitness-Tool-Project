@@ -5,11 +5,12 @@ const UserContext = createContext(null);
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  // A function to log in the user and set the user state
-  const login = (userData) => {
+  // A function to log in the user and set the user state. The token is
+  // stored separately so requests can send it as a Bearer header.
+  const login = (userData, token) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", userData.token);
+    localStorage.setItem("token", token);
   };
 
   // A function to log out the user
