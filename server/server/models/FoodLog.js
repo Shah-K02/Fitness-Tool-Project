@@ -1,4 +1,4 @@
-const db = require("../../config/db");
+const db = require("../db");
 
 class FoodLog {
   static async create(logData) {

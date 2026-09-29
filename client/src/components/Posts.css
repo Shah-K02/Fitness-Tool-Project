@@ -165,3 +165,38 @@
   outline: 2px solid var(--ink);
   outline-offset: 1px;
 }
+
+.post-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.post-actions span {
+  margin-right: 4px;
+}
+
+.post-author {
+  font-weight: 600;
+}
+
+.post-delete:hover {
+  background: var(--flag);
+  border-color: var(--flag);
+}
+
+.post-comments {
+  margin-top: 12px;
+}
+
+.post-muted {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.post-error {
+  margin: 8px 0 0;
+  color: var(--flag);
+  font-size: 0.9rem;
+}

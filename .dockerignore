@@ -1,0 +1,13 @@
+**/node_modules
+**/.env
+**/.env.local
+client/build
+server/server/uploads
+server/server/__tests__
+**/*.test.js
+.git
+.github
+.claude
+.impeccable
+.playwright-mcp
+*.md

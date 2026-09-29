@@ -1,29 +1,19 @@
 // commentModel.js
-const db = require("../../config/db");
+const db = require("../db");
 
+// The comments table uses camelCase columns (postId, userId, createdAt).
 class CommentModel {
   static async findByPostId(postId) {
-    try {
-      const [rows] = await db.query(
-        "SELECT * FROM comments WHERE post_id = ?",
-        [postId]
-      );
-      return rows;
-    } catch (error) {
-      throw error;
-    }
+    const [rows] = await db.query("SELECT * FROM comments WHERE postId = ?", [postId]);
+    return rows;
   }
 
   static async create(postId, userId, text) {
-    try {
-      const [result] = await db.query(
-        "INSERT INTO comments (post_id, user_id, text) VALUES (?, ?, ?)",
-        [postId, userId, text]
-      );
-      return { id: result.insertId, postId, userId, text };
-    } catch (error) {
-      throw error;
-    }
+    const [result] = await db.query(
+      "INSERT INTO comments (postId, userId, text) VALUES (?, ?, ?)",
+      [postId, userId, text]
+    );
+    return { id: result.insertId, postId: Number(postId), userId, text };
   }
 }
 

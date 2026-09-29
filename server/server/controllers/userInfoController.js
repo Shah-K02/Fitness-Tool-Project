@@ -1,98 +1,98 @@
-const db = require("../../config/db");
+const db = require("../db");
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+const GENDERS = ["male", "female", "other"];
+const ACTIVITY_LEVELS = [
+  "sedentary",
+  "lightly_active",
+  "moderately_active",
+  "very_active",
+  "extra_active",
+];
 
 exports.fetchUserInfo = async (req, res) => {
-  const userId = req.userId;
-  console.log("Attempting to fetch user info for userID:", userId);
-  const query =
-    "SELECT name, email, birthday, gender, height, weight, bmi, activityLevel FROM users_info WHERE user_id = ?";
-
   try {
-    const [results] = await db.query(query, [userId]);
-    console.log("User info retrieved:", results);
-    if (results.length > 0) {
-      return res.json(results[0]);
-    } else {
-      console.log("No user info found for userID:", userId);
-      return res.json({
-        name: "",
-        email: "",
-        birthday: "",
-        gender: "",
-        height: "",
-        weight: "",
-        bmi: "",
-        activityLevel: "",
-      });
-    }
-  } catch (err) {
-    console.error(
-      "Failed to fetch user info for userID:",
-      userId,
-      "Error:",
-      err
+    const [results] = await db.query(
+      "SELECT name, email, birthday, gender, height, weight, bmi, activityLevel FROM users_info WHERE user_id = ?",
+      [req.userId]
     );
-    return res.status(500).send("Failed to fetch user info");
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Profile not found." });
+    }
+    res.json(results[0]);
+  } catch (err) {
+    console.error("Failed to fetch profile:", err.message);
+    res.status(500).json({ message: "Couldn't load your profile." });
   }
 };
 
-// Update user info using promises
+// Optional number within a range; empty → null.
+const optionalNumber = (value, min, max) => {
+  if (value === null || value === undefined || value === "") return { value: null };
+  const n = Number(value);
+  if (!Number.isFinite(n) || n < min || n > max) return { error: true };
+  return { value: Math.round(n * 100) / 100 };
+};
+
 exports.updateUserInfo = async (req, res) => {
-  const { name, email, birthday, gender, height, weight, bmi, activityLevel } =
-    req.body;
-  const userId = req.userId;
-  console.log("Updating user info for userID:", userId);
+  const { name, birthday, gender, activityLevel } = req.body;
+  const email = typeof req.body.email === "string" ? req.body.email.trim().toLowerCase() : "";
 
-  const validGenders = ["male", "female", "other"];
-  const validActivityLevels = [
-    "sedentary",
-    "lightly_active",
-    "moderately_active",
-    "very_active",
-    "extra_active",
-  ];
+  const errors = [];
+  if (typeof name !== "string" || name.length > 255) errors.push("name");
+  if (!EMAIL_PATTERN.test(email) || email.length > 255) errors.push("email");
+  if (birthday && (!DATE_PATTERN.test(birthday) || Number.isNaN(Date.parse(birthday)) || new Date(birthday) > new Date()))
+    errors.push("birthday");
+  if (!GENDERS.includes(gender)) errors.push("gender");
+  if (!ACTIVITY_LEVELS.includes(activityLevel)) errors.push("activity level");
+  const height = optionalNumber(req.body.height, 100, 250);
+  const weight = optionalNumber(req.body.weight, 30, 300);
+  const bmi = optionalNumber(req.body.bmi, 5, 100);
+  if (height.error) errors.push("height");
+  if (weight.error) errors.push("weight");
+  if (bmi.error) errors.push("BMI");
 
-  if (!validGenders.includes(gender)) {
-    console.log("Invalid gender:", gender);
-    return res
-      .status(400)
-      .send("Invalid gender value. Please select a valid option.");
+  if (errors.length > 0) {
+    return res.status(400).json({ message: `Check these fields: ${errors.join(", ")}.` });
   }
 
-  if (!validActivityLevels.includes(activityLevel)) {
-    console.log("Invalid activity level:", activityLevel);
-    return res
-      .status(400)
-      .send("Invalid activity level value. Please select a valid option.");
-  }
-
-  const query =
-    "UPDATE users_info SET name = ?, email = ?, birthday = ?, gender = ?, height = ?, weight = ?, bmi = ?, activityLevel = ? WHERE user_id = ?";
-
+  let connection;
   try {
-    const [result] = await db.query(query, [
-      name,
-      email,
-      birthday,
-      gender,
-      height,
-      weight,
-      bmi,
-      activityLevel,
-      userId,
-    ]);
-    if (result.affectedRows === 0) {
-      console.log("No user found to update for userID:", userId);
-      return res.status(404).send("User not found");
-    }
-    console.log("User info updated successfully for userID:", userId);
-    return res.send("Profile updated successfully");
-  } catch (err) {
-    console.error(
-      "Failed to update user info for userID:",
-      userId,
-      "Error:",
-      err
+    connection = await db.getConnection();
+    await connection.beginTransaction();
+
+    const [result] = await connection.query(
+      "UPDATE users_info SET name = ?, email = ?, birthday = ?, gender = ?, height = ?, weight = ?, bmi = ?, activityLevel = ? WHERE user_id = ?",
+      [
+        name.trim() || "Unknown",
+        email,
+        birthday || null,
+        gender,
+        height.value,
+        weight.value,
+        bmi.value,
+        activityLevel,
+        req.userId,
+      ]
     );
-    return res.status(500).send("Failed to update user info");
+    if (result.affectedRows === 0) {
+      await connection.rollback();
+      return res.status(404).json({ message: "Profile not found." });
+    }
+    // Keep the sign-in email in step with the profile email.
+    await connection.query("UPDATE users SET email = ? WHERE id = ?", [email, req.userId]);
+
+    await connection.commit();
+    res.json({ message: "Profile updated successfully" });
+  } catch (err) {
+    if (connection) await connection.rollback();
+    if (err.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({ message: "That email is already used by another account." });
+    }
+    console.error("Failed to update profile:", err.message);
+    res.status(500).json({ message: "Couldn't save your profile." });
+  } finally {
+    if (connection) connection.release();
   }
 };

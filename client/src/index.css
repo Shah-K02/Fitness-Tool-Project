@@ -307,22 +307,30 @@ p {
   gap: 2px;
 }
 
-.tab-nav a {
+.tab-nav a,
+.tab-nav button {
+  font-family: var(--font-body);
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--ink-soft);
   text-decoration: none;
   padding: 8px 14px;
+  background: none;
+  border: none;
   border-bottom: 2px solid transparent;
+  cursor: pointer;
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 .tab-nav a:hover,
-.tab-nav a:focus-visible {
+.tab-nav a:focus-visible,
+.tab-nav button:hover,
+.tab-nav button:focus-visible {
   color: var(--ink);
 }
 
-.tab-nav a.is-active {
+.tab-nav a.is-active,
+.tab-nav button.is-active {
   color: var(--ink);
   border-bottom-color: var(--ink);
 }
@@ -476,10 +484,15 @@ nav {
   display: flex;
   align-items: center;
   gap: 0.75em;
+  width: 100%;
   padding: 0.9em 1.25em;
+  font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 600;
+  text-align: left;
   color: #d9d6cd;
+  background: none;
+  border: none;
   margin: 0;
   text-decoration: none;
   transition: background-color 0.15s ease, color 0.15s ease;

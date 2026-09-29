@@ -89,6 +89,7 @@ const UserInfoPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState(null); // null | "saved" | "error"
+  const [saveError, setSaveError] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
   const [errorTimestamp, setErrorTimestamp] = useState(null);
@@ -167,6 +168,7 @@ const UserInfoPage = () => {
       setSaveStatus("saved");
     } catch (err) {
       setSaveStatus("error");
+      setSaveError(err.response?.data?.message || null);
     } finally {
       setIsSaving(false);
     }
@@ -433,7 +435,7 @@ const UserInfoPage = () => {
               )}
               {saveStatus === "error" && (
                 <span className="is-flag">
-                  Couldn&rsquo;t save your changes. Try again.
+                  {saveError || "Couldn’t save your changes. Try again."}
                 </span>
               )}
               {submitted && saveStatus == null && Object.values(errors).some(Boolean) && (

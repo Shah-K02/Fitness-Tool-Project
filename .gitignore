@@ -25,3 +25,7 @@ yarn-error.log*
 
 # design tool files
 .impeccable/
+
+# Local tooling output
+.playwright-mcp/
+.claude/

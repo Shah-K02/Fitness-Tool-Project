@@ -1,204 +1,155 @@
+const fs = require("fs");
+const path = require("path");
 const Post = require("../models/postModel");
 const CommentModel = require("../models/commentModel");
-const db = require("../../config/db");
+const db = require("../db");
+const config = require("../config");
+
+const DESCRIPTION_MAX = 2000;
+const COMMENT_MAX = 1000;
+
+const fail = (res, status, message) => res.status(status).json({ status: "fail", message });
+
+const validId = (value) => /^\d+$/.test(String(value));
+
+const removeUpload = (imagePath) => {
+  if (!imagePath) return;
+  // Only ever delete inside the uploads folder.
+  const file = path.join(config.uploadsDir, path.basename(imagePath));
+  fs.unlink(file, () => {});
+};
 
 exports.createPost = async (req, res) => {
+  const description = typeof req.body.description === "string" ? req.body.description.trim() : "";
+  if (!req.file) return fail(res, 400, "Choose an image to post.");
+  if (description.length > DESCRIPTION_MAX) {
+    removeUpload(req.file.filename);
+    return fail(res, 400, `Keep the description under ${DESCRIPTION_MAX} characters.`);
+  }
+
+  // Stored as a URL path the client can load: uploads/<file>.
+  const image = `uploads/${req.file.filename}`;
   try {
-    const { description } = req.body;
-    const image = req.file.path; // Path where the image is saved
-    const userId = req.userId;
-
-    const [result] = await db.query(
-      "INSERT INTO posts (description, image, user_id) VALUES (?, ?, ?)",
-      [description, image, userId]
-    );
-
-    res.status(201).json({
-      status: "success",
-      data: {
-        post: {
-          id: result.insertId,
-          description,
-          image,
-          userId,
-        },
-      },
-    });
+    const post = await Post.create({ description, image, userId: req.userId });
+    res.status(201).json({ status: "success", data: { post } });
   } catch (error) {
-    res.status(400).json({
-      status: "fail",
-      message: error.message,
-    });
+    removeUpload(req.file.filename);
+    console.error("Failed to create post:", error.message);
+    fail(res, 500, "Couldn't create your post. Please try again.");
   }
 };
 
-// Fetch all posts
 exports.getAllPosts = async (req, res) => {
-  const userId = req.userId;
   try {
-    const posts = (await Post.findAll(userId)) || [];
-    res.status(200).json({
-      status: "success",
-      results: posts.length,
-      data: { posts },
-    });
+    const posts = await Post.findAll(req.userId);
+    res.status(200).json({ status: "success", results: posts.length, data: { posts } });
   } catch (error) {
-    res.status(404).json({
-      status: "fail",
-      message: error.message,
-    });
+    console.error("Failed to fetch posts:", error.message);
+    fail(res, 500, "Couldn't load posts.");
   }
 };
 
-// Fetch a single post by ID
 exports.getPostById = async (req, res) => {
+  if (!validId(req.params.postId)) return fail(res, 404, "Post not found.");
   try {
     const post = await Post.findById(req.params.postId);
-    if (!post) {
-      return res.status(404).json({
-        status: "fail",
-        message: "No post found with that ID",
-      });
-    }
-    res.status(200).json({
-      status: "success",
-      data: {
-        post,
-      },
-    });
+    if (!post) return fail(res, 404, "Post not found.");
+    res.status(200).json({ status: "success", data: { post } });
   } catch (error) {
-    res.status(404).json({
-      status: "fail",
-      message: error.message,
-    });
+    console.error("Failed to fetch post:", error.message);
+    fail(res, 500, "Couldn't load that post.");
   }
 };
 
-// Delete a post
 exports.deletePost = async (req, res) => {
+  if (!validId(req.params.postId)) return fail(res, 404, "Post not found.");
   try {
-    const post = await Post.findByIdAndDelete(req.params.postId);
-    if (!post) {
-      return res.status(404).json({
-        status: "fail",
-        message: "No post found with that ID",
-      });
-    }
-    res.status(204).json({
-      status: "success",
-      data: null, // 204 No Content
-    });
+    const post = await Post.findById(req.params.postId);
+    if (!post) return fail(res, 404, "Post not found.");
+    // Only the author can delete their post.
+    if (post.user_id !== req.userId) return fail(res, 403, "You can only delete your own posts.");
+
+    await Post.deleteById(post.id);
+    removeUpload(post.image);
+    res.status(204).end();
   } catch (error) {
-    res.status(404).json({
-      status: "fail",
-      message: error.message,
-    });
+    console.error("Failed to delete post:", error.message);
+    fail(res, 500, "Couldn't delete that post.");
   }
 };
 
 exports.createComment = async (req, res) => {
-  const { text, userId } = req.body;
   const { postId } = req.params;
+  const text = typeof req.body.text === "string" ? req.body.text.trim() : "";
 
-  if (!text || !userId || !postId) {
-    return res.status(400).json({
-      status: "fail",
-      message:
-        "Missing required fields. Ensure text, userId, and postId are provided.",
-    });
-  }
+  if (!validId(postId)) return fail(res, 404, "Post not found.");
+  if (!text) return fail(res, 400, "Write a comment first.");
+  if (text.length > COMMENT_MAX) return fail(res, 400, `Keep comments under ${COMMENT_MAX} characters.`);
 
   try {
-    const comment = await CommentModel.create(postId, userId, text);
-    return res.status(201).json({
-      status: "success",
-      data: { comment },
-    });
+    // The author is always the signed-in user, never a value from the request.
+    const comment = await CommentModel.create(postId, req.userId, text);
+    res.status(201).json({ status: "success", data: { comment } });
   } catch (error) {
-    console.error("Error creating comment:", error);
-    return res.status(500).json({
-      status: "fail",
-      message: "Server error while creating comment: " + error.message,
-    });
+    if (error.code === "ER_NO_REFERENCED_ROW_2") return fail(res, 404, "Post not found.");
+    console.error("Failed to create comment:", error.message);
+    fail(res, 500, "Couldn't post your comment.");
   }
 };
 
 exports.getCommentsByPostId = async (req, res) => {
-  const postId = req.params.postId;
+  if (!validId(req.params.postId)) return fail(res, 404, "Post not found.");
   try {
     const [comments] = await db.query(
       `SELECT c.id, c.postId, c.userId, c.text, c.createdAt, ui.name AS userName
-      FROM comments c
-      JOIN users_info ui ON c.userId = ui.user_id
-      WHERE c.postId = ?`,
-      [postId]
+       FROM comments c
+       JOIN users_info ui ON c.userId = ui.user_id
+       WHERE c.postId = ?
+       ORDER BY c.createdAt`,
+      [req.params.postId]
     );
-    // Ensure comments is always an array
-    res.status(200).json({
-      status: "success",
-      data: { comments: comments || [] },
-    });
+    res.status(200).json({ status: "success", data: { comments } });
   } catch (error) {
-    console.error("Failed to fetch comments:", error);
-    res.status(500).json({
-      status: "fail",
-      message: "Error retrieving comments: " + error.message,
-    });
+    console.error("Failed to fetch comments:", error.message);
+    fail(res, 500, "Couldn't load comments.");
   }
 };
 
-// In postsController.js
 exports.likePost = async (req, res) => {
-  const postId = req.params.postId;
-  const userId = req.userId;
-
+  if (!validId(req.params.postId)) return fail(res, 404, "Post not found.");
   try {
-    const result = await Post.like(postId, userId);
-    res
-      .status(201)
-      .json({ status: "success", message: "Liked successfully", data: result });
+    const result = await Post.like(req.params.postId, req.userId);
+    res.status(201).json({ status: "success", message: "Liked successfully", data: result });
   } catch (error) {
-    console.error("Failed to like post:", error);
-    if (error.message === "Post already liked by this user") {
-      res.status(409).json({ status: "fail", message: error.message });
-    } else {
-      res
-        .status(500)
-        .json({ status: "fail", message: "Server error: " + error.message });
-    }
+    if (error.message === "Post already liked by this user") return fail(res, 409, error.message);
+    if (error.code === "ER_NO_REFERENCED_ROW_2") return fail(res, 404, "Post not found.");
+    console.error("Failed to like post:", error.message);
+    fail(res, 500, "Couldn't like that post.");
   }
 };
 
 exports.unlikePost = async (req, res) => {
-  const postId = req.params.postId;
-  const userId = req.userId;
-
+  if (!validId(req.params.postId)) return fail(res, 404, "Post not found.");
   try {
-    const result = await Post.unlike(postId, userId);
-    res.status(204).json({
-      status: "success",
-      message: "Unliked successfully",
-      data: result,
-    });
+    await Post.unlike(req.params.postId, req.userId);
+    res.status(204).end();
   } catch (error) {
-    console.error("Error unliking the post:", error);
-    res
-      .status(500)
-      .json({ status: "fail", message: "Failed to unlike the post." });
+    if (error.message === "Like not found or already removed") return fail(res, 404, error.message);
+    console.error("Failed to unlike post:", error.message);
+    fail(res, 500, "Couldn't unlike that post.");
   }
 };
 
-// Get like count for a post
 exports.getLikeCount = async (req, res) => {
-  const postId = req.params.postId;
-
+  if (!validId(req.params.postId)) return fail(res, 404, "Post not found.");
   try {
     const [likes] = await db.query(
       "SELECT COUNT(*) AS likeCount FROM likes WHERE post_id = ?",
-      [postId]
+      [req.params.postId]
     );
     res.status(200).json({ status: "success", data: likes[0] });
   } catch (error) {
-    res.status(404).json({ status: "fail", message: error.message });
+    console.error("Failed to count likes:", error.message);
+    fail(res, 500, "Couldn't load likes.");
   }
 };

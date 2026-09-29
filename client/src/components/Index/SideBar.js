@@ -32,9 +32,9 @@ const SideBar = ({ links, close, user, logout }) => {
           <span>{user.email}</span>
         </div>
       )}
-      <a className="sidebar-link" onClick={handleLogout}>
+      <button type="button" className="sidebar-link" onClick={handleLogout}>
         Logout
-      </a>
+      </button>
     </div>
   );
 };

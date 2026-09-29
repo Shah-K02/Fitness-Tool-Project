@@ -1,70 +1,134 @@
-# Getting Started with Create React App
+# Personalised Fitness Assistant
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A personal training log: log food by time of day against a daily calorie
+target, calculate calories and macros for a goal, search exercises with
+demonstrations and tutorial videos, and share progress in a community feed.
 
-## Available Scripts
+- **Client:** React 18 (Create React App), in `client/`
+- **API:** Node 20 + Express 4, in `server/server/`
+- **Database:** MySQL 8, schema in `server/db/`
+- **External APIs:** USDA FoodData Central (food search), ExerciseDB and
+  YouTube Search via RapidAPI (exercises and tutorial videos)
 
-In the project directory, you can run:
+In production a single Express server serves both the API (`/api/*`) and the
+built React app, so there's one service to deploy and no CORS setup.
 
-### `npm start`
+## Requirements
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Node.js 20 or newer
+- MySQL 8
+- API keys: a [USDA FoodData Central key](https://fdc.nal.usda.gov/api-key-signup)
+  (free) and a [RapidAPI](https://rapidapi.com) key subscribed to
+  **ExerciseDB** and **YouTube Search and Download**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Local development
 
-### `npm test`
+```bash
+# 1. Install dependencies
+npm run install:all
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# 2. Create the database and tables
+mysql -u root -p -e "CREATE DATABASE fitness_app"
+mysql -u root -p fitness_app < server/db/schema.sql
 
-### `npm run build`
+# 3. Configure the server
+cp server/server/.env.example server/server/.env
+#    then fill in the database details, JWT_SECRET and API keys
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# 4. Run the API (port 8081) and the client (port 3000) in two terminals
+npm run dev:server
+npm run dev:client
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Open http://localhost:3000. The client's dev server proxies `/api` requests
+to the API.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Tests
 
-### `npm run eject`
+```bash
+npm test
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Runs the API tests (`server/server/__tests__`, database mocked) and the client
+tests. GitHub Actions runs the same tests, a dependency audit and a production
+build on every push (`.github/workflows/ci.yml`).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Configuration
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+All settings are environment variables, documented in
+[`server/server/.env.example`](server/server/.env.example). The ones a
+deployment must set:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+| Variable | Notes |
+|---|---|
+| `NODE_ENV` | `production` |
+| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_NAME` | MySQL connection |
+| `DB_SSL` | `true` for managed databases that require TLS |
+| `JWT_SECRET` | Random string, at least 32 characters |
+| `USDA_API_KEY` | Without it, food search falls back to USDA's heavily rate-limited `DEMO_KEY` |
+| `REACT_APP_RAPID_API_KEY` | Used by the API server only; never sent to the browser |
+| `PORT` | Usually set by the host |
 
-## Learn More
+The server refuses to start if the required variables are missing or the JWT
+secret is too short in production.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Deploying
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Any Node host (Render, Railway, Heroku, a VPS)
 
-### Code Splitting
+- **Build command:** `npm run build` (builds the client and installs the
+  server's production dependencies only; run `npm run install:all` again
+  before developing or testing locally)
+- **Start command:** `npm start`
+- **Health check path:** `/api/health`
+- Set the environment variables above.
+- Create the tables once with `server/db/schema.sql`.
+- Uploaded post images are written to `server/server/uploads` (or
+  `UPLOADS_DIR`). Hosts with ephemeral disks lose these on redeploy, so attach
+  a persistent disk at that path.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Docker
 
-### Analyzing the Bundle Size
+```bash
+docker build -t fitness-assistant .
+docker run -p 8081:8081 --env-file server/server/.env -e NODE_ENV=production \
+  -v fitness-uploads:/app/server/server/uploads fitness-assistant
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Upgrading an existing database
 
-### Making a Progressive Web App
+Databases created before `server/db/schema.sql` existed need one migration,
+which adds unique emails and cascading deletes:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+mysql -u <user> -p <database> < server/db/migrations/001_integrity_constraints.sql
+```
 
-### Advanced Configuration
+## Security
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Passwords are hashed with bcrypt (cost 12). Sign-in returns a JWT that
+  expires after an hour.
+- Login and registration are rate limited, as are the exercise and food
+  lookups that spend third-party API quota.
+- Security headers via Helmet, including a Content-Security-Policy.
+- Uploads accept JPEG, PNG, GIF and WebP only (checked by file contents, not
+  just the declared type), up to 5 MB, saved under random names.
+- Users can only change or delete their own posts, food entries and profile.
+- API errors never expose internal details.
 
-### Deployment
+## Project structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+client/                 React app
+  src/components/       Pages and components
+  src/helpers/          Auth context, API client, nutrition maths
+server/
+  db/                   schema.sql and migrations
+  server/               Express API
+    app.js              App setup: security, rate limits, routes
+    server.js           Starts the server
+    config.js           Environment configuration
+    db.js               MySQL connection pool
+    routes/ controllers/ models/ middleware/
+    __tests__/          API tests
+```

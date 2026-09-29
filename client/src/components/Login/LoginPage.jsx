@@ -39,8 +39,8 @@ const LoginPage = () => {
       setError("Passwords do not match.");
       setErrorTimestamp(Date.now());
       return;
-    } else if (userCredentials.signUpPassword.length < 6) {
-      setError("Password must be at least 6 characters long.");
+    } else if (userCredentials.signUpPassword.length < 8) {
+      setError("Password must be at least 8 characters long.");
       setErrorTimestamp(Date.now());
       return;
     } else if (!userCredentials.signUpEmail.includes("@")) {
@@ -128,26 +128,29 @@ const LoginPage = () => {
 
   const toggleSignUp = () => setIsSignUpActive(true);
   const toggleLogin = () => setIsSignUpActive(false);
-  const preventDefault = (event) => event.preventDefault();
 
   return (
     <div className="login-page">
       <div className="login-container">
         <div className="login-tabs tab-nav">
-          <a
+          <button
+            type="button"
             className={!isSignUpActive ? "is-active" : undefined}
             onClick={toggleLogin}
+            aria-pressed={!isSignUpActive}
             data-testid="toggle-signin"
           >
             Sign In
-          </a>
-          <a
+          </button>
+          <button
+            type="button"
             className={isSignUpActive ? "is-active" : undefined}
             onClick={toggleSignUp}
+            aria-pressed={isSignUpActive}
             data-testid="toggle-signup"
           >
             Create Account
-          </a>
+          </button>
         </div>
         <ErrorMessage
           message={error}
@@ -224,14 +227,6 @@ const LoginPage = () => {
               value={userCredentials.signInPassword}
               data-testid="signin-password"
             />
-            <a
-              href="#"
-              className="forgot-password"
-              onClick={preventDefault}
-              data-testid="forgot-password-link"
-            >
-              Forgot Your Password?
-            </a>
             <button type="submit" className="btn btn-primary" data-testid="signin-submit">
               Sign In
             </button>
