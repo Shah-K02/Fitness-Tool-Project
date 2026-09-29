@@ -58,7 +58,6 @@ function NutrientRing({ values, size = 100, strokeWidth = 10, calories }) {
           className="calories-text"
           dominantBaseline="middle"
           textAnchor="middle"
-          fill="black"
         >
           {calories} kcal
         </text>
@@ -67,21 +66,21 @@ function NutrientRing({ values, size = 100, strokeWidth = 10, calories }) {
         <p>
           <span
             className="legend-color"
-            style={{ backgroundColor: "#dc0000" }}
+            style={{ backgroundColor: "#161a22" }}
           ></span>{" "}
           Protein
         </p>
         <p>
           <span
             className="legend-color"
-            style={{ backgroundColor: "#ffa500" }}
+            style={{ backgroundColor: "#2f5d42" }}
           ></span>{" "}
           Carbs
         </p>
         <p>
           <span
             className="legend-color"
-            style={{ backgroundColor: "#36454f" }}
+            style={{ backgroundColor: "#a8791f" }}
           ></span>{" "}
           Fats
         </p>

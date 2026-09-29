@@ -1,5 +1,5 @@
-// LogEntry.js
 import React from "react";
+import "./LogEntry.css";
 
 const LogEntry = ({ entry }) => {
   const { id, description, log_time, protein, carbs, fats, calories } = entry;
@@ -11,14 +11,14 @@ const LogEntry = ({ entry }) => {
 
   return (
     <div className="log-entry" key={id}>
-      <h4>{description}</h4>
-      <p>Logged at: {displayTime}</p>
-      <ul>
-        <li>Protein: {protein}g</li>
-        <li>Carbs: {carbs}g</li>
-        <li>Fats: {fats}g</li>
-        <li>Calories: {calories} kcal</li>
-      </ul>
+      <div className="log-entry-row">
+        <span className="log-entry-desc">{description}</span>
+        <span className="log-entry-kcal num">{calories} kcal</span>
+      </div>
+      <p className="log-entry-meta">
+        {displayTime} &middot; P {protein}g &middot; C {carbs}g &middot; F{" "}
+        {fats}g
+      </p>
     </div>
   );
 };

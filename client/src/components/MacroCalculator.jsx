@@ -154,15 +154,11 @@ const MacroCalculator = () => {
             label: "Macronutrient Distribution",
             data: chartData,
             backgroundColor: [
-              "rgba(255, 99, 132, 0.6)",
-              "rgba(54, 162, 235, 0.6)",
-              "rgba(255, 206, 86, 0.6)",
+              "rgba(22, 26, 34, 0.85)",
+              "rgba(47, 93, 66, 0.85)",
+              "rgba(168, 121, 31, 0.85)",
             ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-            ],
+            borderColor: ["#161a22", "#2f5d42", "#a8791f"],
             borderWidth: 1,
           },
         ],
@@ -276,7 +272,9 @@ const MacroCalculator = () => {
             Maintain weight
           </label>
           <br />
-          <button type="submit">Calculate</button>
+          <button type="submit" className="btn btn-primary">
+            Calculate
+          </button>
         </form>
       </div>
       {/* Display results */}

@@ -127,123 +127,111 @@ const LoginPage = () => {
 
   return (
     <div className="login-page">
-      <ErrorMessage
-        message={error}
-        timestamp={errorTimestamp}
-        data-testid="error-message"
-      />
-      <div
-        className={`login-container ${isSignUpActive ? "active" : ""}`}
-        id="container"
-      >
-        {/* Sign Up Form */}
-        <div className="form-container sign-up-container">
-          <form id="signup-form" onSubmit={handleSignup}>
+      <div className="login-container">
+        <div className="login-tabs tab-nav">
+          <a
+            className={!isSignUpActive ? "is-active" : undefined}
+            onClick={toggleLogin}
+            data-testid="toggle-signin"
+          >
+            Sign In
+          </a>
+          <a
+            className={isSignUpActive ? "is-active" : undefined}
+            onClick={toggleSignUp}
+            data-testid="toggle-signup"
+          >
+            Create Account
+          </a>
+        </div>
+        <ErrorMessage
+          message={error}
+          timestamp={errorTimestamp}
+          data-testid="error-message"
+        />
+        {isSignUpActive ? (
+          <form
+            id="signup-form"
+            className="login-form"
+            onSubmit={handleSignup}
+          >
             <h1>Create Account</h1>
+            <p className="login-form-sub">
+              Enter your details and start the record.
+            </p>
+            <label htmlFor="email-signup">Email</label>
             <input
               type="email"
               id="email-signup"
               name="signUpEmail"
-              placeholder="Email"
               required
-              aria-label="Email"
               onChange={handleInputChange}
               value={userCredentials.signUpEmail}
               data-testid="signup-email"
             />
+            <label htmlFor="password-signup">Password</label>
             <input
               type="password"
               id="password-signup"
               name="signUpPassword"
-              placeholder="Password"
               required
-              aria-label="Password"
               onChange={handleInputChange}
               value={userCredentials.signUpPassword}
               data-testid="signup-password"
             />
+            <label htmlFor="confirm-password">Confirm Password</label>
             <input
               type="password"
               id="confirm-password"
               name="confirmPassword"
-              placeholder="Confirm Password"
               required
-              aria-label="Confirm Password"
               onChange={handleInputChange}
               value={userCredentials.confirmPassword}
               data-testid="signup-confirm-password"
             />
-            <button type="submit" data-testid="signup-submit">
+            <button type="submit" className="btn btn-primary" data-testid="signup-submit">
               Sign Up
             </button>
           </form>
-        </div>
-        {/* Sign In Form */}
-        <div className="form-container sign-in-container">
-          <form onSubmit={handleLogin}>
-            <h1>Sign in</h1>
+        ) : (
+          <form className="login-form" onSubmit={handleLogin}>
+            <h1>Sign In</h1>
+            <p className="login-form-sub">
+              To keep connected, sign in with your personal info.
+            </p>
+            <label htmlFor="email-signin">Email</label>
             <input
               type="email"
               id="email-signin"
               name="signInEmail"
-              placeholder="Email"
               required
-              aria-label="Email"
               onChange={handleInputChange}
               value={userCredentials.signInEmail}
               data-testid="signin-email"
             />
+            <label htmlFor="password-signin">Password</label>
             <input
               type="password"
               id="password-signin"
               name="signInPassword"
-              placeholder="Password"
               required
-              aria-label="Password"
               onChange={handleInputChange}
               value={userCredentials.signInPassword}
               data-testid="signin-password"
             />
             <a
               href="#"
+              className="forgot-password"
               onClick={preventDefault}
               data-testid="forgot-password-link"
             >
               Forgot Your Password?
             </a>
-            <button type="submit" data-testid="signin-submit">
+            <button type="submit" className="btn btn-primary" data-testid="signin-submit">
               Sign In
             </button>
           </form>
-        </div>
-        <div className="toggle-container">
-          <div className="toggle">
-            <div
-              className="toggle-panel toggle-left"
-              onClick={toggleLogin}
-              data-testid="toggle-signin"
-            >
-              <h1>Welcome Back!</h1>
-              <p>
-                To keep connected with us please login with your personal info
-              </p>
-              <button className="ghost" id="signIn" data-testid="button-signin">
-                Sign In
-              </button>
-            </div>
-            <div
-              className="toggle-panel toggle-right"
-              onClick={toggleSignUp}
-              data-testid="toggle-signup"
-            >
-              <h1>Hello, Friend!</h1>
-              <p>Enter your personal details and start journey with us</p>
-              <button className="ghost" id="signUp" data-testid="button-signup">
-                Sign Up
-              </button>
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

@@ -11,7 +11,13 @@ import {
 
 const ExerciseCard = ({ exercise }) => (
   <Grid item xs={12} sm={6} md={4}>
-    <Card>
+    <Card
+      sx={{
+        border: "1px solid var(--ink)",
+        borderRadius: "8px",
+        boxShadow: "none",
+      }}
+    >
       <CardMedia
         component="img"
         loading="lazy"
@@ -20,22 +26,24 @@ const ExerciseCard = ({ exercise }) => (
           objectFit: "cover",
           overflow: "hidden",
           aspectRatio: "1/1",
+          filter: "grayscale(1) contrast(1.08)",
         }}
         image={exercise.gifUrl}
         alt={`Gif showing ${exercise.name}`}
       />
       <CardContent>
-        <Stack direction="row">
+        <Stack direction="row" spacing={1}>
           <Button
             sx={{
-              ml: "21px",
-              color: "#ffff",
-              background: "#dc0000",
-              fontSize: "14px",
+              color: "var(--ink)",
+              background: "transparent",
+              border: "1px solid var(--ink)",
+              fontSize: "13px",
               borderRadius: "20px",
               textTransform: "capitalize",
               "&:hover": {
-                bgcolor: "grey",
+                bgcolor: "var(--ink)",
+                color: "var(--paper)",
               },
             }}
           >
@@ -43,14 +51,15 @@ const ExerciseCard = ({ exercise }) => (
           </Button>
           <Button
             sx={{
-              ml: "21px",
-              color: "#36454f",
-              background: "#ffa500",
-              fontSize: "14px",
+              color: "var(--ink)",
+              background: "transparent",
+              border: "1px solid var(--ink)",
+              fontSize: "13px",
               borderRadius: "20px",
               textTransform: "capitalize",
               "&:hover": {
-                bgcolor: "grey",
+                bgcolor: "var(--ink)",
+                color: "var(--paper)",
               },
             }}
           >
@@ -58,23 +67,19 @@ const ExerciseCard = ({ exercise }) => (
           </Button>
         </Stack>
         <Typography
-          ml="21px"
-          color="#36454f"
-          fontWeight="bold"
-          sx={{ fontSize: { lg: "24px", xs: "20px" } }}
+          color="var(--ink)"
+          fontWeight="700"
+          sx={{ fontSize: { lg: "22px", xs: "18px" }, fontFamily: "var(--font-body)" }}
           mt="11px"
-          pb="10px"
+          pb="6px"
           textTransform="capitalize"
         >
           {exercise.name}
         </Typography>
         <Typography
-          ml="21px"
-          color="#36454f"
-          fontWeight="bold"
-          sx={{ fontSize: { lg: "15px", xs: "12px" } }}
-          mt="11px"
-          pb="10px"
+          color="var(--ink-soft)"
+          fontWeight="500"
+          sx={{ fontSize: { lg: "14px", xs: "12px" } }}
           textTransform="capitalize"
         >
           Equipment: {exercise.equipment}

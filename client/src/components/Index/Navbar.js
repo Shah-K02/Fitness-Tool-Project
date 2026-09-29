@@ -3,8 +3,8 @@ import SideBar from "./SideBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faUser, faDumbbell } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "../../helpers/UserContext";
-import logo from "../../assets/logo.png";
-import { useNavigate } from "react-router-dom";
+import logo from "../../assets/logo-mark.svg";
+import { useNavigate, Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -38,22 +38,30 @@ const Navbar = () => {
   return (
     <>
       <nav>
-        <a href="/">
-          <div className="nav-icon">
-            <img src={logo} alt="logo" />
-          </div>
-        </a>
         <ul className="nav-links">
           {links.map((link) => (
             <li key={link.name}>
-              <a href={link.url} title={link.name}>
+              <NavLink
+                to={link.url}
+                title={link.name}
+                className={({ isActive }) => (isActive ? "is-active" : undefined)}
+                end={link.url === "/" || link.url === "/user-home"}
+              >
                 {link.icon && <FontAwesomeIcon icon={link.icon} />}
                 {link.name}
-              </a>
+              </NavLink>
             </li>
           ))}
+        </ul>
+
+        <Link to="/" className="nav-brand">
+          <img src={logo} alt="" className="nav-logo" />
+          <span className="nav-wordmark">Personalised Fitness Assistant</span>
+        </Link>
+
+        <div className="nav-right">
           {user && (
-            <li className="account-dropdown" ref={dropdownRef}>
+            <div className="account-dropdown" ref={dropdownRef}>
               <div
                 className="dropdown-icon"
                 onClick={() => setDropdownOpen(!isDropdownOpen)}
@@ -69,16 +77,16 @@ const Navbar = () => {
                   </div>
                 </div>
               )}
-            </li>
+            </div>
           )}
-        </ul>
-        <div
-          onClick={() => setIsOpen(!isOpen)}
-          className={isOpen ? "burger active" : "burger"}
-        >
-          <div className="bar"></div>
-          <div className="bar"></div>
-          <div className="bar"></div>
+          <div
+            onClick={() => setIsOpen(!isOpen)}
+            className={isOpen ? "burger active" : "burger"}
+          >
+            <div className="bar"></div>
+            <div className="bar"></div>
+            <div className="bar"></div>
+          </div>
         </div>
       </nav>
       {isOpen && (

@@ -4,78 +4,93 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  background-color: #ffffff; /* White background for contrast */
+  padding: 24px 20px 64px;
+}
+
+.macro-container h1 {
+  margin: 40px 0 24px;
 }
 
 .macro-form-container {
   display: flex;
   flex-direction: column;
-  max-width: 400px;
+  max-width: 420px;
   width: 100%;
-  background: #f0f0f0; /* Light grey background for the form */
-  padding: 20px;
-  border-radius: 10px; /* Rounded corners for the form container */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  margin-bottom: 20px;
+  background: var(--paper-card);
+  padding: 24px;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+}
+
+.macro-form-container label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-top: 14px;
+  display: inline-block;
 }
 
 .macro-form-container input,
 .macro-form-container select {
-  padding: 10px;
-  margin-top: 10px; /* Increase spacing */
-  border-radius: 5px;
-  border: 1px solid #ccc; /* Slightly darker border for definition */
-  font-size: 16px; /* Larger font size for readability */
+  padding: 10px 12px;
+  margin-top: 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.macro-form-container button {
-  padding: 10px;
-  margin-top: 15px; /* Increase spacing before the button */
-  background-color: #dc0000; /* Bright Red for action items */
-  color: white;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px; /* Consistent rounded corners */
-  transition: background-color 0.2s ease-in-out;
+.macro-form-container input[type="radio"] {
+  width: auto;
+  margin-right: 6px;
+  vertical-align: middle;
 }
 
-.macro-form-container button:hover {
-  background-color: #ffa500; /* Orange on hover for interaction feedback */
-}
-
-.macro-form-container label {
-  font-weight: bold;
-  color: #36454f; /* Charcoal Gray for text */
-  margin-top: 15px;
+.macro-form-container .btn {
+  margin-top: 20px;
+  width: 100%;
 }
 
 .macro-results-container {
-  text-align: center;
-  padding: 20px;
-  background: #f0f0f0; /* Light grey background for results */
-  border-radius: 10px; /* Rounded corners for the results container */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  text-align: left;
+  padding: 24px;
+  background: var(--paper-card);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-md);
   width: 100%;
-  max-width: 400px; /* Match form width */
+  max-width: 420px;
+}
+
+.macro-results-container h2 {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
 }
 
 .macro-results-container p {
-  color: #36454f; /* Charcoal Gray for a softer look */
-  font-size: 18px; /* Slightly reduced font size */
-  margin: 10px 0; /* Reduced spacing */
+  color: var(--ink);
+  font-size: 0.95rem;
+  margin: 6px 0;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--paper-line);
+  padding-bottom: 6px;
 }
 
 .macro-chart-container {
   width: 100%;
-  max-width: 400px; /* Match form and results width */
-  height: 400px;
-  padding: 20px;
-  background: #ffffff; /* White background for contrast */
-  border-radius: 10px; /* Rounded corners for the chart container */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  margin-top: 20px;
+  max-width: 420px;
+  height: 340px;
+  padding: 24px;
+  background: var(--paper-card);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-md);
+  margin-top: 24px;
+  box-sizing: border-box;
 }
 
 .macro-chart-container canvas {

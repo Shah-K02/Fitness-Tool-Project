@@ -14,23 +14,27 @@ const SearchExercises = ({ onSearch }) => {
         <Typography
           fontWeight="700"
           sx={{
-            fontSize: { lg: "44px", xs: "30px" },
+            fontSize: { lg: "40px", xs: "28px" },
             mb: "49px",
             textAlign: "center",
-            fontFamily: '"Bebas Neue", sans-serif',
-            color: "#36454f",
+            fontFamily: "var(--font-body)",
+            color: "var(--ink)",
           }}
         >
-          Discover New Exercises
+          Exercises
         </Typography>
         <Box position="relative" mb="72px">
           <TextField
             height="76px"
             sx={{
-              input: { fontWeight: "700", border: "none", borderRadius: "4px" },
-              width: { lg: "1170px", xs: "350px" },
-              backgroundColor: "#fff",
-              borderRadius: "40px",
+              input: {
+                fontWeight: "600",
+                border: "none",
+                borderRadius: "4px 0 0 4px",
+                backgroundColor: "var(--paper)",
+              },
+              "& fieldset": { border: "1px solid var(--ink)", borderRadius: "4px 0 0 4px" },
+              width: { lg: "1170px", xs: "280px" },
             }}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
@@ -39,18 +43,19 @@ const SearchExercises = ({ onSearch }) => {
           />
           <Button
             sx={{
-              bgcolor: "#dc0000",
-              color: "#ffff",
+              bgcolor: "var(--ink)",
+              color: "var(--paper)",
               textTransform: "none",
+              fontWeight: "600",
+              borderRadius: "0 4px 4px 0",
               position: "absolute",
               right: 0,
               top: 0,
-              width: { lg: "173px", xs: "80px" },
+              width: { lg: "150px", xs: "80px" },
               height: "56px",
-              fontSize: { lg: "20px", xs: "14px" },
+              fontSize: { lg: "16px", xs: "14px" },
               "&:hover": {
-                bgcolor: "#ffa500",
-                color: "#ffff",
+                bgcolor: "var(--logged)",
               },
             }}
             onClick={() => onSearch(searchTerm)}

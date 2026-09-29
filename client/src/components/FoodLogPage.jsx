@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./FoodLogPage.css";
 import SearchBar from "./SearchBar/SearchBar";
-import SearchResultList from "./SearchBar/SearchResultsList";
 import BackButton from "./BackButton";
 import LogEntry from "./LogEntry";
 import axios from "axios";
@@ -10,7 +9,6 @@ function FoodLogPage() {
   const [currentDay, setCurrentDay] = useState(new Date());
   const [foodLogEntries, setFoodLogEntries] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
-  const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedHour, setSelectedHour] = useState(null);
   const [error, setError] = useState(null);
@@ -70,10 +68,24 @@ function FoodLogPage() {
   };
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="food-log-page">
+        <BackButton className="back-button" backText=" Back" />
+        <h1 className="food-log-title">Log Your Food</h1>
+        <p className="state-message">Loading&hellip;</p>
+      </div>
+    );
   }
   if (error) {
-    return <p>Error: {error}</p>;
+    return (
+      <div className="food-log-page">
+        <BackButton className="back-button" backText=" Back" />
+        <h1 className="food-log-title">Log Your Food</h1>
+        <p className="state-message is-flag">
+          Couldn&rsquo;t load today&rsquo;s log: {error}
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -93,38 +105,39 @@ function FoodLogPage() {
           </button>
         ))}
       </div>
-      <div className="hour-logs-list">
-        {" "}
+      <div className="hour-logs-list ledger">
         {Array.from({ length: 24 }, (_, index) => formatHour(index)).map(
-          (formattedHour, index) => (
-            <div className="hour-log" key={index}>
-              {" "}
-              <span className="hour-text">{formattedHour}</span>
-              <button
-                className="log-button"
-                onClick={() => handleLogFood(index)}
-              >
-                +
-              </button>
-              <div className="log-entries-container">
-                {foodLogEntries.length > 0 ? (
-                  foodLogEntries
-                    .filter(
-                      (entry) => new Date(entry.log_time).getHours() === index
-                    )
-                    .map((entry) => <LogEntry key={entry.id} entry={entry} />)
-                ) : (
-                  <p>No food logs for this day.</p>
-                )}
-              </div>
-              {showSearch && selectedHour === index && (
-                <div className="search-bar-container">
-                  <SearchBar setResults={setResults} />
-                  {results.length > 0 && <SearchResultList results={results} />}
+          (formattedHour, index) => {
+            const entriesForHour = foodLogEntries.filter(
+              (entry) => new Date(entry.log_time).getHours() === index
+            );
+            return (
+              <div className="hour-log" key={index}>
+                <span className="hour-text num">{formattedHour}</span>
+                <div className="log-entries-container">
+                  {entriesForHour.length > 0 ? (
+                    entriesForHour.map((entry) => (
+                      <LogEntry key={entry.id} entry={entry} />
+                    ))
+                  ) : (
+                    <p className="hour-empty">&mdash;</p>
+                  )}
+                  {showSearch && selectedHour === index && (
+                    <div className="search-bar-container">
+                      <SearchBar />
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          )
+                <button
+                  className="log-button"
+                  onClick={() => handleLogFood(index)}
+                  aria-label={`Log food at ${formattedHour}`}
+                >
+                  +
+                </button>
+              </div>
+            );
+          }
         )}
       </div>
     </div>

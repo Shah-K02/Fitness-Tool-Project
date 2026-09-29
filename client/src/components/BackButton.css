@@ -1,16 +1,21 @@
 .back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   position: absolute;
-  top: 60px;
+  top: 76px;
   left: 20px;
-  background-color: none; /* Transparent background */
-  color: #36454f; /* Charcoal Gray */
+  background: none;
+  color: var(--ink-soft);
   border: none;
   padding: 8px 12px;
-  margin: 20px;
-  border-radius: 6px; /* Rounded corners */
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
 }
 
 .back-button:hover {
-  background-color: #d3d3d3;
+  color: var(--ink);
+  background-color: var(--paper-card);
 }

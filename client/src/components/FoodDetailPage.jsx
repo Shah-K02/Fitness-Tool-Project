@@ -116,12 +116,30 @@ const FoodDetailPage = () => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!foodDetails) return <div>No details available</div>;
+  if (isLoading) {
+    return (
+      <div className="food-detail-page">
+        <p className="state-message">Loading&hellip;</p>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="food-detail-page">
+        <p className="state-message is-flag">{error}</p>
+      </div>
+    );
+  }
+  if (!foodDetails) {
+    return (
+      <div className="food-detail-page">
+        <p className="state-message">No details available.</p>
+      </div>
+    );
+  }
 
   return (
-    <div>
+    <div className="food-detail-page">
       <BackButton className="back-button" backText=" Back" />
 
       <h1>{foodDetails?.description || "N/A"}</h1>
@@ -161,7 +179,7 @@ const FoodDetailPage = () => {
             : foodDetails?.foodPortions?.[0]?.portionDescription ?? "N/A"}
         </p>
 
-        <button onClick={logFood} className="log-food-button2">
+        <button onClick={logFood} className="btn btn-primary log-food-button2">
           Log This Food
         </button>
       </div>
@@ -178,7 +196,7 @@ const FoodDetailPage = () => {
           </p>
         </header>
         <div className="divider lg"></div>
-        <ul>
+        <div className="nutrients-list">
           <div className="calories-info">
             <h2>
               {energyNutrient && (
@@ -205,7 +223,7 @@ const FoodDetailPage = () => {
                 </React.Fragment>
               )
           )}
-        </ul>
+        </div>
       </div>
     </div>
   );

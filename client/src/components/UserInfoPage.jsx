@@ -73,6 +73,7 @@ const UserInfoPage = () => {
         setError(
           error.response ? error.response.data.message : "Network error"
         );
+        setErrorTimestamp(Date.now());
         setIsLoading(false);
       }
     };
@@ -121,18 +122,21 @@ const UserInfoPage = () => {
   };
 
   if (!user) {
-    console.log("Displaying login error message");
-    return <ErrorMessage message="Please log in to view this page." />;
+    return (
+      <div className="user-info-page">
+        <p className="state-message is-flag">
+          Please log in to view this page.
+        </p>
+      </div>
+    );
   }
   if (isLoading) {
-    console.log("Displaying loading state");
-    return <div>Loading...</div>;
+    return (
+      <div className="user-info-page">
+        <p className="state-message">Loading&hellip;</p>
+      </div>
+    );
   }
-  if (error) {
-    console.log("Displaying error message");
-    return <ErrorMessage message={error} timestamp={errorTimestamp} />;
-  }
-
   return (
     <div className="user-info-page">
       <BackButton className="back-button" backText=" Back" />
@@ -229,7 +233,7 @@ const UserInfoPage = () => {
             ))}
           </select>
         </div>
-        <button className="submit-button" type="submit">
+        <button className="btn btn-primary submit-button" type="submit">
           Save Changes
         </button>
       </form>

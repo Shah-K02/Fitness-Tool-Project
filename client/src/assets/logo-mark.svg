@@ -1,0 +1,10 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Personalised Fitness Assistant logo">
+  <g stroke="#161a22" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="43" cy="11" r="5.5" fill="#161a22" stroke="none" />
+    <path d="M39 19 L27 35" />
+    <path d="M39 20 L29 14 L23 19" />
+    <path d="M37 22 L46 27 L42 36" />
+    <path d="M27 35 L35 43 L29 51" />
+    <path d="M27 35 L17 41 L9 37" />
+  </g>
+</svg>

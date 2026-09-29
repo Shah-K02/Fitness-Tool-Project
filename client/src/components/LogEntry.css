@@ -1,0 +1,34 @@
+.log-entry {
+  padding: 3px 0;
+}
+
+.log-entry:not(:last-child) {
+  border-bottom: 1px dashed var(--paper-line);
+  margin-bottom: 4px;
+  padding-bottom: 6px;
+}
+
+.log-entry-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.log-entry-desc {
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.log-entry-kcal {
+  color: var(--ink);
+  font-size: 0.85rem;
+  flex: none;
+}
+
+.log-entry-meta {
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
