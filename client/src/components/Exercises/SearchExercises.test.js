@@ -36,4 +36,15 @@ describe("SearchExercises", () => {
     // Assert `onSearch` was called with the right arguments
     expect(mockOnSearch).toHaveBeenCalledWith("cardio");
   });
+
+  test("calls onSearch when Enter is pressed in the search field", () => {
+    render(<SearchExercises onSearch={mockOnSearch} />);
+    const input = screen.getByPlaceholderText("Search Exercises");
+    fireEvent.change(input, { target: { value: "squat" } });
+
+    // Pressing Enter in a text field submits its form
+    fireEvent.submit(screen.getByRole("search"));
+
+    expect(mockOnSearch).toHaveBeenCalledWith("squat");
+  });
 });

@@ -9,6 +9,8 @@ const ExercisesPage = () => {
   const [exercises, setExercises] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  // Bumped on every submit so searching the same term again re-fetches.
+  const [searchCount, setSearchCount] = useState(0);
   // Keep the search term in the URL so results survive a trip to the detail
   // page and back.
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,11 +37,13 @@ const ExercisesPage = () => {
     return () => {
       cancelled = true;
     };
-  }, [query]);
+  }, [query, searchCount]);
 
   const handleSearch = (searchTerm) => {
     const term = searchTerm.trim();
-    if (term) setSearchParams({ q: term });
+    if (!term) return;
+    setSearchParams({ q: term });
+    setSearchCount((count) => count + 1);
   };
 
   return (

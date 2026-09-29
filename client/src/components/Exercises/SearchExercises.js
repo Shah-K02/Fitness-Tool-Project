@@ -23,7 +23,16 @@ const SearchExercises = ({ onSearch, initialTerm = "" }) => {
         >
           Exercises
         </Typography>
-        <Box position="relative" mb="72px">
+        <Box
+          component="form"
+          role="search"
+          position="relative"
+          mb="72px"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSearch(searchTerm);
+          }}
+        >
           <TextField
             height="76px"
             sx={{
@@ -38,11 +47,9 @@ const SearchExercises = ({ onSearch, initialTerm = "" }) => {
             }}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") onSearch(searchTerm);
-            }}
             placeholder="Search Exercises"
-            type="text"
+            type="search"
+            inputProps={{ "aria-label": "Search exercises" }}
           />
           <Button
             sx={{
@@ -61,7 +68,7 @@ const SearchExercises = ({ onSearch, initialTerm = "" }) => {
                 bgcolor: "var(--logged)",
               },
             }}
-            onClick={() => onSearch(searchTerm)}
+            type="submit"
           >
             Search
           </Button>
