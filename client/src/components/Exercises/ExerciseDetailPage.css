@@ -1,0 +1,145 @@
+.exercise-detail-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+.exercise-detail-header {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+  margin-top: 32px;
+}
+
+.exercise-detail-media {
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-md);
+  background: #fff;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.exercise-detail-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.exercise-detail-summary h1 {
+  margin: 0 0 12px;
+  text-transform: capitalize;
+}
+
+.exercise-detail-description {
+  color: var(--ink-soft);
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.exercise-detail-facts {
+  margin: 0;
+  border-top: 1px solid var(--paper-line);
+}
+
+.exercise-detail-facts > div {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  padding: 10px 2px;
+  border-bottom: 1px solid var(--paper-line);
+}
+
+.exercise-detail-facts dt {
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.exercise-detail-facts dd {
+  margin: 0;
+  color: var(--ink);
+  text-transform: capitalize;
+}
+
+.exercise-detail-section {
+  margin-top: 48px;
+}
+
+.exercise-detail-section h2 {
+  font-size: 1.35rem;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.exercise-instructions {
+  margin: 0;
+  padding-left: 1.4rem;
+  line-height: 1.65;
+}
+
+.exercise-instructions li {
+  padding: 6px 0;
+}
+
+.exercise-instructions li::marker {
+  color: var(--logged);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.exercise-videos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.exercise-video {
+  margin: 0;
+}
+
+.exercise-video-frame {
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.exercise-video-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.exercise-video figcaption {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+.exercise-video figcaption span {
+  color: var(--ink-soft);
+}
+
+.exercise-videos-fallback a {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.exercise-videos-fallback a:hover {
+  color: var(--logged);
+}
+
+@media (max-width: 720px) {
+  .exercise-detail-header {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .exercise-detail-media {
+    max-width: 360px;
+  }
+}

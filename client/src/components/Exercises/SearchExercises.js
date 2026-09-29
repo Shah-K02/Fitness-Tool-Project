@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Typography, Stack } from "@mui/material";
 
-const SearchExercises = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+const SearchExercises = ({ onSearch, initialTerm = "" }) => {
+  const [searchTerm, setSearchTerm] = useState(initialTerm);
 
   return (
     <Box>
@@ -38,6 +38,9 @@ const SearchExercises = ({ onSearch }) => {
             }}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") onSearch(searchTerm);
+            }}
             placeholder="Search Exercises"
             type="text"
           />

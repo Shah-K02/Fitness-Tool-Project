@@ -7,6 +7,7 @@ import MacroCalculator from "./components/MacroCalculator";
 import Navbar from "./components/Index/Navbar";
 import Footer from "./components/Index/Footer";
 import ExercisesPage from "./components/Exercises/ExercisesPage";
+import ExerciseDetailPage from "./components/Exercises/ExerciseDetailPage";
 const HeroSection = lazy(() => import("./components/Index/HeroSection"));
 const NewsSection = lazy(() => import("./components/Index/NewsSection"));
 const MacronutrientSection = lazy(() =>
@@ -56,6 +57,7 @@ function App() {
             <Route path="/food/:id" element={<FoodDetailPage />} />
             <Route path="*" element={<h1>Not Found</h1>} />
             <Route path="/exercisespage" element={<>{<ExercisesPage />}</>} />
+            <Route path="/exercises/:id" element={<ExerciseDetailPage />} />
           </Routes>
         </Suspense>
         <Footer />
