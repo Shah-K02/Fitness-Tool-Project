@@ -568,4 +568,14 @@ nav {
   .nav-wordmark {
     display: none;
   }
+
+  /* With the tab links hidden, keep the mark left and the controls right
+     instead of letting them slide into the first two grid columns. */
+  nav {
+    grid-template-columns: 1fr auto;
+  }
+
+  .nav-brand {
+    justify-self: start;
+  }
 }
