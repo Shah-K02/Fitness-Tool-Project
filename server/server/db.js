@@ -27,12 +27,4 @@ const pool = mysql.createPool({
   dateStrings: ["DATE"],
 });
 
-// Fail loudly at startup if the database is unreachable.
-if (process.env.NODE_ENV !== "test") {
-  pool
-    .getConnection()
-    .then((connection) => connection.release())
-    .catch((err) => console.error("Error connecting to the database:", err.message));
-}
-
 module.exports = pool;

@@ -27,9 +27,8 @@ built React app, so there's one service to deploy and no CORS setup.
 # 1. Install dependencies
 npm run install:all
 
-# 2. Create the database and tables
+# 2. Create the database (the server creates the tables when it starts)
 mysql -u root -p -e "CREATE DATABASE fitness_app"
-mysql -u root -p fitness_app < server/db/schema.sql
 
 # 3. Configure the server
 cp server/server/.env.example server/server/.env
@@ -82,7 +81,8 @@ secret is too short in production.
 - **Start command:** `npm start`
 - **Health check path:** `/api/health`
 - Set the environment variables above.
-- Create the tables once with `server/db/schema.sql`.
+- The server creates any missing tables from `server/db/schema.sql` when it
+  starts, so an empty database is all it needs.
 - Uploaded post images are written to `server/server/uploads` (or
   `UPLOADS_DIR`). Hosts with ephemeral disks lose these on redeploy, so attach
   a persistent disk at that path.

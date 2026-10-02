@@ -18,6 +18,8 @@ WORKDIR /app/server/server
 COPY server/server/package.json server/server/package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 COPY server/server/ ./
+# schema.sql, applied at startup to create any missing tables.
+COPY server/db/ /app/server/db/
 COPY --from=client /app/client/build /app/client/build
 # Uploaded images live here; mount a volume at this path to keep them
 # across deploys.
